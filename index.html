@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grêmio Estudantil</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Grêmio Estudantil</h1>
+</header>
+
+<nav>
+  <a href="index.html">Início</a>
+  <a href="noticias.html">Notícias</a>
+  <a href="enquetes.html">Enquetes</a>
+  <a href="sugestoes.html">Sugestões</a>
+  <a href="admin.html">Admin</a>
+</nav>
+
+<div class="container">
+  <h2>Últimas notícias</h2>
+  <div id="news"></div>
+
+  <h2>Enquete ativa</h2>
+  <div id="poll"></div>
+</div>
+
+<script src="js/storage.js"></script>
+<script>
+  const news = getData("news").slice(-3).reverse();
+  const poll = getData("polls").slice(-1)[0];
+
+  const newsDiv = document.getElementById("news");
+
+  news.forEach(n => {
+    newsDiv.innerHTML += `
+      <div class="card">
+        <h3>${n.title}</h3>
+        <p>${n.text}</p>
+      </div>
+    `;
+  });
+
+  const pollDiv = document.getElementById("poll");
+
+  if (poll) {
+    pollDiv.innerHTML = `
+      <div class="card">
+        <h3>${poll.question}</h3>
+        <button onclick="vote()">Votar</button>
+        <p>Total votos: ${poll.votes}</p>
+      </div>
+    `;
+  }
+
+  function vote() {
+    poll.votes++;
+    setData("polls", getData("polls"));
+    location.reload();
+  }
+</script>
+
+</body>
+</html>
