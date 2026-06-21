@@ -1,65 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <title>Grêmio Estudantil</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grêmio Estudantil Visão Coletiva</title>
+
+  <link rel="stylesheet" href="css/style.css"/>
+  <script defer src="js/app.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<header>
-  <h1>Grêmio Estudantil</h1>
+<header class="topbar">
+  <div class="logo-area">
+    <img src="assets/logo.png" alt="Logo Grêmio" class="logo">
+    <span>Visão Coletiva</span>
+  </div>
+
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="participacao.html">Participação</a>
+    <a href="enquetes.html">Enquetes</a>
+    <a href="projetos.html">Projetos</a>
+    <a href="transparencia.html">Transparência</a>
+    <a href="membros.html">Membros</a>
+  </nav>
 </header>
 
-<nav>
-  <a href="index.html">Início</a>
-  <a href="noticias.html">Notícias</a>
-  <a href="enquetes.html">Enquetes</a>
-  <a href="sugestoes.html">Sugestões</a>
-  <a href="admin.html">Admin</a>
-</nav>
+<section class="hero">
+  <img src="assets/logo.png" class="hero-logo">
+  <h1>Grêmio Estudantil Visão Coletiva</h1>
+  <p>Participação, transparência e representatividade estudantil</p>
 
-<div class="container">
-  <h2>Últimas notícias</h2>
-  <div id="news"></div>
+  <button class="btn-primary">Enviar sugestão ao Grêmio</button>
+</section>
 
+<section class="grid">
+  <div class="card">📰 Últimas notícias</div>
+  <div class="card">📌 Avisos importantes</div>
+  <div class="card">📊 Projetos em andamento</div>
+</section>
+
+<section class="poll">
   <h2>Enquete ativa</h2>
-  <div id="poll"></div>
-</div>
+  <button>Votar agora</button>
+</section>
 
-<script src="js/storage.js"></script>
-<script>
-  const news = getData("news").slice(-3).reverse();
-  const poll = getData("polls").slice(-1)[0];
-
-  const newsDiv = document.getElementById("news");
-
-  news.forEach(n => {
-    newsDiv.innerHTML += `
-      <div class="card">
-        <h3>${n.title}</h3>
-        <p>${n.text}</p>
-      </div>
-    `;
-  });
-
-  const pollDiv = document.getElementById("poll");
-
-  if (poll) {
-    pollDiv.innerHTML = `
-      <div class="card">
-        <h3>${poll.question}</h3>
-        <button onclick="vote()">Votar</button>
-        <p>Total votos: ${poll.votes}</p>
-      </div>
-    `;
-  }
-
-  function vote() {
-    poll.votes++;
-    setData("polls", getData("polls"));
-    location.reload();
-  }
-</script>
+<footer>
+  <img src="assets/logo.png" class="footer-logo">
+  <p>Grêmio Estudantil Visão Coletiva © 2026</p>
+</footer>
 
 </body>
 </html>
