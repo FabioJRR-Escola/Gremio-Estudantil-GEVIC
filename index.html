@@ -1,58 +1,312 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Grêmio Estudantil Visão Coletiva</title>
-
-  <link rel="stylesheet" href="css/style.css"/>
-  <script defer src="js/app.js"></script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grêmio Estudantil | Sua voz, sua escola</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div class="background-blur blur-1"></div>
+  <div class="background-blur blur-2"></div>
 
-<header class="topbar">
-  <div class="logo-area">
-    <img src="assets/logo.png" alt="Logo Grêmio" class="logo">
-    <span>Visão Coletiva</span>
-  </div>
+  <header class="header">
+    <div class="brand">
+      <div class="brand-mark">GE</div>
+      <div>
+        <h1>Grêmio Estudantil</h1>
+        <p>Sua voz, sua escola, sua participação</p>
+      </div>
+    </div>
 
-  <nav>
-    <a href="index.html">Início</a>
-    <a href="noticias.html">Notícias</a>
-    <a href="participacao.html">Participação</a>
-    <a href="enquetes.html">Enquetes</a>
-    <a href="projetos.html">Projetos</a>
-    <a href="transparencia.html">Transparência</a>
-    <a href="membros.html">Membros</a>
-  </nav>
-</header>
+    <button class="icon-btn mobile-only" id="menuBtn" aria-label="Abrir menu">☰</button>
 
-<section class="hero">
-  <img src="assets/logo.png" class="hero-logo">
-  <h1>Grêmio Estudantil Visão Coletiva</h1>
-  <p>Participação, transparência e representatividade estudantil</p>
+    <nav class="nav" id="navMenu">
+      <a href="#inicio">Início</a>
+      <a href="#noticias">Notícias</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#enquetes">Enquetes</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#participe">Participe</a>
+      <a href="#contato">Contato</a>
+    </nav>
 
-  <button class="btn-primary">Enviar sugestão ao Grêmio</button>
-</section>
+    <button class="theme-btn" id="themeBtn" aria-label="Alternar tema">
+      <span id="themeIcon">🌙</span>
+    </button>
+  </header>
 
-<section class="grid">
-  <div class="card">📰 Últimas notícias</div>
-  <div class="card">📌 Avisos importantes</div>
-  <div class="card">📊 Projetos em andamento</div>
-</section>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <span class="badge">Site oficial do Grêmio</span>
+        <h2>Informação, diálogo e participação para toda a escola</h2>
+        <p>
+          Acompanhe as novidades, vote nas enquetes, envie sugestões e participe
+          ativamente das decisões do grêmio estudantil.
+        </p>
 
-<section class="poll">
-  <h2>Enquete ativa</h2>
-  <button>Votar agora</button>
-</section>
+        <div class="hero-actions">
+          <a href="#noticias" class="btn primary">Ver notícias</a>
+          <a href="#participe" class="btn secondary">Enviar sugestão</a>
+        </div>
 
-<footer>
-  <img src="assets/logo.png" class="footer-logo">
-  <p>Grêmio Estudantil Visão Coletiva © 2026</p>
-</footer>
+        <div class="stats">
+          <div class="stat">
+            <strong>+20</strong>
+            <span>notícias publicadas</span>
+          </div>
+          <div class="stat">
+            <strong>+8</strong>
+            <span>eventos organizados</span>
+          </div>
+          <div class="stat">
+            <strong>100%</strong>
+            <span>feito para os estudantes</span>
+          </div>
+        </div>
+      </div>
 
+      <div class="hero-card">
+        <h3>Destaque da semana</h3>
+        <p class="mini-label">Hoje</p>
+        <h4>Nova enquete sobre o próximo evento da escola</h4>
+        <p>
+          Queremos ouvir os estudantes para planejar atividades mais interessantes,
+          úteis e participativas.
+        </p>
+        <a href="#enquetes" class="text-link">Participar agora →</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <span class="section-tag">Quem somos</span>
+        <h2>Um grêmio mais próximo dos alunos</h2>
+        <p>
+          Nosso objetivo é conectar os estudantes às decisões, divulgar informações
+          com clareza e fortalecer a voz estudantil dentro da escola.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">📰</div>
+          <h3>Notícias rápidas</h3>
+          <p>Atualizações, comunicados e tudo o que os estudantes precisam saber.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🗳️</div>
+          <h3>Participação ativa</h3>
+          <p>Enquetes, sugestões e formulários para ouvir opiniões da comunidade escolar.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3>Eventos organizados</h3>
+          <p>Calendário com reuniões, ações, campanhas e atividades especiais.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alt" id="noticias">
+      <div class="section-heading">
+        <span class="section-tag">Atualizações</span>
+        <h2>Últimas notícias</h2>
+        <p>Fique por dentro do que está acontecendo na escola e no grêmio.</p>
+      </div>
+
+      <div class="news-grid">
+        <article class="news-card">
+          <div class="news-date">24 JUN</div>
+          <h3>Nova caixa de sugestões anônimas</h3>
+          <p>
+            Agora os alunos podem enviar ideias e opiniões de forma anônima pelo site.
+          </p>
+          <button class="small-btn">Ler mais</button>
+        </article>
+
+        <article class="news-card">
+          <div class="news-date">22 JUN</div>
+          <h3>Reunião aberta com representantes de turma</h3>
+          <p>
+            Debate sobre melhorias na escola, sugestões de eventos e comunicação com os alunos.
+          </p>
+          <button class="small-btn">Ler mais</button>
+        </article>
+
+        <article class="news-card">
+          <div class="news-date">19 JUN</div>
+          <h3>Campanha solidária arrecadou mais de 100 itens</h3>
+          <p>
+            A campanha mostrou o poder da participação estudantil em ações sociais.
+          </p>
+          <button class="small-btn">Ler mais</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="eventos">
+      <div class="section-heading">
+        <span class="section-tag">Agenda</span>
+        <h2>Próximos eventos</h2>
+        <p>Veja o calendário das próximas ações e atividades do grêmio.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span>SEX, 28 JUN</span>
+            <h3>Reunião aberta do grêmio</h3>
+            <p>Discussão de ideias com estudantes e representantes de turma.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span>QUA, 03 JUL</span>
+            <h3>Enquete final sobre o dia do esporte</h3>
+            <p>Última votação para escolher o formato do evento esportivo.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span>SEX, 12 JUL</span>
+            <h3>Gincana cultural</h3>
+            <p>Competição entre turmas com tarefas, desafios e premiações.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="enquetes">
+      <div class="section-heading">
+        <span class="section-tag">Opinião dos alunos</span>
+        <h2>Enquete da semana</h2>
+        <p>Escolha o próximo tema de evento para a escola.</p>
+      </div>
+
+      <div class="poll-card">
+        <h3>Qual atividade você gostaria de ver no próximo mês?</h3>
+
+        <div class="poll-options">
+          <button class="poll-option" data-poll="Campeonato esportivo">Campeonato esportivo</button>
+          <button class="poll-option" data-poll="Noite cultural">Noite cultural</button>
+          <button class="poll-option" data-poll="Gincana entre turmas">Gincana entre turmas</button>
+          <button class="poll-option" data-poll="Palestra e debate">Palestra e debate</button>
+        </div>
+
+        <p class="poll-result" id="pollResult">Vote em uma opção acima.</p>
+      </div>
+    </section>
+
+    <section class="section" id="galeria">
+      <div class="section-heading">
+        <span class="section-tag">Memórias</span>
+        <h2>Galeria de atividades</h2>
+        <p>Registros de ações, campanhas e momentos importantes do grêmio.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item">📸 Foto da campanha solidária</div>
+        <div class="gallery-item">🎤 Roda de conversa com alunos</div>
+        <div class="gallery-item">🏅 Torneio interclasse</div>
+        <div class="gallery-item">📚 Feira de livros e leitura</div>
+      </div>
+    </section>
+
+    <section class="section alt" id="participe">
+      <div class="section-heading">
+        <span class="section-tag">Contribua</span>
+        <h2>Participe ativamente</h2>
+        <p>Envie sua sugestão para melhorar a escola e as ações do grêmio.</p>
+      </div>
+
+      <div class="participation-grid">
+        <form class="form-card" id="suggestionForm">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" placeholder="Seu nome" />
+          </div>
+
+          <div class="form-group">
+            <label for="turma">Turma</label>
+            <input type="text" id="turma" placeholder="Ex: 9º A" />
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoria da ideia</label>
+            <select id="categoria">
+              <option value="">Selecione</option>
+              <option>Evento</option>
+              <option>Melhoria na escola</option>
+              <option>Comunicação</option>
+              <option>Campanha social</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="sugestao">Sua sugestão</label>
+            <textarea id="sugestao" rows="5" placeholder="Escreva sua ideia aqui"></textarea>
+          </div>
+
+          <button type="submit" class="btn primary full">Enviar sugestão</button>
+          <p class="message" id="formMessage"></p>
+        </form>
+
+        <aside class="side-card">
+          <h3>Como você pode ajudar</h3>
+          <ul>
+            <li>Participando das reuniões abertas</li>
+            <li>Votando nas enquetes</li>
+            <li>Divulgando as ações do grêmio</li>
+            <li>Mandando ideias pelo formulário</li>
+          </ul>
+
+          <div class="callout">
+            <strong>Importante:</strong>
+            Toda opinião conta. Quanto mais estudantes participarem, melhor será a escola.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="section-heading">
+        <span class="section-tag">Fale com a gente</span>
+        <h2>Contato</h2>
+        <p>Entre em contato com o grêmio pelos canais oficiais.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>E-mail do Presidente</h3>
+          <p>rocha.junior.fabio@escola.pr.gov.br</p>
+        </div>
+        <div class="contact-card">
+          <h3>Instagram</h3>
+          <p>visaãocoletiva_gevic</p>
+        </div>
+        <div class="contact-card">
+          <h3>Reuniões</h3>
+          <p>Sextas-feiras, às 16h</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Grêmio Estudantil. Feito para os estudantes.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
