@@ -835,3 +835,24 @@ const observerInterval = setInterval(() => {
     renderPollAdmin();
   }
 }, 2000);
+
+// =========================
+// Mobile nav toggle
+// =========================
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = navMenu.classList.toggle("active");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // Fecha menu ao clicar em um link
+  navMenu.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
