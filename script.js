@@ -1,22 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializa a persistência local padrão se estiver acessando a primeira vez
     verificarEInicializarBanco();
 
-    // Renderiza os componentes dinamicamente a partir dos dados gravados
     renderizarPortalNoticias();
     renderizarPortalAgenda();
     renderizarPortalProjetos();
     renderizarPortalMural();
     renderizarPortalTransparencia();
 
-    // Configura o formulário de envio de sugestões dos alunos
     configurarFormularioEstudante();
-
-    // Configura efeito suave nas âncoras da página
     configurarRolagemSuave();
 });
 
-// GARANTE QUE EXISTAM DADOS PARA IMPRIMIR EM CASO DE PRIMEIRA VISITA
 function verificarEInicializarBanco() {
     if (!localStorage.getItem('gre_noticias')) {
         const dadosPadrao = [
@@ -47,14 +41,13 @@ function verificarEInicializarBanco() {
     }
     if (!localStorage.getItem('gre_transparencia')) {
         const transPadrao = [
-            { titulo: "Estatuto do Grêmio", descricao: "Estatuto oficial assinado em vigência." },
-            { titulo: "Prestação de Contas", descricao: "Balanço financeiro detalhado deste ano." }
+            { titulo: "Estatuto do Grêmio", descricao: "Estatuto oficial assinado em vigência.", arquivo: "", nomeArquivo: "" },
+            { titulo: "Prestação de Contas", descricao: "Balanço financeiro detalhado deste ano.", arquivo: "", nomeArquivo: "" }
         ];
         localStorage.setItem('gre_transparencia', JSON.stringify(transPadrao));
     }
 }
 
-// 1. RENDERIZAÇÃO DE NOTÍCIAS (Distingue se tem foto Base64 ou se usa o ícone padrão)
 function renderizarPortalNoticias() {
     const noticias = JSON.parse(localStorage.getItem('gre_noticias')) || [];
     const container = document.getElementById('noticias-container');
@@ -67,11 +60,9 @@ function renderizarPortalNoticias() {
 
     let html = '';
     noticias.forEach(item => {
-        // Formata data padrão ISO (AAAA-MM-DD) para formato legível (DD/MM/AAAA)
         const partesData = item.data.split('-');
         const dataFormatada = partesData.length === 3 ? `${partesData[2]}/${partesData[1]}/${partesData[0]}` : item.data;
         
-        // Verifica se há foto enviada via admin
         const mediaRender = item.foto 
             ? `<img src="${item.foto}" class="card-news-img" alt="Imagem da notícia">`
             : `<i class="fa-solid fa-bullhorn news-icon"></i>`;
@@ -88,7 +79,6 @@ function renderizarPortalNoticias() {
     container.innerHTML = html;
 }
 
-// 2. RENDERIZAÇÃO DA AGENDA
 function renderizarPortalAgenda() {
     const eventos = JSON.parse(localStorage.getItem('gre_agenda')) || [];
     const container = document.getElementById('agenda-container');
@@ -103,7 +93,7 @@ function renderizarPortalAgenda() {
     let html = '';
 
     eventos.forEach(item => {
-        const partesData = item.data.split('-'); // [AAAA, MM, DD]
+        const partesData = item.data.split('-');
         let dia = "00";
         let mesExtenso = "S/M";
         if(partesData.length === 3) {
@@ -126,25 +116,23 @@ function renderizarPortalAgenda() {
     container.innerHTML = html;
 }
 
-// 3. RENDERIZAÇÃO DOS PROJETOS
 function renderizarPortalProjetos() {
     const projetos = JSON.parse(localStorage.getItem('gre_projetos')) || [];
     const container = document.getElementById('projetos-container');
     if (!container) return;
 
     let html = '';
-    projetos.forEach(item => {
+    for(let i=0; i < projetos.length; i++){
         html += `
             <div class="card">
-                <h3>${item.icone} ${item.titulo}</h3>
-                <p>${item.descricao}</p>
+                <h3>${projetos[i].icone} ${projetos[i].titulo}</h3>
+                <p>${projetos[i].descricao}</p>
             </div>
         `;
-    });
+    }
     container.innerHTML = html;
 }
 
-// 4. RENDERIZAÇÃO DO MURAL (Mostra apenas os itens com status 'Aprovado')
 function renderizarPortalMural() {
     const sugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
     const container = document.getElementById('mural-container');
@@ -169,20 +157,25 @@ function renderizarPortalMural() {
     container.innerHTML = html;
 }
 
-// 5. RENDERIZAÇÃO DA TRANSPARÊNCIA
+// ATUALIZADO: Renderiza o link indicando se há um anexo real pronto para baixar
 function renderizarPortalTransparencia() {
     const docs = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
     const container = document.getElementById('transparencia-container');
     if (!container) return;
 
     let html = '';
-    docs.forEach(item => {
+    docs.forEach((item, index) => {
+        const subtexto = item.nomeArquivo 
+            ? `<span style="font-size: 0.75rem; color: var(--azul-principal); display:block; margin-top:5px;"><i class="fa-solid fa-paperclip"></i> ${item.nomeArquivo}</span>` 
+            : '';
+
         html += `
-            <a href="#" class="transparencia-card" onclick="alert('Fazendo download fictício do documento: ${item.titulo}'); return false;">
+            <a href="#" class="transparencia-card" onclick="baixarDocumentoTransparencia(${index}); return false;">
                 <i class="fa-solid fa-file-pdf"></i>
                 <div>
                     <h3>${item.titulo}</h3>
                     <p style="color: var(--texto-claro); font-size: 0.9rem;">${item.descricao}</p>
+                    ${subtexto}
                 </div>
             </a>
         `;
@@ -190,7 +183,23 @@ function renderizarPortalTransparencia() {
     container.innerHTML = html;
 }
 
-// CAPTURA A SUGESTÃO DO ESTUDANTE E DEIXA "PENDENTE" PARA O ADMIN APROVAR
+// NOVA FUNÇÃO: Reconverte a string Base64 e força o download do arquivo anexado
+function baixarDocumentoTransparencia(index) {
+    const docs = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
+    const doc = docs[index];
+    
+    if (doc && doc.arquivo) {
+        const linkBaixar = document.createElement('a');
+        linkBaixar.href = doc.arquivo;
+        linkBaixar.download = doc.nomeArquivo || `documento-${index}`;
+        document.body.appendChild(linkBaixar);
+        linkBaixar.click();
+        document.body.removeChild(linkBaixar);
+    } else {
+        alert('Este é um documento padrão de teste e não possui um arquivo real anexado.');
+    }
+}
+
 function configurarFormularioEstudante() {
     const form = document.getElementById('student-sugestao-form');
     if (!form) return;
@@ -205,7 +214,7 @@ function configurarFormularioEstudante() {
         const novaSugestao = {
             texto: `[${tipoSelect}] ${msgTexto}`,
             autor: autorInput || "Anônimo",
-            status: "Pendente" // Enviado para aprovação do Presidente
+            status: "Pendente"
         };
 
         let bancoSugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
@@ -217,7 +226,6 @@ function configurarFormularioEstudante() {
     });
 }
 
-// INTERATIVIDADE DA SEÇÃO DE CATEGORIAS (Foca no formulário mudando o tipo)
 function focarFormulario(tipo) {
     const select = document.getElementById('student-tipo');
     const textarea = document.getElementById('student-msg');
