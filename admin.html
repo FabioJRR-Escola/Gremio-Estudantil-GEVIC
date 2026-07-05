@@ -1,254 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- TRAVA DE SEGURANÇA: Bloqueia visualização se não estiver logado -->
+    <script>
+        if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
+            alert('Acesso negado! Por favor, faça login primeiro.');
+            window.location.href = 'login.html';
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo - Visão Coletiva</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <title>Painel Administrativo - Grêmio Estudantil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos complementares específicos do layout do Painel */
+        .admin-header {
+            background: var(--branco);
+            padding: 15px 20px;
+            box-shadow: var(--sombra);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        .admin-box {
+            background: var(--branco);
+            padding: 30px;
+            border-radius: var(--borda-raio);
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+        }
+        .admin-form-group {
+            margin-bottom: 15px;
+        }
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .admin-form-group input, .admin-form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
 </head>
-<body>
+<body style="padding-top: 20px;">
 
-    <div class="admin-container">
-        <!-- BARRA LATERAL (SIDEBAR) -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <i class="fa-solid fa-user-gear"></i>
-                <div>
-                    <h2>Grêmio Admin</h2>
-                    <span>Visão Coletiva</span>
-                </div>
+    <div class="container">
+        <!-- Barra superior administrativa -->
+        <div class="admin-header">
+            <div>
+                <h2><i class="fa-solid fa-user-gear"></i> Painel de Controle Administrativo</h2>
+                <p style="color: var(--texto-claro); font-size: 0.9rem;">Gerenciamento de conteúdos e ouvidoria</p>
             </div>
-            <nav class="sidebar-menu">
-                <a href="#" class="menu-item active" data-tab="noticias"><i class="fa-solid fa-bullhorn"></i> Notícias</a>
-                <a href="#" class="menu-item" data-tab="agenda"><i class="fa-regular fa-calendar-days"></i> Agenda</a>
-                <a href="#" class="menu-item" data-tab="projetos"><i class="fa-solid fa-diagram-project"></i> Projetos</a>
-                <a href="#" class="menu-item" data-tab="sugestoes"><i class="fa-solid fa-comments"></i> Sugestões e Mural</a>
-                <a href="#" class="menu-item" data-tab="transparencia"><i class="fa-solid fa-chart-pie"></i> Transparência</a>
-            </nav>
-            <div class="sidebar-footer">
-                <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Portal</a>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="index.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fa-solid fa-eye"></i> Ver Site</a>
+                <button onclick="fazerLogout()" class="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
             </div>
-        </aside>
+        </div>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <main class="main-content">
-            <header class="main-header">
-                <h1>Painel de Controle da Diretoria</h1>
-                <div class="user-profile">
-                    <span>Olá, <strong>Presidente</strong></span>
-                    <i class="fa-solid fa-circle-user"></i>
-                </div>
-            </header>
-
-            <!-- CONTEÚDO DINÂMICO DAS ABAS -->
-            <div class="tab-wrapper">
-                
-                <!-- ABA: NOTÍCIAS -->
-                <section id="tab-noticias" class="tab-content active">
-                    <div class="section-header">
-                        <h2>Gerenciar Notícias</h2>
-                        <button class="btn" onclick="openModal('modal-noticia')"><i class="fa-solid fa-plus"></i> Nova Notícia</button>
-                    </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Foto</th>
-                                <th>Título</th>
-                                <th>Data</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-noticias"><!-- Inserido via JS --></tbody>
-                    </table>
-                </section>
-
-                <!-- ABA: AGENDA -->
-                <section id="tab-agenda" class="tab-content">
-                    <div class="section-header">
-                        <h2>Gerenciar Agenda e Eventos</h2>
-                        <button class="btn" onclick="openModal('modal-agenda')"><i class="fa-solid fa-plus"></i> Novo Evento</button>
-                    </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Evento</th>
-                                <th>Descrição</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-agenda"><!-- Inserido via JS --></tbody>
-                    </table>
-                </section>
-
-                <!-- ABA: PROJETOS -->
-                <section id="tab-projetos" class="tab-content">
-                    <div class="section-header">
-                        <h2>Gerenciar Projetos</h2>
-                        <button class="btn" onclick="openModal('modal-projeto')"><i class="fa-solid fa-plus"></i> Novo Projeto</button>
-                    </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Ícone/Emoji</th>
-                                <th>Nome do Projeto</th>
-                                <th>Descrição</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-projetos"><!-- Inserido via JS --></tbody>
-                    </table>
-                </section>
-
-                <!-- ABA: SUGESTÕES E MURAL -->
-                <section id="tab-sugestoes" class="tab-content">
-                    <div class="section-header">
-                        <h2>Sugestões Recebidas & Mensagens do Mural</h2>
-                    </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Mensagem / Sugestão</th>
-                                <th>Autor sugerido</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-sugestoes"><!-- Inserido via JS --></tbody>
-                    </table>
-                </section>
-
-                <!-- ABA: TRANSPARÊNCIA -->
-                <section id="tab-transparencia" class="tab-content">
-                    <div class="section-header">
-                        <h2>Documentos de Transparência</h2>
-                        <button class="btn" onclick="openModal('modal-transparencia')"><i class="fa-solid fa-plus"></i> Novo Documento</button>
-                    </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Documento</th>
-                                <th>Descrição</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-transparencia"><!-- Inserido via JS --></tbody>
-                    </table>
-                </section>
-
-            </div>
-        </main>
-    </div>
-
-    <!-- ==================== MODAIS DE CADASTRO ==================== -->
-
-    <!-- MODAL NOTÍCIA -->
-    <div id="modal-noticia" class="modal">
-        <div class="modal-content">
-            <h3>Adicionar / Modificar Notícia</h3>
-            <form id="form-noticia">
-                <input type="hidden" id="noticia-index">
-                <div class="form-group">
+        <!-- Exemplo de Bloco de Postagem (Notícias) -->
+        <div class="admin-box">
+            <h3><i class="fa-solid fa-bullhorn"></i> Publicar Nova Notícia</h3>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+            <form id="form-nova-noticia">
+                <div class="admin-form-group">
                     <label>Título da Notícia</label>
-                    <input type="text" id="noticia-titulo" required>
+                    <input type="text" id="noticia-titulo" required placeholder="Ex: Grêmio consegue novos computadores para a biblioteca">
                 </div>
-                <div class="form-group">
-                    <label>Data de Publicação</label>
-                    <input type="date" id="noticia-data" required>
+                <div class="admin-form-group">
+                    <label>Texto Descritivo</label>
+                    <textarea id="noticia-texto" rows="3" required placeholder="Escreva os detalhes da notícia aqui..."></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Texto/Conteúdo da Notícia</label>
-                    <textarea id="noticia-texto" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Foto da Notícia</label>
+                <div class="admin-form-group">
+                    <label>Foto do Evento (Opcional)</label>
                     <input type="file" id="noticia-foto" accept="image/*">
-                    <div id="preview-foto" style="margin-top:10px; max-width:150px;"></div>
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-noticia')">Cancelar</button>
-                    <button type="submit" class="btn">Salvar</button>
-                </div>
+                <button type="submit" class="btn">Publicar no Portal</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL AGENDA -->
-    <div id="modal-agenda" class="modal">
-        <div class="modal-content">
-            <h3>Adicionar / Modificar Evento</h3>
-            <form id="form-agenda">
-                <input type="hidden" id="agenda-index">
-                <div class="form-group">
-                    <label>Data do Evento</label>
-                    <input type="date" id="agenda-data" required>
-                </div>
-                <div class="form-group">
-                    <label>Título do Evento</label>
-                    <input type="text" id="agenda-titulo" required>
-                </div>
-                <div class="form-group">
-                    <label>Descrição Curta</label>
-                    <input type="text" id="agenda-descricao" required>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-agenda')">Cancelar</button>
-                    <button type="submit" class="btn">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <script>
+        // Função de encerramento de sessão segura
+        function fazerLogout() {
+            if (confirm("Deseja realmente sair da conta administrativa?")) {
+                sessionStorage.removeItem('gre_admin_logado');
+                window.location.href = 'login.html';
+            }
+        }
 
-    <!-- MODAL PROJETO -->
-    <div id="modal-projeto" class="modal">
-        <div class="modal-content">
-            <h3>Adicionar / Modificar Projeto</h3>
-            <form id="form-projeto">
-                <input type="hidden" id="projeto-index">
-                <div class="form-group">
-                    <label>Emoji identificador (Ex: 🌱, 📚, 🎭)</label>
-                    <input type="text" id="projeto-icone" required placeholder="Ex: 📚">
-                </div>
-                <div class="form-group">
-                    <label>Nome do Projeto</label>
-                    <input type="text" id="projeto-titulo" required>
-                </div>
-                <div class="form-group">
-                    <label>Descrição do Projeto</label>
-                    <textarea id="projeto-descricao" rows="3" required></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-projeto')">Cancelar</button>
-                    <button type="submit" class="btn">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+        // Lógica para interceptar o formulário, converter imagem para Base64 e salvar no LocalStorage
+        document.getElementById('form-nova-noticia')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const titulo = document.getElementById('noticia-titulo').value.trim();
+            const texto = document.getElementById('noticia-texto').value.trim();
+            const fotoInput = document.getElementById('noticia-foto');
+            const dataHoje = new Date().toISOString().split('T')[0]; // Salva no padrão AAAA-MM-DD
 
-    <!-- MODAL TRANSPARÊNCIA -->
-    <div id="modal-transparencia" class="modal">
-        <div class="modal-content">
-            <h3>Adicionar / Modificar Documento Oficial</h3>
-            <form id="form-transparencia">
-                <input type="hidden" id="transparencia-index">
-                <div class="form-group">
-                    <label>Nome do Documento (Ex: Estatuto 2026)</label>
-                    <input type="text" id="transparencia-titulo" required>
-                </div>
-                <div class="form-group">
-                    <label>Breve Resumo/Descrição</label>
-                    <input type="text" id="transparencia-descricao" required>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-transparencia')">Cancelar</button>
-                    <button type="submit" class="btn">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+            const salvarNoticia = (fotoBase64 = "") => {
+                const novaNoticia = { titulo, texto, data: dataHoje, foto: fotoBase64 };
+                let noticiasAtuais = JSON.parse(localStorage.getItem('gre_noticias')) || [];
+                
+                noticiasAtuais.unshift(novaNoticia); // Adiciona no início da lista
+                localStorage.setItem('gre_noticias', JSON.stringify(noticiasAtuais));
+                
+                alert("Notícia publicada com sucesso! Ela já está visível na página inicial.");
+                this.reset();
+            };
 
-    <script src="admin.js"></script>
+            if (fotoInput.files && fotoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    salvarNoticia(event.target.result); // Grava a string comprimida da foto
+                };
+                reader.readAsDataURL(fotoInput.files[0]);
+            } else {
+                salvarNoticia();
+            }
+        });
+    </script>
 </body>
 </html>
