@@ -91,6 +91,27 @@ a:hover {
     color: #fff;
 }
 
+/* NOVO: Estilo para o botão de Deslogar do Painel Admin */
+.btn-logout {
+    background: #ef4444;
+    color: var(--branco);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transicao);
+}
+.btn-logout:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+}
+
 section {
     padding: 80px 0;
 }
