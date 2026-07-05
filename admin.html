@@ -116,6 +116,33 @@
                 <div class="moderar-lista" id="lista-projetos-admin"></div>
             </div>
 
+            <!-- 7. MÓDULO: MEMBROS DA DIRETORIA (NOVA ÁREA) -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-id-card"></i> Cadastrar Membro da Diretoria</h3>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-novo-membro">
+                    <div class="admin-form-group">
+                        <label>Nome Completo do Estudante</label>
+                        <input type="text" id="membro-nome" required placeholder="Ex: Ana Clara Silva">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Cargo Ocupado</label>
+                        <input type="text" id="membro-cargo" required placeholder="Ex: Presidente, Diretor de Esportes...">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Série / Turma</label>
+                        <input type="text" id="membro-serie" required placeholder="Ex: 3º Ano A, 2º Ano Técnico...">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Foto de Perfil (Opcional)</label>
+                        <input type="file" id="membro-foto" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn">Cadastrar Integrante</button>
+                </form>
+                <h4 style="margin-top: 25px; color: var(--azul-escuro)">Integrantes da Gestão:</h4>
+                <div class="moderar-lista" id="lista-membros-admin"></div>
+            </div>
+
             <!-- 4. MÓDULO: TRANSPARÊNCIA -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-file-invoice-dollar"></i> Publicar Documento de Transparência</h3>
@@ -147,7 +174,7 @@
                 <div class="moderar-lista" id="lista-sugestoes-pendentes"></div>
             </div>
 
-            <!-- 6. NOVO MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ -->
+            <!-- 6. MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-address-card"></i> Configurar Informações do Rodapé e Contatos</h3>
                 <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Atualize os links sociais e dados institucionais exibidos na base do site.</p>
