@@ -23,6 +23,7 @@ function renderizarTodasAsListasAdmin() {
     renderizarListaGenericaAdmin('gre_noticias', 'lista-noticias-admin', (item) => item.titulo);
     renderizarListaGenericaAdmin('gre_agenda', 'lista-agenda-admin', (item) => `${item.data} - ${item.titulo}`);
     renderizarListaGenericaAdmin('gre_projetos', 'lista-projetos-admin', (item) => `${item.icone} ${item.titulo}`);
+    renderizarListaGenericaAdmin('gre_membros', 'lista-membros-admin', (item) => `${item.nome} (${item.cargo})`);
     renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', (item) => item.titulo);
 }
 
@@ -182,6 +183,38 @@ function configurarFormularios() {
         alert("Novo projeto cadastrado com sucesso!");
         this.reset();
         renderizarTodasAsListasAdmin();
+    });
+
+    // 7. Membros da Diretoria
+    document.getElementById('form-novo-membro')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nome = document.getElementById('membro-nome').value.trim();
+        const cargo = document.getElementById('membro-cargo').value.trim();
+        const serie = document.getElementById('membro-serie').value.trim();
+        const fotoInput = document.getElementById('membro-foto');
+
+        const salvar = (fotoBase64 = "") => {
+            let dados = JSON.parse(localStorage.getItem('gre_membros')) || [];
+            dados.push({ nome, cargo, serie, foto: fotoBase64 });
+            localStorage.setItem('gre_membros', JSON.stringify(dados));
+
+            alert("Novo integrante da diretoria salvo com sucesso!");
+            this.reset();
+            renderizarTodasAsListasAdmin();
+        };
+
+        if (fotoInput.files && fotoInput.files[0]) {
+            const file = fotoInput.files[0];
+            if (file.size > 1.5 * 1024 * 1024) {
+                alert("A imagem de perfil é pesada! Escolha uma menor ou comprimida (Até 1.5MB).");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (ev) => salvar(ev.target.result);
+            reader.readAsDataURL(file);
+        } else {
+            salvar();
+        }
     });
 
     // 4. Transparência
