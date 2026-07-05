@@ -117,6 +117,14 @@ function carregarDadosRodapeForm() {
     if(document.getElementById('rodape-atendimento')) document.getElementById('rodape-atendimento').value = rodape.atendimento || '';
 }
 
+function restaurarIdentidadeVisualPadrao() {
+    if (confirm("Deseja realmente redefinir a identidade visual do portal e voltar ao design padrão?")) {
+        localStorage.removeItem('gre_visual');
+        alert("Design padrão restaurado!");
+        window.location.reload();
+    }
+}
+
 function configurarFormularios() {
     
     // 1. Notícias
@@ -209,6 +217,41 @@ function configurarFormularios() {
         }
     });
 
+    // NOVO: Processamento do Form da Identidade Visual (Logo + Banner)
+    document.getElementById('form-identidade-visual')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const logoInput = document.getElementById('visual-logo');
+        const bannerInput = document.getElementById('visual-banner');
+
+        let visualAtual = JSON.parse(localStorage.getItem('gre_visual')) || { logo: "", banner: "" };
+
+        const processarLogo = () => {
+            return new Promise((resolve) => {
+                if (logoInput.files && logoInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => { visualAtual.logo = ev.target.result; resolve(); };
+                    reader.readAsDataURL(logoInput.files[0]);
+                } else { resolve(); }
+            });
+        };
+
+        const processarBanner = () => {
+            return new Promise((resolve) => {
+                if (bannerInput.files && bannerInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => { visualAtual.banner = ev.target.result; resolve(); };
+                    reader.readAsDataURL(bannerInput.files[0]);
+                } else { resolve(); }
+            });
+        };
+
+        Promise.all([processarLogo(), processarBanner()]).then(() => {
+            localStorage.setItem('gre_visual', JSON.stringify(visualAtual));
+            alert("Identidade visual sincronizada! As alterações já estão aplicadas na Home.");
+            this.reset();
+        });
+    });
+
     // 4. Transparência
     document.getElementById('form-nova-transparencia')?.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -240,7 +283,7 @@ function configurarFormularios() {
         }
     });
 
-    // 6. Formulário do Rodapé (Atualizado apenas com Instagram)
+    // 6. Formulário do Rodapé
     document.getElementById('form-config-rodape')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const novoRodape = {
@@ -252,6 +295,6 @@ function configurarFormularios() {
         };
 
         localStorage.setItem('gre_rodape', JSON.stringify(novoRodape));
-        alert("Configurações do rodapé atualizadas com sucesso no portal!");
+        alert("Configurações do rodapé updated!");
     });
 }
