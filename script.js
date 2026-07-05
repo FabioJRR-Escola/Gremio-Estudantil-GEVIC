@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     verificarEInicializarBanco();
 
+    renderizarIdentidadeVisual(); // Chamada adicionada para renderizar o Logo e Banner
     renderizarPortalNoticias();
     renderizarPortalAgenda();
     renderizarPortalProjetos();
@@ -57,7 +58,6 @@ function verificarEInicializarBanco() {
         ];
         localStorage.setItem('gre_transparencia', JSON.stringify(transPadrao));
     }
-    // Removido TikTok e WhatsApp dos padrões
     if (!localStorage.getItem('gre_rodape')) {
         const rodapePadrao = {
             descricao: "O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.",
@@ -67,6 +67,29 @@ function verificarEInicializarBanco() {
             atendimento: "Seg a Sex, nos intervalos."
         };
         localStorage.setItem('gre_rodape', JSON.stringify(rodapePadrao));
+    }
+}
+
+// NOVO: injeta o logo e banner do administrador dinamicamente se existirem no banco
+function renderizarIdentidadeVisual() {
+    const visual = JSON.parse(localStorage.getItem('gre_visual'));
+    if (!visual) return;
+
+    if (visual.logo) {
+        const logoElement = document.getElementById('portal-logo');
+        if (logoElement) {
+            logoElement.innerHTML = `<img src="${visual.logo}" alt="Logotipo do Grêmio" style="max-height: 50px; width: auto; object-fit: contain; display: block;">`;
+        }
+    }
+
+    if (visual.banner) {
+        const heroSection = document.getElementById('hero-banner-section');
+        if (heroSection) {
+            // Aplica um filtro linear escuro para manter o texto em branco legível sobre qualquer imagem
+            heroSection.style.backgroundImage = `linear-gradient(rgba(14, 34, 61, 0.75), rgba(14, 34, 61, 0.75)), url(${visual.banner})`;
+            heroSection.style.backgroundSize = 'cover';
+            heroSection.style.backgroundPosition = 'center';
+        }
     }
 }
 
@@ -248,7 +271,6 @@ function baixarDocumentoTransparencia(index) {
     }
 }
 
-// Apenas o link do Instagram é impresso agora
 function renderizarPortalRodape() {
     const dados = JSON.parse(localStorage.getItem('gre_rodape'));
     if (!dados) return;
