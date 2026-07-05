@@ -1,10 +1,8 @@
-// ==================== TRAVA DE SEGURANÇA IMEDIATA ====================
 if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
     alert('Acesso negado! Por favor, faça login primeiro.');
     window.location.href = 'login.html';
 }
 
-// ==================== INICIALIZAÇÃO DO PAINEL ====================
 document.addEventListener('DOMContentLoaded', () => {
     renderizarTodasAsListasAdmin();
     configurarFormularios();
@@ -27,7 +25,6 @@ function renderizarTodasAsListasAdmin() {
     renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', (item) => item.titulo);
 }
 
-// ==================== RENDERIZADOR GENERICO DE REMOÇÃO ====================
 function renderizarListaGenericaAdmin(chaveBanco, idContainer, funcaoTexto) {
     const container = document.getElementById(idContainer);
     if (!container) return;
@@ -64,7 +61,6 @@ function excluirItemPublicado(chaveBanco, index, idContainer) {
     }
 }
 
-// ==================== GERENCIAMENTO DA OUVIDORIA ====================
 function renderizarSugestoesAdmin() {
     const listaContainer = document.getElementById('lista-sugestoes-pendentes');
     if (!listaContainer) return;
@@ -110,21 +106,17 @@ function moderarMensagem(index, acao) {
     renderizarTodasAsListasAdmin();
 }
 
-// ==================== CONFIGURAÇÃO DO RODAPÉ (ADMIN) ====================
 function carregarDadosRodapeForm() {
     const rodape = JSON.parse(localStorage.getItem('gre_rodape'));
     if (!rodape) return;
 
     if(document.getElementById('rodape-descricao')) document.getElementById('rodape-descricao').value = rodape.descricao || '';
     if(document.getElementById('rodape-instagram')) document.getElementById('rodape-instagram').value = rodape.instagram || '';
-    if(document.getElementById('rodape-tiktok')) document.getElementById('rodape-tiktok').value = rodape.tiktok || '';
-    if(document.getElementById('rodape-whatsapp')) document.getElementById('rodape-whatsapp').value = rodape.whatsapp || '';
     if(document.getElementById('rodape-email')) document.getElementById('rodape-email').value = rodape.email || '';
     if(document.getElementById('rodape-localizacao')) document.getElementById('rodape-localizacao').value = rodape.localizacao || '';
     if(document.getElementById('rodape-atendimento')) document.getElementById('rodape-atendimento').value = rodape.atendimento || '';
 }
 
-// ==================== PROCESSAMENTO DOS FORMULÁRIOS ====================
 function configurarFormularios() {
     
     // 1. Notícias
@@ -185,7 +177,7 @@ function configurarFormularios() {
         renderizarTodasAsListasAdmin();
     });
 
-    // 7. Membros da Diretoria
+    // Membros da Diretoria
     document.getElementById('form-novo-membro')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const nome = document.getElementById('membro-nome').value.trim();
@@ -248,14 +240,12 @@ function configurarFormularios() {
         }
     });
 
-    // 6. Formulário do Rodapé
+    // 6. Formulário do Rodapé (Atualizado apenas com Instagram)
     document.getElementById('form-config-rodape')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const novoRodape = {
             descricao: document.getElementById('rodape-descricao').value.trim(),
             instagram: document.getElementById('rodape-instagram').value.trim() || '#',
-            tiktok: document.getElementById('rodape-tiktok').value.trim() || '#',
-            whatsapp: document.getElementById('rodape-whatsapp').value.trim() || '#',
             email: document.getElementById('rodape-email').value.trim(),
             localizacao: document.getElementById('rodape-localizacao').value.trim(),
             atendimento: document.getElementById('rodape-atendimento').value.trim()
