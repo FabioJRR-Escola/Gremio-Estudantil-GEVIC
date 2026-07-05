@@ -1,471 +1,259 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grêmio Estudantil Visão Coletiva</title>
-  <meta name="theme-color" content="#0b3a67" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Grêmio Estudantil Visão Coletiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-      <div class="topbar-right">
-        <a href="#contato" class="top-link">Contato</a>
-        <button class="btn btn-link" id="openAdminBtn" type="button">Área Administrativa</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- Header / Navegação -->
-<header class="header">
-  <div class="container header-inner">
-    <div class="brand">
-      <img
-        src="logo.png"
-        alt="Logo Grêmio Estudantil Visão Coletiva"
-        class="brand-logo"
-        loading="lazy"
-      />
-      <div class="brand-text">
-        <div class="brand-title">Grêmio Estudantil</div>
-        <div class="brand-sub">Visão Coletiva • Portal Institucional</div>
-      </div>
-    </div>
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-users-viewfinder"></i>
+                Visão Coletiva
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="#noticias">Notícias</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#projetos">Projetos</a></li>
+                    <li><a href="#participacao">Participação</a></li>
+                    <li><a href="#transparencia">Transparência</a></li>
+                </ul>
+            </nav>
 
-    <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
-      ☰
-    </button>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Buscar no portal...">
+                </div>
+                <a href="#participacao" class="btn">Enviar Sugestão</a>
+            </div>
+        </div>
+    </header>
 
-    <nav class="nav" id="navMenu" aria-label="Navegação principal">
-      <a href="#inicio" class="nav-link">Início</a>
-      <a href="#noticias" class="nav-link">Notícias</a>
-      <a href="#eventos" class="nav-link">Eventos</a>
-      <a href="#enquetes" class="nav-link">Enquetes</a>
-      <a href="#fotos" class="nav-link">Fotos</a>
-      <a href="#colaboracoes" class="nav-link">Colaborações</a>
-    </nav>
-
-  </div>
-</header>
-
-  <!-- Conteúdo público -->
-  <main class="main" id="inicio">
-    <!-- Hero -->
     <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="hero-kicker">Transparência • Participação • Organização</div>
-          <h1>Informação e voz dos estudantes.</h1>
-          <p>
-            Acompanhe notícias oficiais do Grêmio, calendário de eventos,
-            enquetes para ouvir a comunidade escolar e fotos das ações realizadas.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#noticias">Ver Notícias</a>
-            <a class="btn btn-outline" href="#colaboracoes">Enviar Colaboração</a>
-          </div>
-
-          <div class="hero-metrics" role="list" aria-label="Indicadores do portal">
-            <div class="metric" role="listitem">
-              <div class="metric-value" id="metricNoticias">0</div>
-              <div class="metric-label">Notícias</div>
+        <div class="container">
+            <h1>Bem-vindo ao Portal do Grêmio Estudantil Visão Coletiva</h1>
+            <p>Informação, participação e representação estudantil. Construindo juntos a nossa escola.</p>
+            <div class="hero-btns">
+                <a href="#noticias" class="btn">Últimas Notícias</a>
+                <a href="#participacao" class="btn btn-outline">Participe Agora</a>
             </div>
-            <div class="metric" role="listitem">
-              <div class="metric-value" id="metricEventos">0</div>
-              <div class="metric-label">Eventos</div>
-            </div>
-            <div class="metric" role="listitem">
-              <div class="metric-value" id="metricFotos">0</div>
-              <div class="metric-label">Fotos</div>
-            </div>
-          </div>
         </div>
-
-        <aside class="hero-aside">
-          <div class="card">
-            <h2 class="card-title">Última atualização</h2>
-            <div class="divider"></div>
-            <div id="lastUpdateBox" class="muted">Carregando...</div>
-          </div>
-
-          <div class="card card-soft">
-            <h2 class="card-title">Como participar</h2>
-            <ul class="list">
-              <li>Leia as notícias e acompanhe as decisões.</li>
-              <li>Vote nas enquetes.</li>
-              <li>Envie ideias e colaborações.</li>
-              <li>Contribua com fotos das ações.</li>
-            </ul>
-          </div>
-        </aside>
-      </div>
     </section>
 
-    <!-- Notícias -->
-    <section class="section" id="noticias">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Notícias</h2>
-            <p class="section-sub">Comunicados e atualizações institucionais do Grêmio.</p>
-          </div>
+    <section id="noticias" class="container">
+        <h2 class="section-title">Notícias em Destaque</h2>
+        <div class="grid-3">
+            <article class="card">
+                <i class="fa-solid fa-bullhorn news-icon"></i>
+                <span class="news-date">15 de Julho, 2026</span>
+                <h3>Festa Julina arrecada mais de R$ 5.000 para a formatura</h3>
+                <p>O evento foi um sucesso de público. Confira a prestação de contas completa e a galeria de fotos.</p>
+            </article>
+            <article class="card">
+                <i class="fa-solid fa-graduation-cap news-icon" style="color: var(--azul-turquesa)"></i>
+                <span class="news-date">10 de Julho, 2026</span>
+                <h3>Inscrições para a Olimpíada de Matemática estão abertas</h3>
+                <p>O Grêmio oferecerá grupos de estudo semanais para os alunos interessados em participar.</p>
+            </article>
+            <article class="card">
+                <i class="fa-solid fa-book-open-reader news-icon" style="color: #FFB020"></i>
+                <span class="news-date">05 de Julho, 2026</span>
+                <h3>Biblioteca recebe novos livros solicitados pelos alunos</h3>
+                <p>Mais de 50 novos títulos de ficção e fantasia chegaram hoje, resultado da nossa campanha.</p>
+            </article>
         </div>
-
-        <div class="grid grid-3" id="newsList"></div>
-        <div class="empty" id="newsEmpty" hidden>Nenhuma notícia cadastrada.</div>
-      </div>
     </section>
 
-    <!-- Eventos -->
-    <section class="section section-alt" id="eventos">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Eventos</h2>
-            <p class="section-sub">Reuniões, campanhas e atividades do Grêmio.</p>
-          </div>
-        </div>
-
-        <div class="timeline" id="eventsList"></div>
-        <div class="empty" id="eventsEmpty" hidden>Nenhum evento cadastrado.</div>
-      </div>
-    </section>
-
-    <!-- Enquetes -->
-    <section class="section" id="enquetes">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Enquetes</h2>
-            <p class="section-sub">Participe: vote e ajude a decidir os próximos passos.</p>
-          </div>
-        </div>
-
-        <div class="grid grid-2">
-          <div class="poll-card" id="pollCard">
-            <h3 class="poll-title" id="pollQuestion">Carregando enquete...</h3>
-            <div class="divider divider-sm"></div>
-
-            <div class="poll-options" id="pollOptions"></div>
-
-            <div class="poll-result" id="pollResult" aria-live="polite"></div>
-
-            <div class="poll-meta">
-              <span class="muted" id="pollTotalVotes">0 votos</span>
+    <section id="agenda" style="background-color: var(--branco);">
+        <div class="container">
+            <h2 class="section-title">Agenda Estudantil</h2>
+            <div class="agenda-container">
+                <div class="agenda-item">
+                    <div class="agenda-data">
+                        20 <span>JUL</span>
+                    </div>
+                    <div>
+                        <h3>Reunião Geral com Representantes de Turma</h3>
+                        <p>Discussão sobre o novo regimento interno e propostas para o próximo semestre.</p>
+                    </div>
+                </div>
+                <div class="agenda-item">
+                    <div class="agenda-data">
+                        25 <span>JUL</span>
+                    </div>
+                    <div>
+                        <h3>Início da Campanha do Agasalho</h3>
+                        <p>Arrecadação no pátio principal durante o intervalo.</p>
+                    </div>
+                </div>
+                <div class="agenda-item">
+                    <div class="agenda-data">
+                        12 <span>AGO</span>
+                    </div>
+                    <div>
+                        <h3>Simulado do Ensino Médio</h3>
+                        <p>Aulas suspensas para a realização da prova oficial da escola.</p>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div class="card card-soft">
-            <h3 class="card-title">Princípio</h3>
-            <p class="muted">
-              A votação é usada para orientar decisões do Grêmio. Resultados podem ser
-              acompanhados na área administrativa.
-            </p>
-
-            <div class="divider"></div>
-
-            <h3 class="card-title">Transparência</h3>
-            <p class="muted">
-              Sempre que possível, o Grêmio publica o resultado e o que foi definido a partir das votações.
-            </p>
-          </div>
         </div>
-      </div>
     </section>
 
-    <!-- Fotos / Galeria -->
-    <section class="section section-alt" id="fotos">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Fotos das Ações</h2>
-            <p class="section-sub">Registros das atividades realizadas pelo Grêmio.</p>
-          </div>
+    <section id="projetos" class="container">
+        <h2 class="section-title">Nossos Projetos</h2>
+        <div class="grid-3">
+            <div class="card" style="border-top-color: #1DB7C9;">
+                <h3>📚 Biblioteca Viva</h3>
+                <p>Clubes de leitura quinzenais e arrecadação contínua de novos exemplares para o acervo.</p>
+            </div>
+            <div class="card" style="border-top-color: #4CAF50;">
+                <h3>🌱 Escola Sustentável</h3>
+                <p>Implementação de lixeiras de coleta seletiva e horta comunitária cuidada pelos alunos.</p>
+            </div>
+            <div class="card" style="border-top-color: #F44336;">
+                <h3>❤️ Campanha do Agasalho</h3>
+                <p>Projeto de solidariedade de inverno destinado a comunidades carentes da região.</p>
+            </div>
+            <div class="card" style="border-top-color: #9C27B0;">
+                <h3>🎭 Semana Cultural</h3>
+                <p>Festival de talentos, apresentações teatrais e exposições de arte feitas pelos estudantes.</p>
+            </div>
         </div>
-
-        <div class="gallery" id="photoGallery"></div>
-        <div class="empty" id="photosEmpty" hidden>Nenhuma foto cadastrada.</div>
-      </div>
     </section>
 
-    <!-- Colaborações -->
-    <section class="section" id="colaboracoes">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Colaborações</h2>
-            <p class="section-sub">Envie sugestões, ideias e colabore com o Grêmio.</p>
-          </div>
-        </div>
-
-        <div class="grid grid-2">
-          <form class="form" id="collabForm">
-            <h3 class="form-title">Enviar colaboração</h3>
-
-            <label class="field">
-              <span class="field-label">Nome</span>
-              <input type="text" id="cNome" required placeholder="Seu nome (ou apelido)" />
-            </label>
-
-            <label class="field">
-              <span class="field-label">Turma</span>
-              <input type="text" id="cTurma" required placeholder="Ex: 9º A" />
-            </label>
-
-            <label class="field">
-              <span class="field-label">Tipo</span>
-              <select id="cTipo" required>
-                <option value="Sugestão">Sugestão</option>
-                <option value="Reclamação">Reclamação</option>
-                <option value="Relato">Relato</option>
-                <option value="Parceria">Parceria</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span class="field-label">Mensagem</span>
-              <textarea id="cMsg" rows="5" required placeholder="Escreva sua mensagem..."></textarea>
-            </label>
-
-            <button class="btn btn-primary" type="submit">Enviar</button>
-
-            <p class="form-msg" id="collabMsg" role="status"></p>
-          </form>
-
-          <div class="card card-soft">
-            <h3 class="card-title">Boas práticas</h3>
-            <ul class="list">
-              <li>Seja respeitoso(a) e objetivo(a).</li>
-              <li>Detalhe o que você quer melhorar ou propor.</li>
-              <li>Evite dados pessoais sensíveis.</li>
-            </ul>
-
-            <div class="divider"></div>
-
-            <h3 class="card-title">Como será usado</h3>
-            <p class="muted">
-              Suas colaborações ficam registradas e podem ser analisadas pelo Grêmio para orientar ações.
-            </p>
-
-            <div class="info-note">
-              <strong>Dica:</strong> envie também ideias para eventos e campanhas.
+    <section id="participacao">
+        <div class="container">
+            <h2 class="section-title">Sua Voz no Grêmio</h2>
+            <div class="grid-4">
+                <div class="card participacao-card">
+                    <i class="fa-regular fa-lightbulb"></i>
+                    <h3>Enviar uma Ideia</h3>
+                    <p>Tem um projeto legal para a escola? Compartilhe.</p>
+                </div>
+                <div class="card participacao-card">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <h3>Fazer uma Sugestão</h3>
+                    <p>Reclamações ou melhorias na infraestrutura.</p>
+                </div>
+                <div class="card participacao-card">
+                    <i class="fa-solid fa-check-to-slot"></i>
+                    <h3>Participar de Enquetes</h3>
+                    <p>Vote nas decisões importantes do Grêmio.</p>
+                </div>
+                <div class="card participacao-card">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <h3>Tirar Dúvidas</h3>
+                    <p>Pergunte à diretoria sobre direitos e regras.</p>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    <!-- Contato -->
-    <section class="section" id="contato">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Contato</h2>
-            <p class="section-sub">Canais oficiais do Grêmio.</p>
-          </div>
+    <section id="mural" class="container">
+        <h2 class="section-title">Mural dos Estudantes</h2>
+        <div class="mural-grid">
+            <div class="mensagem-mural">
+                <p>A organização do interclasse deste ano está incrível, os horários estão muito melhores!</p>
+                <span class="autor-mural">— Turma 2º Ano A</span>
+            </div>
+            <div class="mensagem-mural">
+                <p>Gostaria de sugerir que colocassem mais bancos na área próxima às quadras esportivas.</p>
+                <span class="autor-mural">— João P., 1º Ano C</span>
+            </div>
+            <div class="mensagem-mural">
+                <p>Parabéns pela transparência com os gastos da Festa Julina, foi muito bom ver para onde o dinheiro foi.</p>
+                <span class="autor-mural">— Mariana T., 3º Ano B</span>
+            </div>
         </div>
-
-        <div class="grid grid-3">
-          <div class="contact-card card">
-            <h3 class="card-title">E-mail do Presidente>
-            <p class="muted">rocha.junior.fabio@escola.pr.gov.br</p>
-          </div>
-          <div class="contact-card card">
-            <h3 class="card-title">Instagram</h3>
-            <p class="muted">@visaãocoletiva_gevic>
-          </div>
-          <div class="contact-card card">
-            <h3 class="card-title">Reuniões</h3>
-            <p class="muted">Sextas-feiras, 16h (ajustável)</p>
-          </div>
-        </div>
-      </div>
     </section>
-  </main>
 
-  <!-- Rodapé -->
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span>© <span id="year"></span> Grêmio Estudantil — Visão Coletiva</span>
-      <span class="muted">Portal Institucional</span>
-    </div>
-  </footer>
-
-  <!-- MODAL ADMIN -->
-  <div class="modal-backdrop" id="adminBackdrop" hidden></div>
-  <div class="modal" id="adminModal" hidden role="dialog" aria-modal="true" aria-labelledby="adminTitle">
-    <div class="modal-header">
-      <div>
-        <h2 id="adminTitle">Área Administrativa</h2>
-        <p class="muted">Gerencie Notícias, Eventos e Fotos (LocalStorage).</p>
-      </div>
-      <button class="icon-btn" id="closeAdminBtn" type="button" aria-label="Fechar">✕</button>
-    </div>
-
-    <div class="modal-body">
-      <!-- Login -->
-      <div class="login-panel" id="adminLoginPanel">
-        <label class="field">
-          <span class="field-label">Senha administrativa</span>
-          <input type="password" id="adminPass" placeholder="Digite a senha" />
-        </label>
-        <div class="row">
-          <button class="btn btn-primary" id="adminLoginBtn" type="button">Entrar</button>
-          <button class="btn btn-outline" id="adminResetBtn" type="button" title="Apaga dados locais do site">Reset local</button>
-        </div>
-        <p class="form-msg" id="adminLoginMsg" role="status"></p>
-        <p class="muted small">
-          Se você esquecer, use Reset local. Recomendado apenas para protótipo.
-        </p>
-      </div>
-
-      <!-- Painel -->
-      <div class="admin-panel" id="adminPanel" hidden>
-        <div class="tabs" role="tablist">
-          <button class="tab active" data-tab="tabNews" type="button">Notícias</button>
-          <button class="tab" data-tab="tabEvents" type="button">Eventos</button>
-          <button class="tab" data-tab="tabPhotos" type="button">Fotos</button>
-          <button class="tab" data-tab="tabCollabs" type="button">Colaborações</button>
-          <button class="tab" data-tab="tabPolls" type="button">Enquetes</button>
-        </div>
-
-        <!-- Notícias -->
-        <div class="tab-content active" id="tabNews" role="tabpanel">
-          <h3 class="card-title">Gerenciar Notícias</h3>
-
-          <div class="admin-grid">
-            <form class="form mini" id="newsAdminForm">
-              <h4 class="form-title">Adicionar notícia</h4>
-
-              <label class="field">
-                <span class="field-label">Título</span>
-                <input type="text" id="newsTitle" required placeholder="Ex: Reunião do Grêmio" />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Data (ISO)</span>
-                <input type="date" id="newsDate" required />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Resumo</span>
-                <textarea id="newsSummary" rows="4" required placeholder="Resumo para exibição no portal"></textarea>
-              </label>
-
-              <button class="btn btn-primary" type="submit">Adicionar</button>
-              <p class="form-msg" id="newsAdminMsg" role="status"></p>
-            </form>
-
-            <div class="list-wrap">
-              <div class="list-head">
-                <h4 class="card-title">Lista</h4>
-              </div>
-              <div class="admin-items" id="newsAdminList"></div>
+    <section id="transparencia" style="background-color: var(--branco);">
+        <div class="container">
+            <h2 class="section-title">Transparência</h2>
+            <div class="grid-3">
+                <a href="#" class="transparencia-card">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <div>
+                        <h3>Estatuto do Grêmio</h3>
+                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Documento oficial com as regras.</p>
+                    </div>
+                </a>
+                <a href="#" class="transparencia-card">
+                    <i class="fa-solid fa-file-signature"></i>
+                    <div>
+                        <h3>Atas de Reuniões</h3>
+                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Registros de decisões tomadas.</p>
+                    </div>
+                </a>
+                <a href="#" class="transparencia-card">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <div>
+                        <h3>Prestação de Contas</h3>
+                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Relatórios financeiros mensais.</p>
+                    </div>
+                </a>
+                <a href="#" class="transparencia-card">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <div>
+                        <h3>Calendário de Reuniões</h3>
+                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Datas dos encontros da diretoria.</p>
+                    </div>
+                </a>
+                <a href="#" class="transparencia-card">
+                    <i class="fa-solid fa-list-check"></i>
+                    <div>
+                        <h3>Plano de Gestão</h3>
+                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Nossas metas para este ano.</p>
+                    </div>
+                </a>
             </div>
-          </div>
         </div>
+    </section>
 
-        <!-- Eventos -->
-        <div class="tab-content" id="tabEvents" role="tabpanel">
-          <h3 class="card-title">Gerenciar Eventos</h3>
-
-          <div class="admin-grid">
-            <form class="form mini" id="eventsAdminForm">
-              <h4 class="form-title">Adicionar evento</h4>
-
-              <label class="field">
-                <span class="field-label">Nome do evento</span>
-                <input type="text" id="eventTitle" required placeholder="Ex: Gincana Cultural" />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Data (ISO)</span>
-                <input type="date" id="eventDate" required />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Local/Observação</span>
-                <input type="text" id="eventPlace" placeholder="Ex: Quadra / Sala X" />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Descrição</span>
-                <textarea id="eventDesc" rows="4" required placeholder="Breve descrição do evento"></textarea>
-              </label>
-
-              <button class="btn btn-primary" type="submit">Adicionar</button>
-              <p class="form-msg" id="eventsAdminMsg" role="status"></p>
-            </form>
-
-            <div class="list-wrap">
-              <div class="list-head">
-                <h4 class="card-title">Lista</h4>
-              </div>
-              <div class="admin-items" id="eventsAdminList"></div>
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">Visão <span>Coletiva</span></div>
+                    <p>O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#noticias">Notícias</a></li>
+                        <li><a href="#projetos">Projetos</a></li>
+                        <li><a href="#transparencia">Documentos Oficiais</a></li>
+                        <li><a href="#">Oportunidades (Em breve)</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> contato@visaocoletiva.edu.br</li>
+                        <li><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Sala do Grêmio (Pátio Principal)</li>
+                        <li><i class="fa-solid fa-clock" style="margin-right: 8px;"></i> Atendimento: Seg a Sex, nos intervalos.</li>
+                    </ul>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Fotos -->
-        <div class="tab-content" id="tabPhotos" role="tabpanel">
-          <h3 class="card-title">Gerenciar Fotos</h3>
-
-          <div class="admin-grid">
-            <form class="form mini" id="photosAdminForm">
-              <h4 class="form-title">Adicionar foto</h4>
-
-              <label class="field">
-                <span class="field-label">Título</span>
-                <input type="text" id="photoTitle" required placeholder="Ex: Campanha Solidária" />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Data (ISO)</span>
-                <input type="date" id="photoDate" required />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Imagem</span>
-                <input type="file" id="photoFile" accept="image/*" required />
-                <span class="muted small">A imagem será salva localmente (Base64).</span>
-              </label>
-
-              <button class="btn btn-primary" type="submit">Adicionar</button>
-              <p class="form-msg" id="photosAdminMsg" role="status"></p>
-            </form>
-
-            <div class="list-wrap">
-              <div class="list-head">
-                <h4 class="card-title">Lista</h4>
-              </div>
-              <div class="admin-items" id="photosAdminList"></div>
+            <div class="copyright">
+                <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. Todos os direitos reservados.</p>
             </div>
-          </div>
         </div>
+    </footer>
 
-        <!-- Colaborações recebidas -->
-        <div class="tab-content" id="tabCollabs" role="tabpanel">
-          <h3 class="card-title">Colaborações recebidas</h3>
-          <div class="admin-items" id="collabsAdminList"></div>
-          <p class="muted small">Remover colaborações pode ser feito via Reset local.</p>
-        </div>
-
-        <!-- Enquetes (resultados) -->
-        <div class="tab-content" id="tabPolls" role="tabpanel">
-          <h3 class="card-title">Resultados da Enquete</h3>
-          <div class="poll-admin-result" id="pollAdminResult"></div>
-          <p class="muted small">
-            Observação: a enquete abaixo é fixa no portal (mas os votos são persistidos).
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
