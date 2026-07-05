@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- TRAVA DE SEGURANÇA: Bloqueia visualização se não estiver logado -->
+    <script>
+        if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
+            alert('Acesso negado! Por favor, faça login primeiro.');
+            window.location.href = 'login.html';
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - Grêmio Estudantil</title>
@@ -9,11 +17,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Arquivos de Estilo (O global e o específico do admin) -->
+    <!-- Arquivos de Estilo -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="admin.css">
 
-    <!-- Arquivo de Script do Admin (Carregado no topo para a trava de segurança funcionar antes de renderizar a tela) -->
+    <!-- Arquivo de Script do Admin -->
     <script src="admin.js"></script>
 </head>
 <body style="padding-top: 20px;">
@@ -102,7 +110,7 @@
                 </form>
             </div>
 
-            <!-- 4. MÓDULO: TRANSPARÊNCIA -->
+            <!-- 4. MÓDULO: TRANSPARÊNCIA (ATUALIZADO COM CAMPO ANEXAR) -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-file-invoice-dollar"></i> Publicar Documento de Transparência</h3>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
@@ -114,6 +122,10 @@
                     <div class="admin-form-group">
                         <label>Descrição do Conteúdo</label>
                         <input type="text" id="trans-descricao" required placeholder="Ex: Detalhamento de entradas da lanchonete e saídas com materiais.">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Anexar Documento (PDF ou Imagem)</label>
+                        <input type="file" id="trans-arquivo" accept=".pdf,image/*" required>
                     </div>
                     <button type="submit" class="btn">Publicar Documento</button>
                 </form>
