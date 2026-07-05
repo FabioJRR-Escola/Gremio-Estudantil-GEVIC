@@ -1,33 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- TRAVA DE SEGURANÇA: Bloqueia visualização se não estiver logado -->
     <script>
         if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
             alert('Acesso negado! Por favor, faça login primeiro.');
             window.location.href = 'login.html';
         }
     </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - Grêmio Estudantil</title>
-    
-    <!-- Google Fonts e Ícones -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Arquivos de Estilo -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="admin.css">
-
-    <!-- Arquivo de Script do Admin -->
     <script src="admin.js"></script>
 </head>
 <body style="padding-top: 20px;">
 
     <div class="container">
-        <!-- Barra superior administrativa -->
         <div class="admin-header">
             <div>
                 <h2><i class="fa-solid fa-user-gear"></i> Painel de Controle Administrativo</h2>
@@ -116,7 +107,7 @@
                 <div class="moderar-lista" id="lista-projetos-admin"></div>
             </div>
 
-            <!-- 7. MÓDULO: MEMBROS DA DIRETORIA (NOVA ÁREA) -->
+            <!-- MÓDULO: MEMBROS DA DIRETORIA -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-id-card"></i> Cadastrar Membro da Diretoria</h3>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
@@ -166,7 +157,7 @@
                 <div class="moderar-lista" id="lista-transparencia-admin"></div>
             </div>
 
-            <!-- 5. MÓDULO: MODERAÇÃO DE SUGESTÕES -->
+            <!-- 5. MÓDULO: MODERAÇÃO -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-comments"></i> Ouvidoria e Mural: Mensagens dos Alunos</h3>
                 <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Aprovações vão direto para o "Mural dos Estudantes" na página principal.</p>
@@ -174,10 +165,10 @@
                 <div class="moderar-lista" id="lista-sugestoes-pendentes"></div>
             </div>
 
-            <!-- 6. MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ -->
+            <!-- 6. MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ (ATUALIZADO - APENAS INSTAGRAM) -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-address-card"></i> Configurar Informações do Rodapé e Contatos</h3>
-                <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Atualize os links sociais e dados institucionais exibidos na base do site.</p>
+                <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Atualize o link social e dados institucionais exibidos na base do site.</p>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
                 <form id="form-config-rodape">
                     <div class="admin-form-group">
@@ -187,14 +178,6 @@
                     <div class="admin-form-group">
                         <label>Link do Instagram</label>
                         <input type="text" id="rodape-instagram" placeholder="https://instagram.com/seu_gremio">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Link do TikTok</label>
-                        <input type="text" id="rodape-tiktok" placeholder="https://tiktok.com/@seu_gremio">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Link do WhatsApp / Grupo</label>
-                        <input type="text" id="rodape-whatsapp" placeholder="https://wa.me/seu_numero">
                     </div>
                     <div class="admin-form-group">
                         <label>E-mail de Contato</label>
