@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal do Grêmio Estudantil Visão Coletiva</title>
+    <!-- Google Fonts: Poppins (Títulos) e Inter (Textos) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Arquivo CSS Externo -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- CABEÇALHO -->
     <header>
         <div class="container header-content">
             <a href="#" class="logo">
@@ -32,11 +36,12 @@
                     <i class="fa-solid fa-search"></i>
                     <input type="text" placeholder="Buscar no portal...">
                 </div>
-                <a href="#participacao" class="btn">Enviar Sugestão</a>
+                <a href="admin.html" class="btn btn-admin-nav"><i class="fa-solid fa-user-lock"></i> Painel Admin</a>
             </div>
         </div>
     </header>
 
+    <!-- BANNER PRINCIPAL -->
     <section class="hero">
         <div class="container">
             <h1>Bem-vindo ao Portal do Grêmio Estudantil Visão Coletiva</h1>
@@ -48,176 +53,106 @@
         </div>
     </section>
 
+    <!-- NOTÍCIAS EM DESTAQUE -->
     <section id="noticias" class="container">
         <h2 class="section-title">Notícias em Destaque</h2>
-        <div class="grid-3">
-            <article class="card">
-                <i class="fa-solid fa-bullhorn news-icon"></i>
-                <span class="news-date">15 de Julho, 2026</span>
-                <h3>Festa Julina arrecada mais de R$ 5.000 para a formatura</h3>
-                <p>O evento foi um sucesso de público. Confira a prestação de contas completa e a galeria de fotos.</p>
-            </article>
-            <article class="card">
-                <i class="fa-solid fa-graduation-cap news-icon" style="color: var(--azul-turquesa)"></i>
-                <span class="news-date">10 de Julho, 2026</span>
-                <h3>Inscrições para a Olimpíada de Matemática estão abertas</h3>
-                <p>O Grêmio oferecerá grupos de estudo semanais para os alunos interessados em participar.</p>
-            </article>
-            <article class="card">
-                <i class="fa-solid fa-book-open-reader news-icon" style="color: #FFB020"></i>
-                <span class="news-date">05 de Julho, 2026</span>
-                <h3>Biblioteca recebe novos livros solicitados pelos alunos</h3>
-                <p>Mais de 50 novos títulos de ficção e fantasia chegaram hoje, resultado da nossa campanha.</p>
-            </article>
+        <div class="grid-3" id="noticias-container">
+            <!-- Inserido dinamicamente via script.js -->
         </div>
     </section>
 
+    <!-- AGENDA -->
     <section id="agenda" style="background-color: var(--branco);">
         <div class="container">
             <h2 class="section-title">Agenda Estudantil</h2>
-            <div class="agenda-container">
-                <div class="agenda-item">
-                    <div class="agenda-data">
-                        20 <span>JUL</span>
-                    </div>
-                    <div>
-                        <h3>Reunião Geral com Representantes de Turma</h3>
-                        <p>Discussão sobre o novo regimento interno e propostas para o próximo semestre.</p>
-                    </div>
-                </div>
-                <div class="agenda-item">
-                    <div class="agenda-data">
-                        25 <span>JUL</span>
-                    </div>
-                    <div>
-                        <h3>Início da Campanha do Agasalho</h3>
-                        <p>Arrecadação no pátio principal durante o intervalo.</p>
-                    </div>
-                </div>
-                <div class="agenda-item">
-                    <div class="agenda-data">
-                        12 <span>AGO</span>
-                    </div>
-                    <div>
-                        <h3>Simulado do Ensino Médio</h3>
-                        <p>Aulas suspensas para a realização da prova oficial da escola.</p>
-                    </div>
-                </div>
+            <div class="agenda-container" id="agenda-container">
+                <!-- Inserido dinamicamente via script.js -->
             </div>
         </div>
     </section>
 
+    <!-- PROJETOS -->
     <section id="projetos" class="container">
         <h2 class="section-title">Nossos Projetos</h2>
-        <div class="grid-3">
-            <div class="card" style="border-top-color: #1DB7C9;">
-                <h3>📚 Biblioteca Viva</h3>
-                <p>Clubes de leitura quinzenais e arrecadação contínua de novos exemplares para o acervo.</p>
-            </div>
-            <div class="card" style="border-top-color: #4CAF50;">
-                <h3>🌱 Escola Sustentável</h3>
-                <p>Implementação de lixeiras de coleta seletiva e horta comunitária cuidada pelos alunos.</p>
-            </div>
-            <div class="card" style="border-top-color: #F44336;">
-                <h3>❤️ Campanha do Agasalho</h3>
-                <p>Projeto de solidariedade de inverno destinado a comunidades carentes da região.</p>
-            </div>
-            <div class="card" style="border-top-color: #9C27B0;">
-                <h3>🎭 Semana Cultural</h3>
-                <p>Festival de talentos, apresentações teatrais e exposições de arte feitas pelos estudantes.</p>
-            </div>
+        <div class="grid-3" id="projetos-container">
+            <!-- Inserido dinamicamente via script.js -->
         </div>
     </section>
 
+    <!-- PARTICIPAÇÃO -->
     <section id="participacao">
         <div class="container">
             <h2 class="section-title">Sua Voz no Grêmio</h2>
             <div class="grid-4">
-                <div class="card participacao-card">
+                <div class="card participacao-card" onclick="focarFormulario('Ideia')">
                     <i class="fa-regular fa-lightbulb"></i>
                     <h3>Enviar uma Ideia</h3>
                     <p>Tem um projeto legal para a escola? Compartilhe.</p>
                 </div>
-                <div class="card participacao-card">
+                <div class="card participacao-card" onclick="focarFormulario('Sugestão')">
                     <i class="fa-solid fa-bullhorn"></i>
                     <h3>Fazer uma Sugestão</h3>
                     <p>Reclamações ou melhorias na infraestrutura.</p>
                 </div>
-                <div class="card participacao-card">
+                <div class="card participacao-card" onclick="focarFormulario('Enquete')">
                     <i class="fa-solid fa-check-to-slot"></i>
                     <h3>Participar de Enquetes</h3>
                     <p>Vote nas decisões importantes do Grêmio.</p>
                 </div>
-                <div class="card participacao-card">
+                <div class="card participacao-card" onclick="focarFormulario('Dúvida')">
                     <i class="fa-regular fa-circle-question"></i>
                     <h3>Tirar Dúvidas</h3>
                     <p>Pergunte à diretoria sobre direitos e regras.</p>
                 </div>
             </div>
+
+            <!-- FORMULÁRIO DE ENVIO REAL PARA O STORAGE -->
+            <div class="form-sugestao-box">
+                <h3>Envie sua mensagem diretamente para a Diretoria</h3>
+                <form id="student-sugestao-form">
+                    <div class="form-row">
+                        <div class="form-group-student">
+                            <label for="student-nome">Seu Nome / Turma (Opcional)</label>
+                            <input type="text" id="student-nome" placeholder="Ex: Carlos do 2ºB (ou deixe em branco)">
+                        </div>
+                        <div class="form-group-student">
+                            <label for="student-tipo">Tipo de Envio</label>
+                            <select id="student-tipo">
+                                <option value="Ideia">💡 Ideia de Projeto</option>
+                                <option value="Sugestão" selected>📢 Sugestão / Reclamação</option>
+                                <option value="Dúvida">❓ Dúvida para a Diretoria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-student">
+                        <label for="student-msg">Escreva sua mensagem</label>
+                        <textarea id="student-msg" rows="4" placeholder="Digite aqui o que você gostaria de dizer ao Grêmio..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Enviar Mensagem</button>
+                </form>
+            </div>
         </div>
     </section>
 
+    <!-- MURAL DOS ESTUDANTES -->
     <section id="mural" class="container">
         <h2 class="section-title">Mural dos Estudantes</h2>
-        <div class="mural-grid">
-            <div class="mensagem-mural">
-                <p>A organização do interclasse deste ano está incrível, os horários estão muito melhores!</p>
-                <span class="autor-mural">— Turma 2º Ano A</span>
-            </div>
-            <div class="mensagem-mural">
-                <p>Gostaria de sugerir que colocassem mais bancos na área próxima às quadras esportivas.</p>
-                <span class="autor-mural">— João P., 1º Ano C</span>
-            </div>
-            <div class="mensagem-mural">
-                <p>Parabéns pela transparência com os gastos da Festa Julina, foi muito bom ver para onde o dinheiro foi.</p>
-                <span class="autor-mural">— Mariana T., 3º Ano B</span>
-            </div>
+        <div class="mural-grid" id="mural-container">
+            <!-- Inserido dinamicamente via script.js (Apenas mensagens aprovadas) -->
         </div>
     </section>
 
+    <!-- TRANSPARÊNCIA -->
     <section id="transparencia" style="background-color: var(--branco);">
         <div class="container">
             <h2 class="section-title">Transparência</h2>
-            <div class="grid-3">
-                <a href="#" class="transparencia-card">
-                    <i class="fa-solid fa-scale-balanced"></i>
-                    <div>
-                        <h3>Estatuto do Grêmio</h3>
-                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Documento oficial com as regras.</p>
-                    </div>
-                </a>
-                <a href="#" class="transparencia-card">
-                    <i class="fa-solid fa-file-signature"></i>
-                    <div>
-                        <h3>Atas de Reuniões</h3>
-                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Registros de decisões tomadas.</p>
-                    </div>
-                </a>
-                <a href="#" class="transparencia-card">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <div>
-                        <h3>Prestação de Contas</h3>
-                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Relatórios financeiros mensais.</p>
-                    </div>
-                </a>
-                <a href="#" class="transparencia-card">
-                    <i class="fa-regular fa-calendar-days"></i>
-                    <div>
-                        <h3>Calendário de Reuniões</h3>
-                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Datas dos encontros da diretoria.</p>
-                    </div>
-                </a>
-                <a href="#" class="transparencia-card">
-                    <i class="fa-solid fa-list-check"></i>
-                    <div>
-                        <h3>Plano de Gestão</h3>
-                        <p style="color: var(--texto-claro); font-size: 0.9rem;">Nossas metas para este ano.</p>
-                    </div>
-                </a>
+            <div class="grid-3" id="transparencia-container">
+                <!-- Inserido dinamicamente via script.js -->
             </div>
         </div>
     </section>
 
+    <!-- RODAPÉ -->
     <footer>
         <div class="container">
             <div class="footer-grid">
@@ -236,7 +171,6 @@
                         <li><a href="#noticias">Notícias</a></li>
                         <li><a href="#projetos">Projetos</a></li>
                         <li><a href="#transparencia">Documentos Oficiais</a></li>
-                        <li><a href="#">Oportunidades (Em breve)</a></li>
                     </ul>
                 </div>
                 <div>
@@ -254,6 +188,7 @@
         </div>
     </footer>
 
+    <!-- Arquivo JavaScript Externo -->
     <script src="script.js"></script>
 </body>
 </html>
