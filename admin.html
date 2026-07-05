@@ -31,7 +31,7 @@
         <div class="admin-header">
             <div>
                 <h2><i class="fa-solid fa-user-gear"></i> Painel de Controle Administrativo</h2>
-                <p style="color: var(--texto-claro); font-size: 0.9rem;">Gerenciamento de conteúdos e ouvidoria ativa</p>
+                <p style="color: var(--texto-claro); font-size: 0.9rem;">Gerenciamento de conteúdos, rodapé e ouvidoria ativa</p>
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
                 <a href="index.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fa-solid fa-eye"></i> Ver Site</a>
@@ -60,6 +60,8 @@
                     </div>
                     <button type="submit" class="btn">Publicar Notícia</button>
                 </form>
+                <h4 style="margin-top: 25px; color: var(--azul-escuro)">Notícias Atuais:</h4>
+                <div class="moderar-lista" id="lista-noticias-admin"></div>
             </div>
 
             <!-- 2. MÓDULO: AGENDA -->
@@ -81,6 +83,8 @@
                     </div>
                     <button type="submit" class="btn">Adicionar Evento</button>
                 </form>
+                <h4 style="margin-top: 25px; color: var(--azul-escuro)">Cronograma Atual:</h4>
+                <div class="moderar-lista" id="lista-agenda-admin"></div>
             </div>
 
             <!-- 3. MÓDULO: PROJETOS -->
@@ -108,9 +112,11 @@
                     </div>
                     <button type="submit" class="btn">Cadastrar Projeto</button>
                 </form>
+                <h4 style="margin-top: 25px; color: var(--azul-escuro)">Projetos Ativos:</h4>
+                <div class="moderar-lista" id="lista-projetos-admin"></div>
             </div>
 
-            <!-- 4. MÓDULO: TRANSPARÊNCIA (ATUALIZADO COM CAMPO ANEXAR) -->
+            <!-- 4. MÓDULO: TRANSPARÊNCIA -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-file-invoice-dollar"></i> Publicar Documento de Transparência</h3>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
@@ -129,6 +135,8 @@
                     </div>
                     <button type="submit" class="btn">Publicar Documento</button>
                 </form>
+                <h4 style="margin-top: 25px; color: var(--azul-escuro)">Documentos Disponíveis:</h4>
+                <div class="moderar-lista" id="lista-transparencia-admin"></div>
             </div>
 
             <!-- 5. MÓDULO: MODERAÇÃO DE SUGESTÕES -->
@@ -136,10 +144,45 @@
                 <h3><i class="fa-solid fa-comments"></i> Ouvidoria e Mural: Mensagens dos Alunos</h3>
                 <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Aprovações vão direto para o "Mural dos Estudantes" na página principal.</p>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                
-                <div class="moderar-lista" id="lista-sugestoes-pendentes">
-                    <!-- Inserido dinamicamente via admin.js -->
-                </div>
+                <div class="moderar-lista" id="lista-sugestoes-pendentes"></div>
+            </div>
+
+            <!-- 6. NOVO MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-address-card"></i> Configurar Informações do Rodapé e Contatos</h3>
+                <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Atualize os links sociais e dados institucionais exibidos na base do site.</p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-config-rodape">
+                    <div class="admin-form-group">
+                        <label>Texto Descritivo do Grêmio</label>
+                        <textarea id="rodape-descricao" rows="2" required></textarea>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Link do Instagram</label>
+                        <input type="text" id="rodape-instagram" placeholder="https://instagram.com/seu_gremio">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Link do TikTok</label>
+                        <input type="text" id="rodape-tiktok" placeholder="https://tiktok.com/@seu_gremio">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Link do WhatsApp / Grupo</label>
+                        <input type="text" id="rodape-whatsapp" placeholder="https://wa.me/seu_numero">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>E-mail de Contato</label>
+                        <input type="email" id="rodape-email" required placeholder="contato@escola.com">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Onde Encontrar o Grêmio (Sala / Localização)</label>
+                        <input type="text" id="rodape-localizacao" required placeholder="Ex: Sala ao lado da Diretoria">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Horário de Atendimento</label>
+                        <input type="text" id="rodape-atendimento" required placeholder="Ex: Seg a Sex, nos intervalos da manhã e noite">
+                    </div>
+                    <button type="submit" class="btn">Salvar Alterações do Rodapé</button>
+                </form>
             </div>
 
         </div>
