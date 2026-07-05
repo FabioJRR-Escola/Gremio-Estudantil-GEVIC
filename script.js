@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarPortalNoticias();
     renderizarPortalAgenda();
     renderizarPortalProjetos();
-    renderizarPortalMembros(); // Nova chamada adicionada
+    renderizarPortalMembros();
     renderizarPortalMural();
     renderizarPortalTransparencia();
     renderizarPortalRodape();
@@ -34,7 +34,6 @@ function verificarEInicializarBanco() {
         ];
         localStorage.setItem('gre_projetos', JSON.stringify(projetosPadrao));
     }
-    // NOVO: Inicializador padrão para membros da chapa
     if (!localStorage.getItem('gre_membros')) {
         const membrosPadrao = [
             { nome: "Ana Clara Silva", cargo: "Presidente", serie: "3º Ano A", foto: "" },
@@ -58,12 +57,11 @@ function verificarEInicializarBanco() {
         ];
         localStorage.setItem('gre_transparencia', JSON.stringify(transPadrao));
     }
+    // Removido TikTok e WhatsApp dos padrões
     if (!localStorage.getItem('gre_rodape')) {
         const rodapePadrao = {
             descricao: "O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.",
             instagram: "#",
-            tiktok: "#",
-            whatsapp: "#",
             email: "contato@visaocoletiva.edu.br",
             localizacao: "Sala do Grêmio (Pátio Principal)",
             atendimento: "Seg a Sex, nos intervalos."
@@ -157,7 +155,6 @@ function renderizarPortalProjetos() {
     container.innerHTML = html;
 }
 
-// NOVO: Renderiza os Membros da chapa na home com layout circular embutido
 function renderizarPortalMembros() {
     const membros = JSON.parse(localStorage.getItem('gre_membros')) || [];
     const container = document.getElementById('diretoria-container');
@@ -251,6 +248,7 @@ function baixarDocumentoTransparencia(index) {
     }
 }
 
+// Apenas o link do Instagram é impresso agora
 function renderizarPortalRodape() {
     const dados = JSON.parse(localStorage.getItem('gre_rodape'));
     if (!dados) return;
@@ -262,8 +260,6 @@ function renderizarPortalRodape() {
     if(sociaisContainer) {
         sociaisContainer.innerHTML = `
             <a href="${dados.instagram}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-            <a href="${dados.tiktok}" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="${dados.whatsapp}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
         `;
     }
 
