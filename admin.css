@@ -1,265 +1,97 @@
-:root {
-    --azul-principal: #1F63B7;
-    --azul-turquesa: #1DB7C9;
-    --branco: #FFFFFF;
-    --azul-escuro: #184E92;
-    --cinza-claro: #F4F7FA;
-    --texto-escuro: #333333;
-    --texto-claro: #666666;
-    --danger: #E53935;
-    --success: #4CAF50;
-    --borda-raio: 16px;
-    --transicao: all 0.3s ease;
-}
+/* ==================== Estilos Específicos do Painel Admin ==================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--cinza-claro);
-    color: var(--texto-escuro);
-}
-
-.admin-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* SIDEBAR */
-.sidebar {
-    width: 260px;
-    background-color: var(--azul-escuro);
-    color: var(--branco);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    position: fixed;
-    height: 100vh;
-}
-
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 40px;
-}
-
-.sidebar-brand i {
-    font-size: 2rem;
-    color: var(--azul-turquesa);
-}
-
-.sidebar-brand h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    color: var(--branco);
-}
-
-.sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex-grow: 1;
-}
-
-.menu-item {
-    color: #cbd5e1;
-    text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 500;
-    transition: var(--transicao);
-}
-
-.menu-item:hover, .menu-item.active {
-    background-color: var(--azul-principal);
-    color: var(--branco);
-}
-
-.btn-back {
-    color: var(--branco);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-}
-
-/* ÁREA DE CONTEÚDO PRINCIPAL */
-.main-content {
-    margin-left: 260px;
-    flex-grow: 1;
-    padding: 40px;
-}
-
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
-}
-
-.main-header h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.8rem;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.user-profile i {
-    font-size: 2rem;
-    color: var(--azul-principal);
-}
-
-/* CONTEÚDO DAS ABAS */
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-/* BOTÕES */
-.btn {
-    background: linear-gradient(135deg, var(--azul-principal), var(--azul-turquesa));
-    color: var(--branco);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: var(--transicao);
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-}
-
-.btn-outline {
-    background: transparent;
-    border: 1px solid #ccc;
-    color: var(--texto-escuro);
-}
-
-.btn-action {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    color: var(--branco);
-    font-size: 0.85rem;
-    margin-right: 5px;
-}
-
-.btn-edit { background-color: #FFA000; }
-.btn-delete { background-color: var(--danger); }
-.btn-approve { background-color: var(--success); }
-
-/* TABELAS */
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--branco);
-    border-radius: var(--borda-raio);
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-}
-
-.admin-table th, .admin-table td {
+.admin-header {
+    background: var(--branco);
     padding: 15px 20px;
-    text-align: left;
-    border-bottom: 1px solid #edf2f7;
-}
-
-.admin-table th {
-    background-color: #edf2f7;
-    color: var(--azul-escuro);
-    font-weight: 600;
-}
-
-.img-table {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
+    box-shadow: var(--sombra);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
     border-radius: 8px;
 }
 
-/* MODAIS */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
 }
 
-.modal-content {
-    background-color: var(--branco);
+.admin-box {
+    background: var(--branco);
     padding: 30px;
     border-radius: var(--borda-raio);
-    width: 100%;
-    max-width: 550px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: var(--sombra);
+    border-top: 4px solid var(--azul-principal);
 }
 
-.modal h3 {
-    margin-bottom: 20px;
-}
-
-.form-group {
+.admin-form-group {
     margin-bottom: 15px;
 }
 
-.form-group label {
+.admin-form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
     font-size: 0.9rem;
 }
 
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group textarea {
+.admin-form-group input, 
+.admin-form-group textarea, 
+.admin-form-group select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-family: inherit;
     outline: none;
 }
 
-.modal-actions {
+/* Lista de Ouvidoria / Moderação */
+.moderar-lista {
+    margin-top: 15px;
+}
+
+.item-moderacao {
+    background: var(--cinza-claro);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.item-moderacao .info {
+    flex: 1;
+}
+
+.item-moderacao .acoes {
+    display: flex;
     gap: 10px;
-    margin-top: 20px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+}
+
+.btn-sucesso { 
+    background: #10b981; 
+    color: white; 
+}
+
+.btn-sucesso:hover { 
+    background: #059669; 
+}
+
+.btn-perigo { 
+    background: #ef4444; 
+    color: white; 
+}
+
+.btn-perigo:hover { 
+    background: #dc2626; 
 }
