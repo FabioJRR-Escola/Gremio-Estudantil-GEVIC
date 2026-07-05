@@ -1,32 +1,444 @@
-// Aguarda o carregamento do documento
-document.addEventListener('DOMContentLoaded', () => {
+/* ==================== Variáveis de Cores e Estilo ==================== */
+:root {
+    --azul-principal: #1F63B7;
+    --azul-turquesa: #1DB7C9;
+    --branco: #FFFFFF;
+    --azul-escuro: #184E92;
+    --cinza-claro: #F4F7FA;
+    --texto-escuro: #333333;
+    --texto-claro: #666666;
+    --gradiente: linear-gradient(135deg, var(--azul-principal), var(--azul-turquesa));
+    --borda-raio: 16px;
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --transicao: all 0.3s ease;
+}
 
-    // Efeito de rolagem suave (Smooth Scroll) para as seções do portal
-    const linksDeNavegacao = document.querySelectorAll('a[href^="#"]');
-    
-    linksDeNavegacao.forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            
-            const secaoAlvo = document.querySelector(this.getAttribute('href'));
-            
-            if (secaoAlvo) {
-                // Rola suavemente compensando a altura do cabeçalho fixo (80px)
-                window.scrollTo({
-                    top: secaoAlvo.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
+/* ==================== Reset e Configurações Globais ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    // Função futura para campo de pesquisa (Exemplo lógico inicial)
-    const inputPesquisa = document.querySelector('.search-bar input');
-    if(inputPesquisa) {
-        inputPesquisa.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                alert(`Buscando por: "${inputPesquisa.value}" no portal do Grêmio...`);
-            }
-        });
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cinza-claro);
+    color: var(--texto-escuro);
+    line-height: 1.6;
+    padding-top: 80px; /* Espaço para o header fixo */
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--azul-escuro);
+}
+
+a {
+    text-decoration: none;
+    color: var(--azul-principal);
+    transition: var(--transicao);
+}
+
+a:hover {
+    color: var(--azul-turquesa);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: var(--borda-raio);
+    background: var(--gradiente);
+    color: var(--branco);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--transicao);
+    text-align: center;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(31, 99, 183, 0.3);
+    color: var(--branco);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--azul-principal);
+    color: var(--azul-principal);
+}
+
+.btn-outline:hover {
+    background: var(--azul-principal);
+    color: var(--branco);
+}
+
+section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+/* ==================== Cabeçalho (Header) ==================== */
+header {
+    background-color: var(--branco);
+    box-shadow: var(--sombra);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 80px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--azul-escuro);
+}
+
+.logo i {
+    color: var(--azul-turquesa);
+    font-size: 1.5rem;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+nav a {
+    font-weight: 500;
+    color: var(--texto-escuro);
+}
+
+nav a:hover {
+    color: var(--azul-principal);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-bar {
+    position: relative;
+}
+
+.search-bar input {
+    padding: 8px 12px 8px 35px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-claro);
+}
+
+/* ==================== Banner Principal (Hero) ==================== */
+.hero {
+    background: var(--gradiente);
+    color: var(--branco);
+    text-align: center;
+    padding: 120px 20px;
+    border-radius: 0 0 40px 40px;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: var(--branco);
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.hero .btn-outline {
+    border-color: var(--branco);
+    color: var(--branco);
+}
+
+.hero .btn-outline:hover {
+    background: var(--branco);
+    color: var(--azul-principal);
+}
+
+/* ==================== Grid de Cards Padrão ==================== */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: var(--branco);
+    padding: 25px;
+    border-radius: var(--borda-raio);
+    box-shadow: var(--sombra);
+    transition: var(--transicao);
+    border-top: 4px solid var(--azul-turquesa);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* ==================== Notícias ==================== */
+.news-icon {
+    font-size: 2rem;
+    color: var(--azul-principal);
+    margin-bottom: 15px;
+}
+
+.news-date {
+    font-size: 0.85rem;
+    color: var(--texto-claro);
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ==================== Agenda ==================== */
+.agenda-container {
+    background: var(--branco);
+    border-radius: var(--borda-raio);
+    padding: 30px;
+    box-shadow: var(--sombra);
+}
+
+.agenda-item {
+    display: flex;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.agenda-item:last-child {
+    border-bottom: none;
+}
+
+.agenda-data {
+    background: var(--cinza-claro);
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--azul-escuro);
+    min-width: 80px;
+}
+
+.agenda-data span {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: var(--texto-claro);
+}
+
+/* ==================== Participação ==================== */
+#participacao {
+    background-color: var(--branco);
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.participacao-card {
+    text-align: center;
+    padding: 30px 20px;
+    cursor: pointer;
+}
+
+.participacao-card i {
+    font-size: 3rem;
+    color: var(--azul-turquesa);
+    margin-bottom: 15px;
+    transition: var(--transicao);
+}
+
+.participacao-card:hover i {
+    transform: scale(1.1);
+    color: var(--azul-principal);
+}
+
+/* ==================== Mural dos Estudantes ==================== */
+.mural-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.mensagem-mural {
+    background: var(--branco);
+    padding: 20px;
+    border-radius: var(--borda-raio);
+    border-left: 4px solid var(--azul-principal);
+    font-style: italic;
+    position: relative;
+}
+
+.mensagem-mural::before {
+    content: '\201C';
+    font-size: 3rem;
+    color: var(--cinza-claro);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-family: serif;
+}
+
+.autor-mural {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--texto-claro);
+    font-style: normal;
+    font-weight: 500;
+}
+
+/* ==================== Transparência ==================== */
+.transparencia-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: var(--branco);
+    border-radius: var(--borda-raio);
+    box-shadow: var(--sombra);
+    transition: var(--transicao);
+    border: 1px solid #eee;
+}
+
+.transparencia-card:hover {
+    border-color: var(--azul-turquesa);
+    transform: translateX(5px);
+}
+
+.transparencia-card i {
+    font-size: 2rem;
+    color: var(--azul-escuro);
+}
+
+/* ==================== Rodapé ==================== */
+footer {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+    padding: 60px 0 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer-logo span {
+    color: var(--azul-turquesa);
+}
+
+footer h3 {
+    color: var(--branco);
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+footer ul {
+    list-style: none;
+}
+
+footer ul li {
+    margin-bottom: 10px;
+}
+
+footer a {
+    color: #ddd;
+}
+
+footer a:hover {
+    color: var(--azul-turquesa);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    color: var(--branco);
+}
+
+.social-links a:hover {
+    color: var(--azul-turquesa);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* Responsividade Básica */
+@media (max-width: 992px) {
+    nav, .search-bar {
+        display: none; 
     }
-});
+    .hero h1 {
+        font-size: 2rem;
+    }
+}
