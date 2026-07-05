@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarPortalProjetos();
     renderizarPortalMural();
     renderizarPortalTransparencia();
+    renderizarPortalRodape(); // Chama a nova função do rodapé
 
     configurarFormularioEstudante();
     configurarRolagemSuave();
@@ -45,6 +46,19 @@ function verificarEInicializarBanco() {
             { titulo: "Prestação de Contas", descricao: "Balanço financeiro detalhado deste ano.", arquivo: "", nomeArquivo: "" }
         ];
         localStorage.setItem('gre_transparencia', JSON.stringify(transPadrao));
+    }
+    // NOVO: Inicializador das configurações institucionais do rodapé
+    if (!localStorage.getItem('gre_rodape')) {
+        const rodapePadrao = {
+            descricao: "O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.",
+            instagram: "#",
+            tiktok: "#",
+            whatsapp: "#",
+            email: "contato@visaocoletiva.edu.br",
+            localizacao: "Sala do Grêmio (Pátio Principal)",
+            atendimento: "Seg a Sex, nos intervalos."
+        };
+        localStorage.setItem('gre_rodape', JSON.stringify(rodapePadrao));
     }
 }
 
@@ -157,7 +171,6 @@ function renderizarPortalMural() {
     container.innerHTML = html;
 }
 
-// ATUALIZADO: Renderiza o link indicando se há um anexo real pronto para baixar
 function renderizarPortalTransparencia() {
     const docs = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
     const container = document.getElementById('transparencia-container');
@@ -183,7 +196,6 @@ function renderizarPortalTransparencia() {
     container.innerHTML = html;
 }
 
-// NOVA FUNÇÃO: Reconverte a string Base64 e força o download do arquivo anexado
 function baixarDocumentoTransparencia(index) {
     const docs = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
     const doc = docs[index];
@@ -197,6 +209,36 @@ function baixarDocumentoTransparencia(index) {
         document.body.removeChild(linkBaixar);
     } else {
         alert('Este é um documento padrão de teste e não possui um arquivo real anexado.');
+    }
+}
+
+// NOVO: Renderizador das Configurações Dinâmicas do Rodapé na Home
+function renderizarPortalRodape() {
+    const dados = JSON.parse(localStorage.getItem('gre_rodape'));
+    if (!dados) return;
+
+    // 1. Atualizar descrição descritiva
+    const descEl = document.getElementById('footer-descricao');
+    if(descEl) descEl.textContent = dados.descricao;
+
+    // 2. Atualizar redes sociais
+    const sociaisContainer = document.getElementById('footer-sociais');
+    if(sociaisContainer) {
+        sociaisContainer.innerHTML = `
+            <a href="${dados.instagram}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="${dados.tiktok}" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="${dados.whatsapp}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        `;
+    }
+
+    // 3. Atualizar Contato e Informações de Atendimento
+    const contatoContainer = document.getElementById('footer-contato');
+    if(contatoContainer) {
+        contatoContainer.innerHTML = `
+            <li><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> ${dados.email}</li>
+            <li><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> ${dados.localizacao}</li>
+            <li><i class="fa-solid fa-clock" style="margin-right: 8px;"></i> Atendimento: ${dados.atendimento}</li>
+        `;
     }
 }
 
