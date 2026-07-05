@@ -36,7 +36,6 @@
                     <i class="fa-solid fa-search"></i>
                     <input type="text" placeholder="Buscar no portal...">
                 </div>
-                <!-- ATUALIZADO: Agora aponta para a tela de login seguro -->
                 <a href="login.html" class="btn btn-admin-nav"><i class="fa-solid fa-user-lock"></i> Painel Admin</a>
             </div>
         </div>
@@ -139,7 +138,7 @@
     <section id="mural" class="container">
         <h2 class="section-title">Mural dos Estudantes</h2>
         <div class="mural-grid" id="mural-container">
-            <!-- Inserido dinamicamente via script.js (Apenas mensagens aprovadas) -->
+            <!-- Inserido dinamicamente via script.js -->
         </div>
     </section>
 
@@ -153,17 +152,15 @@
         </div>
     </section>
 
-    <!-- RODAPÉ -->
+    <!-- RODAPÉ DINÂMICO -->
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <div class="footer-logo">Visão <span>Coletiva</span></div>
-                    <p>O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    <p id="footer-descricao"><!-- Inserido via JS --></p>
+                    <div class="social-links" id="footer-sociais">
+                        <!-- Inserido via JS -->
                     </div>
                 </div>
                 <div>
@@ -175,11 +172,9 @@
                     </ul>
                 </div>
                 <div>
-                    <h3>Contato</h3>
-                    <ul>
-                        <li><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> rocha.junior.fabio@escola.pr.gov.br</li>
-                        <li><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Colégio Estadual Cívico-Militar Santos Dumont</li>
-                        <li><i class="fa-solid fa-clock" style="margin-right: 8px;"></i> Atendimento: Seg a Sex, via e-mail.</li>
+                    <h3>Contato e Localização</h3>
+                    <ul id="footer-contato">
+                        <!-- Inserido via JS -->
                     </ul>
                 </div>
             </div>
