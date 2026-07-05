@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarPortalNoticias();
     renderizarPortalAgenda();
     renderizarPortalProjetos();
+    renderizarPortalMembros(); // Nova chamada adicionada
     renderizarPortalMural();
     renderizarPortalTransparencia();
-    renderizarPortalRodape(); // Chama a nova função do rodapé
+    renderizarPortalRodape();
 
     configurarFormularioEstudante();
     configurarRolagemSuave();
@@ -33,6 +34,16 @@ function verificarEInicializarBanco() {
         ];
         localStorage.setItem('gre_projetos', JSON.stringify(projetosPadrao));
     }
+    // NOVO: Inicializador padrão para membros da chapa
+    if (!localStorage.getItem('gre_membros')) {
+        const membrosPadrao = [
+            { nome: "Ana Clara Silva", cargo: "Presidente", serie: "3º Ano A", foto: "" },
+            { nome: "Lucas Andrade", cargo: "Vice-Presidente", serie: "2º Ano B", foto: "" },
+            { nome: "Beatriz Souza", cargo: "Secretária Geral", serie: "3º Ano C", foto: "" },
+            { nome: "Mateus Rocha", cargo: "Diretor de Esportes", serie: "1º Ano Técnico", foto: "" }
+        ];
+        localStorage.setItem('gre_membros', JSON.stringify(membrosPadrao));
+    }
     if (!localStorage.getItem('gre_sugestoes')) {
         const muralPadrao = [
             { texto: "Parabéns pela organização da Festa Julina!", autor: "Mariana T., 3ºB", status: "Aprovado" },
@@ -47,7 +58,6 @@ function verificarEInicializarBanco() {
         ];
         localStorage.setItem('gre_transparencia', JSON.stringify(transPadrao));
     }
-    // NOVO: Inicializador das configurações institucionais do rodapé
     if (!localStorage.getItem('gre_rodape')) {
         const rodapePadrao = {
             descricao: "O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.",
@@ -147,6 +157,35 @@ function renderizarPortalProjetos() {
     container.innerHTML = html;
 }
 
+// NOVO: Renderiza os Membros da chapa na home com layout circular embutido
+function renderizarPortalMembros() {
+    const membros = JSON.parse(localStorage.getItem('gre_membros')) || [];
+    const container = document.getElementById('diretoria-container');
+    if (!container) return;
+
+    if(membros.length === 0) {
+        container.innerHTML = '<p style="color:var(--texto-claro); grid-column: 1/-1; text-align:center;">Informações da gestão em processo de atualização.</p>';
+        return;
+    }
+
+    let html = '';
+    membros.forEach(item => {
+        const avatarHtml = item.foto 
+            ? `<img src="${item.foto}" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px auto; display: block; border: 3px solid var(--azul-principal);" alt="${item.nome}">`
+            : `<div style="width: 110px; height: 110px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--azul-principal); border: 3px solid var(--azul-principal);"><i class="fa-solid fa-user-graduate"></i></div>`;
+
+        html += `
+            <div class="card" style="text-align: center; padding: 25px 20px;">
+                ${avatarHtml}
+                <h3 style="font-size: 1.15rem; margin-bottom: 5px; color: var(--azul-escuro);">${item.nome}</h3>
+                <span style="display: inline-block; background: var(--azul-principal); color: white; padding: 3px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; margin-bottom: 8px;">${item.cargo}</span>
+                <p style="color: var(--texto-claro); font-size: 0.85rem;"><i class="fa-solid fa-graduation-cap"></i> ${item.serie}</p>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
 function renderizarPortalMural() {
     const sugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
     const container = document.getElementById('mural-container');
@@ -212,16 +251,13 @@ function baixarDocumentoTransparencia(index) {
     }
 }
 
-// NOVO: Renderizador das Configurações Dinâmicas do Rodapé na Home
 function renderizarPortalRodape() {
     const dados = JSON.parse(localStorage.getItem('gre_rodape'));
     if (!dados) return;
 
-    // 1. Atualizar descrição descritiva
     const descEl = document.getElementById('footer-descricao');
     if(descEl) descEl.textContent = dados.descricao;
 
-    // 2. Atualizar redes sociais
     const sociaisContainer = document.getElementById('footer-sociais');
     if(sociaisContainer) {
         sociaisContainer.innerHTML = `
@@ -231,7 +267,6 @@ function renderizarPortalRodape() {
         `;
     }
 
-    // 3. Atualizar Contato e Informações de Atendimento
     const contatoContainer = document.getElementById('footer-contato');
     if(contatoContainer) {
         contatoContainer.innerHTML = `
