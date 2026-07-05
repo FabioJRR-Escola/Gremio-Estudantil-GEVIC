@@ -1,54 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- TRAVA DE SEGURANÇA: Bloqueia visualização se não estiver logado -->
-    <script>
-        if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
-            alert('Acesso negado! Por favor, faça login primeiro.');
-            window.location.href = 'login.html';
-        }
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - Grêmio Estudantil</title>
+    
+    <!-- Google Fonts e Ícones -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Arquivos de Estilo (O global e o específico do admin) -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Estilos complementares específicos do layout do Painel */
-        .admin-header {
-            background: var(--branco);
-            padding: 15px 20px;
-            box-shadow: var(--sombra);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-radius: 8px;
-        }
-        .admin-box {
-            background: var(--branco);
-            padding: 30px;
-            border-radius: var(--borda-raio);
-            box-shadow: var(--sombra);
-            margin-bottom: 40px;
-        }
-        .admin-form-group {
-            margin-bottom: 15px;
-        }
-        .admin-form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        .admin-form-group input, .admin-form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Arquivo de Script do Admin (Carregado no topo para a trava de segurança funcionar antes de renderizar a tela) -->
+    <script src="admin.js"></script>
 </head>
 <body style="padding-top: 20px;">
 
@@ -57,7 +23,7 @@
         <div class="admin-header">
             <div>
                 <h2><i class="fa-solid fa-user-gear"></i> Painel de Controle Administrativo</h2>
-                <p style="color: var(--texto-claro); font-size: 0.9rem;">Gerenciamento de conteúdos e ouvidoria</p>
+                <p style="color: var(--texto-claro); font-size: 0.9rem;">Gerenciamento de conteúdos e ouvidoria ativa</p>
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
                 <a href="index.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fa-solid fa-eye"></i> Ver Site</a>
@@ -65,67 +31,107 @@
             </div>
         </div>
 
-        <!-- Exemplo de Bloco de Postagem (Notícias) -->
-        <div class="admin-box">
-            <h3><i class="fa-solid fa-bullhorn"></i> Publicar Nova Notícia</h3>
-            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-            <form id="form-nova-noticia">
-                <div class="admin-form-group">
-                    <label>Título da Notícia</label>
-                    <input type="text" id="noticia-titulo" required placeholder="Ex: Grêmio consegue novos computadores para a biblioteca">
+        <div class="admin-grid">
+            
+            <!-- 1. MÓDULO: NOTÍCIAS -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-bullhorn"></i> Publicar Nova Notícia</h3>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-nova-noticia">
+                    <div class="admin-form-group">
+                        <label>Título da Notícia</label>
+                        <input type="text" id="noticia-titulo" required placeholder="Ex: Grêmio consegue novos computadores para a biblioteca">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Texto Descritivo</label>
+                        <textarea id="noticia-texto" rows="3" required placeholder="Escreva os detalhes da notícia aqui..."></textarea>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Foto do Evento (Opcional)</label>
+                        <input type="file" id="noticia-foto" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn">Publicar Notícia</button>
+                </form>
+            </div>
+
+            <!-- 2. MÓDULO: AGENDA -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-calendar-days"></i> Adicionar Evento na Agenda</h3>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-nova-agenda">
+                    <div class="admin-form-group">
+                        <label>Data do Evento</label>
+                        <input type="date" id="agenda-data" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Título do Evento</label>
+                        <input type="text" id="agenda-titulo" required placeholder="Ex: Assembleia Geral de Alunos">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Breve Descrição / Local</label>
+                        <input type="text" id="agenda-descricao" required placeholder="Ex: Às 14h na quadra coberta para discutir uniforme">
+                    </div>
+                    <button type="submit" class="btn">Adicionar Evento</button>
+                </form>
+            </div>
+
+            <!-- 3. MÓDULO: PROJETOS -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-diagram-project"></i> Cadastrar Novo Projeto</h3>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-novo-projeto">
+                    <div class="admin-form-group">
+                        <label>Ícone Representativo (Emoji)</label>
+                        <select id="projeto-icone">
+                            <option value="📚">📚 Livros / Educação</option>
+                            <option value="🌱">🌱 Sustentabilidade / Planta</option>
+                            <option value="⚽">⚽ Esportes / Lazer</option>
+                            <option value="🎨">🎨 Cultura / Arte</option>
+                            <option value="📢">📢 Comunicação / Voz</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Nome do Projeto</label>
+                        <input type="text" id="projeto-titulo" required placeholder="Ex: Cine-Clube Visão">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Objetivo ou Resumo do Projeto</label>
+                        <textarea id="projeto-descricao" rows="2" required placeholder="Ex: Exibições mensais de filmes seguidas de debate com pipoca grátis."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Cadastrar Projeto</button>
+                </form>
+            </div>
+
+            <!-- 4. MÓDULO: TRANSPARÊNCIA -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-file-invoice-dollar"></i> Publicar Documento de Transparência</h3>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-nova-transparencia">
+                    <div class="admin-form-group">
+                        <label>Nome do Documento / Relatório</label>
+                        <input type="text" id="trans-titulo" required placeholder="Ex: Balancete Financeiro - Junho 2026">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Descrição do Conteúdo</label>
+                        <input type="text" id="trans-descricao" required placeholder="Ex: Detalhamento de entradas da lanchonete e saídas com materiais.">
+                    </div>
+                    <button type="submit" class="btn">Publicar Documento</button>
+                </form>
+            </div>
+
+            <!-- 5. MÓDULO: MODERAÇÃO DE SUGESTÕES -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-comments"></i> Ouvidoria e Mural: Mensagens dos Alunos</h3>
+                <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Aprovações vão direto para o "Mural dos Estudantes" na página principal.</p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                
+                <div class="moderar-lista" id="lista-sugestoes-pendentes">
+                    <!-- Inserido dinamicamente via admin.js -->
                 </div>
-                <div class="admin-form-group">
-                    <label>Texto Descritivo</label>
-                    <textarea id="noticia-texto" rows="3" required placeholder="Escreva os detalhes da notícia aqui..."></textarea>
-                </div>
-                <div class="admin-form-group">
-                    <label>Foto do Evento (Opcional)</label>
-                    <input type="file" id="noticia-foto" accept="image/*">
-                </div>
-                <button type="submit" class="btn">Publicar no Portal</button>
-            </form>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        // Função de encerramento de sessão segura
-        function fazerLogout() {
-            if (confirm("Deseja realmente sair da conta administrativa?")) {
-                sessionStorage.removeItem('gre_admin_logado');
-                window.location.href = 'login.html';
-            }
-        }
-
-        // Lógica para interceptar o formulário, converter imagem para Base64 e salvar no LocalStorage
-        document.getElementById('form-nova-noticia')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const titulo = document.getElementById('noticia-titulo').value.trim();
-            const texto = document.getElementById('noticia-texto').value.trim();
-            const fotoInput = document.getElementById('noticia-foto');
-            const dataHoje = new Date().toISOString().split('T')[0]; // Salva no padrão AAAA-MM-DD
-
-            const salvarNoticia = (fotoBase64 = "") => {
-                const novaNoticia = { titulo, texto, data: dataHoje, foto: fotoBase64 };
-                let noticiasAtuais = JSON.parse(localStorage.getItem('gre_noticias')) || [];
-                
-                noticiasAtuais.unshift(novaNoticia); // Adiciona no início da lista
-                localStorage.setItem('gre_noticias', JSON.stringify(noticiasAtuais));
-                
-                alert("Notícia publicada com sucesso! Ela já está visível na página inicial.");
-                this.reset();
-            };
-
-            if (fotoInput.files && fotoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    salvarNoticia(event.target.result); // Grava a string comprimida da foto
-                };
-                reader.readAsDataURL(fotoInput.files[0]);
-            } else {
-                salvarNoticia();
-            }
-        });
-    </script>
 </body>
 </html>
