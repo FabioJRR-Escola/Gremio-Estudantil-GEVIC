@@ -1,304 +1,140 @@
-document.addEventListener('DOMContentLoaded', () => {
-    inicializarDados();
-    configurarMenuAbas();
-    renderizarTudo();
+// ==================== TRAVA DE SEGURANÇA IMEDIATA ====================
+// Executa na hora que o arquivo carrega, impedindo que a página renderize se não houver login.
+if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
+    alert('Acesso negado! Por favor, faça login primeiro.');
+    window.location.href = 'login.html';
+}
 
-    // Captura envio dos formulários
+// ==================== INICIALIZAÇÃO DO PAINEL ====================
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarSugestoesAdmin();
     configurarFormularios();
 });
 
-// BANCO DE DADOS LOCAL SIMULADO (Se vazio, preenche com padrões)
-function inicializarDados() {
-    if (!localStorage.getItem('gre_noticias')) {
-        const noticiasPadrao = [
-            { titulo: "Festa Julina arrecada mais de R$ 5.000", data: "2026-07-15", texto: "O evento foi um sucesso de público...", foto: "" },
-            { titulo: "Inscrições para Olimpíada de Matemática", data: "2026-07-10", texto: "O Grêmio oferecerá grupos de estudo...", foto: "" }
-        ];
-        localStorage.setItem('gre_noticias', JSON.stringify(noticiasPadrao));
-    }
-    if (!localStorage.getItem('gre_agenda')) {
-        const agendaPadrao = [
-            { data: "2026-07-20", titulo: "Reunião Geral com Representantes", descricao: "Discussão sobre o novo regimento interno." }
-        ];
-        localStorage.setItem('gre_agenda', JSON.stringify(agendaPadrao));
-    }
-    if (!localStorage.getItem('gre_projetos')) {
-        const projetosPadrao = [
-            { icone: "📚", titulo: "Biblioteca Viva", descricao: "Clubes de leitura quinzenais e arrecadação." }
-        ];
-        localStorage.setItem('gre_projetos', JSON.stringify(projetosPadrao));
-    }
-    if (!localStorage.getItem('gre_sugestoes')) {
-        const sugestoesPadrao = [
-            { texto: "Gostaria de mais bancos no pátio próximo às quadras.", autor: "João P., 1º Ano C", status: "Aprovado" },
-            { texto: "Sugestão de termos sabonete líquido nos banheiros.", autor: "Anônimo", status: "Pendente" }
-        ];
-        localStorage.setItem('gre_sugestoes', JSON.stringify(sugestoesPadrao));
-    }
-    if (!localStorage.getItem('gre_transparencia')) {
-        const transparenciaPadrao = [
-            { titulo: "Estatuto do Grêmio", descricao: "Documento oficial com as regras da instituição." }
-        ];
-        localStorage.setItem('gre_transparencia', JSON.stringify(transparenciaPadrao));
+// Função para encerrar a sessão
+function fazerLogout() {
+    if (confirm("Deseja realmente sair da conta administrativa?")) {
+        sessionStorage.removeItem('gre_admin_logado');
+        window.location.href = 'login.html';
     }
 }
 
-// NAVEGAÇÃO ENTRE ABAS DO PAINEL
-function configurarMenuAbas() {
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+// ==================== GERENCIAMENTO DA OUVIDORIA ====================
+function renderizarSugestoesAdmin() {
+    const listaContainer = document.getElementById('lista-sugestoes-pendentes');
+    if (!listaContainer) return;
 
-            item.classList.add('active');
-            const tabId = item.getAttribute('data-tab');
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-        });
-    });
-}
+    const sugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
+    // Mapeia mantendo o índice original para não excluir a mensagem errada após aplicar o filtro
+    const pendentes = sugestoes.map((s, index) => ({...s, originalIndex: index})).filter(s => s.status === 'Pendente');
 
-// OPERAÇÕES DE MODAL
-function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-function closeModal(id) { 
-    document.getElementById(id).style.display = 'none'; 
-    document.querySelectorAll('form').forEach(f => f.reset());
-    document.getElementById('noticia-index').value = "";
-    document.getElementById('agenda-index').value = "";
-    document.getElementById('projeto-index').value = "";
-    document.getElementById('transparencia-index').value = "";
-    document.getElementById('preview-foto').innerHTML = "";
-}
+    if (pendentes.length === 0) {
+        listaContainer.innerHTML = '<p style="color: var(--texto-claro); font-style: italic;">Nenhuma nova mensagem pendente de análise.</p>';
+        return;
+    }
 
-// RENDERIZAÇÃO DAS TABELAS ADMINISTRATIVAS
-function renderizarTudo() {
-    renderNoticias();
-    renderAgenda();
-    renderProjetos();
-    renderSugestoes();
-    renderTransparencia();
-}
-
-function renderNoticias() {
-    const dados = JSON.parse(localStorage.getItem('gre_noticias'));
     let html = '';
-    dados.forEach((item, index) => {
-        const imgTag = item.foto ? `<img src="${item.foto}" class="img-table">` : `<i class="fa-regular fa-image" style="font-size:1.5rem; color:#ccc;"></i>`;
-        html += `<tr>
-            <td>${imgTag}</td>
-            <td><strong>${item.titulo}</strong></td>
-            <td>${item.data}</td>
-            <td>
-                <button class="btn-action btn-edit" onclick="editarNoticia(${index})"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-action btn-delete" onclick="deletarItem('gre_noticias', ${index}, renderNoticias)"><i class="fa-solid fa-trash"></i></button>
-            </td>
-        </tr>`;
+    pendentes.forEach(item => {
+        html += `
+            <div class="item-moderacao">
+                <div class="info">
+                    <strong style="color: var(--azul-escuro);">${item.autor}</strong>
+                    <p style="margin-top: 4px; font-size: 0.95rem; background: #fff; padding: 8px; border-radius: 4px; border: 1px solid #e2e8f0;">${item.texto}</p>
+                </div>
+                <div class="acoes">
+                    <button onclick="moderarMensagem(${item.originalIndex}, 'Aprovado')" class="btn btn-sm btn-sucesso"><i class="fa-solid fa-check"></i> Aprovar</button>
+                    <button onclick="moderarMensagem(${item.originalIndex}, 'Recusado')" class="btn btn-sm btn-perigo"><i class="fa-solid fa-trash"></i> Recusar</button>
+                </div>
+            </div>
+        `;
     });
-    document.getElementById('lista-noticias').innerHTML = html;
+    listaContainer.innerHTML = html;
 }
 
-function renderAgenda() {
-    const dados = JSON.parse(localStorage.getItem('gre_agenda'));
-    let html = '';
-    dados.forEach((item, index) => {
-        html += `<tr>
-            <td>${item.data}</td>
-            <td><strong>${item.titulo}</strong></td>
-            <td>${item.descricao}</td>
-            <td>
-                <button class="btn-action btn-edit" onclick="editarAgenda(${index})"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-action btn-delete" onclick="deletarItem('gre_agenda', ${index}, renderAgenda)"><i class="fa-solid fa-trash"></i></button>
-            </td>
-        </tr>`;
-    });
-    document.getElementById('lista-agenda').innerHTML = html;
-}
-
-function renderProjetos() {
-    const dados = JSON.parse(localStorage.getItem('gre_projetos'));
-    let html = '';
-    dados.forEach((item, index) => {
-        html += `<tr>
-            <td style="font-size:1.5rem">${item.icone}</td>
-            <td><strong>${item.titulo}</strong></td>
-            <td>${item.descricao}</td>
-            <td>
-                <button class="btn-action btn-edit" onclick="editarProjeto(${index})"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-action btn-delete" onclick="deletarItem('gre_projetos', ${index}, renderProjetos)"><i class="fa-solid fa-trash"></i></button>
-            </td>
-        </tr>`;
-    });
-    document.getElementById('lista-projetos').innerHTML = html;
-}
-
-function renderSugestoes() {
-    const dados = JSON.parse(localStorage.getItem('gre_sugestoes'));
-    let html = '';
-    dados.forEach((item, index) => {
-        const badgeColor = item.status === 'Aprovado' ? '#4CAF50' : '#FFA000';
-        html += `<tr>
-            <td>"${item.texto}"</td>
-            <td>${item.autor}</td>
-            <td><span style="background:${badgeColor}; color:#fff; padding:4px 8px; border-radius:12px; font-size:0.75rem;">${item.status}</span></td>
-            <td>
-                ${item.status === 'Pendente' ? `<button class="btn-action btn-approve" onclick="aprovarSugestao(${index})"><i class="fa-solid fa-check"></i> Aprovar no Mural</button>` : ''}
-                <button class="btn-action btn-delete" onclick="deletarItem('gre_sugestoes', ${index}, renderSugestoes)"><i class="fa-solid fa-trash"></i></button>
-            </td>
-        </tr>`;
-    });
-    document.getElementById('lista-sugestoes').innerHTML = html;
-}
-
-function renderTransparencia() {
-    const dados = JSON.parse(localStorage.getItem('gre_transparencia'));
-    let html = '';
-    dados.forEach((item, index) => {
-        html += `<tr>
-            <td><strong>${item.titulo}</strong></td>
-            <td>${item.descricao}</td>
-            <td>
-                <button class="btn-action btn-edit" onclick="editarTransparencia(${index})"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-action btn-delete" onclick="deletarItem('gre_transparencia', ${index}, renderTransparencia)"><i class="fa-solid fa-trash"></i></button>
-            </td>
-        </tr>`;
-    });
-    document.getElementById('lista-transparencia').innerHTML = html;
-}
-
-// DELETAR ITEM GENÉRICO
-function deletarItem(chaveStorage, index, callbackRender) {
-    if(confirm("Tem certeza que deseja remover este item?")) {
-        let dados = JSON.parse(localStorage.getItem(chaveStorage));
-        dados.splice(index, 1);
-        localStorage.setItem(chaveStorage, JSON.stringify(dados));
-        callbackRender();
+function moderarMensagem(index, acao) {
+    let sugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
+    
+    if (acao === 'Aprovado') {
+        sugestoes[index].status = 'Aprovado';
+        alert("Mensagem aprovada! Ela já está visível no Mural do Portal.");
+    } else {
+        sugestoes.splice(index, 1); // Remove definitivamente se for recusada
+        alert("Mensagem descartada com sucesso.");
     }
+
+    localStorage.setItem('gre_sugestoes', JSON.stringify(sugestoes));
+    renderizarSugestoesAdmin();
 }
 
-// APROVAR MENSAGEM NO MURAL
-function aprovarSugestao(index) {
-    let dados = JSON.parse(localStorage.getItem('gre_sugestoes'));
-    dados[index].status = 'Aprovado';
-    localStorage.setItem('gre_sugestoes', JSON.stringify(dados));
-    renderSugestoes();
-}
-
-// EDIÇÃO - CARREGAR DADOS NO FORMULÁRIO DO MODAL
-function editarNoticia(index) {
-    const dados = JSON.parse(localStorage.getItem('gre_noticias'))[index];
-    document.getElementById('noticia-index').value = index;
-    document.getElementById('noticia-titulo').value = dados.titulo;
-    document.getElementById('noticia-data').value = dados.data;
-    document.getElementById('noticia-texto').value = dados.texto;
-    if(dados.foto) {
-        document.getElementById('preview-foto').innerHTML = `<img src="${dados.foto}" style="width:100px; border-radius:4px;">`;
-    }
-    openModal('modal-noticia');
-}
-
-function editarAgenda(index) {
-    const dados = JSON.parse(localStorage.getItem('gre_agenda'))[index];
-    document.getElementById('agenda-index').value = index;
-    document.getElementById('agenda-data').value = dados.data;
-    document.getElementById('agenda-titulo').value = dados.titulo;
-    document.getElementById('agenda-descricao').value = dados.descricao;
-    openModal('modal-agenda');
-}
-
-function editarProjeto(index) {
-    const dados = JSON.parse(localStorage.getItem('gre_projetos'))[index];
-    document.getElementById('projeto-index').value = index;
-    document.getElementById('projeto-icone').value = dados.icone;
-    document.getElementById('projeto-titulo').value = dados.titulo;
-    document.getElementById('projeto-descricao').value = dados.descricao;
-    openModal('modal-projeto');
-}
-
-function editarTransparencia(index) {
-    const dados = JSON.parse(localStorage.getItem('gre_transparencia'))[index];
-    document.getElementById('transparencia-index').value = index;
-    document.getElementById('transparencia-titulo').value = dados.titulo;
-    document.getElementById('transparencia-descricao').value = dados.descricao;
-    openModal('modal-transparencia');
-}
-
-// ENVIOS E ADIÇÕES DE FORMULÁRIO (SALVAR / ATUALIZAR)
+// ==================== PROCESSAMENTO DOS FORMULÁRIOS ====================
 function configurarFormularios() {
     
-    // Form Notícia + Upload de Foto em Base64
-    document.getElementById('form-noticia').addEventListener('submit', function(e) {
+    // 1. Envio de Notícias (Com conversão de foto para string Base64)
+    document.getElementById('form-nova-noticia')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        const index = document.getElementById('noticia-index').value;
-        const titulo = document.getElementById('noticia-titulo').value;
-        const data = document.getElementById('noticia-data').value;
-        const texto = document.getElementById('noticia-texto').value;
-        const fotoInput = document.getElementById('noticia-foto').files[0];
+        const titulo = document.getElementById('noticia-titulo').value.trim();
+        const texto = document.getElementById('noticia-texto').value.trim();
+        const fotoInput = document.getElementById('noticia-foto');
+        const dataHoje = new Date().toISOString().split('T')[0];
 
-        const executarSalvamento = (fotoBase64 = "") => {
-            let dados = JSON.parse(localStorage.getItem('gre_noticias'));
-            const novaNoticia = { titulo, data, texto, foto: fotoBase64 || (index !== "" ? dados[index].foto : "") };
-
-            if(index !== "") dados[index] = novaNoticia; // Editar
-            else dados.push(novaNoticia); // Criar novo
-
+        const salvar = (fotoBase64 = "") => {
+            let dados = JSON.parse(localStorage.getItem('gre_noticias')) || [];
+            dados.unshift({ titulo, texto, data: dataHoje, foto: fotoBase64 });
             localStorage.setItem('gre_noticias', JSON.stringify(dados));
-            renderNoticias();
-            closeModal('modal-noticia');
+            alert("Notícia publicada com sucesso!");
+            this.reset();
         };
 
-        if (fotoInput) {
+        if (fotoInput.files && fotoInput.files[0]) {
             const reader = new FileReader();
-            reader.onloadend = function() { executarSalvamento(reader.result); };
-            reader.readAsDataURL(fotoInput); // Transforma imagem em string de texto
+            reader.onload = (ev) => salvar(ev.target.result);
+            reader.readAsDataURL(fotoInput.files[0]);
         } else {
-            executarSalvamento();
+            salvar();
         }
     });
 
-    // Form Agenda
-    document.getElementById('form-agenda').addEventListener('submit', function(e) {
+    // 2. Envio de Agenda
+    document.getElementById('form-nova-agenda')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        const index = document.getElementById('agenda-index').value;
-        let dados = JSON.parse(localStorage.getItem('gre_agenda'));
-        const novoEvento = {
-            data: document.getElementById('agenda-data').value,
-            titulo: document.getElementById('agenda-titulo').value,
-            descricao: document.getElementById('agenda-descricao').value
-        };
-        if(index !== "") dados[index] = novoEvento; else dados.push(novoEvento);
+        const data = document.getElementById('agenda-data').value;
+        const titulo = document.getElementById('agenda-titulo').value.trim();
+        const descricao = document.getElementById('agenda-descricao').value.trim();
+
+        let dados = JSON.parse(localStorage.getItem('gre_agenda')) || [];
+        dados.unshift({ data, titulo, descricao });
         localStorage.setItem('gre_agenda', JSON.stringify(dados));
-        renderAgenda();
-        closeModal('modal-agenda');
+
+        alert("Evento adicionado à agenda com sucesso!");
+        this.reset();
     });
 
-    // Form Projeto
-    document.getElementById('form-projeto').addEventListener('submit', function(e) {
+    // 3. Envio de Projetos
+    document.getElementById('form-novo-projeto')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        const index = document.getElementById('projeto-index').value;
-        let dados = JSON.parse(localStorage.getItem('gre_projetos'));
-        const novoProjeto = {
-            icone: document.getElementById('projeto-icone').value,
-            titulo: document.getElementById('projeto-titulo').value,
-            descricao: document.getElementById('projeto-descricao').value
-        };
-        if(index !== "") dados[index] = novoProjeto; else dados.push(novoProjeto);
+        const icone = document.getElementById('projeto-icone').value;
+        const titulo = document.getElementById('projeto-titulo').value.trim();
+        const descricao = document.getElementById('projeto-descricao').value.trim();
+
+        let dados = JSON.parse(localStorage.getItem('gre_projetos')) || [];
+        dados.push({ icone, titulo, descricao });
         localStorage.setItem('gre_projetos', JSON.stringify(dados));
-        renderProjetos();
-        closeModal('modal-projeto');
+
+        alert("Novo projeto cadastrado com sucesso!");
+        this.reset();
     });
 
-    // Form Transparência
-    document.getElementById('form-transparencia').addEventListener('submit', function(e) {
+    // 4. Envio de Transparência
+    document.getElementById('form-nova-transparencia')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        const index = document.getElementById('transparencia-index').value;
-        let dados = JSON.parse(localStorage.getItem('gre_transparencia'));
-        const novoDoc = {
-            titulo: document.getElementById('transparencia-titulo').value,
-            descricao: document.getElementById('transparencia-descricao').value
-        };
-        if(index !== "") dados[index] = novoDoc; else dados.push(novoDoc);
+        const titulo = document.getElementById('trans-titulo').value.trim();
+        const descricao = document.getElementById('trans-descricao').value.trim();
+
+        let dados = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
+        dados.push({ titulo, descricao });
         localStorage.setItem('gre_transparencia', JSON.stringify(dados));
-        renderTransparencia();
-        closeModal('modal-transparencia');
+
+        alert("Documento de transparência publicado com sucesso!");
+        this.reset();
     });
 }
