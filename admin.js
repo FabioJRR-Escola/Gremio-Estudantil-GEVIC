@@ -6,14 +6,60 @@ if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
 
 // ==================== INICIALIZAÇÃO DO PAINEL ====================
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarSugestoesAdmin();
+    renderizarTodasAsListasAdmin();
     configurarFormularios();
+    carregarDadosRodapeForm();
 });
 
 function fazerLogout() {
     if (confirm("Deseja realmente sair da conta administrativa?")) {
         sessionStorage.removeItem('gre_admin_logado');
         window.location.href = 'login.html';
+    }
+}
+
+function renderizarTodasAsListasAdmin() {
+    renderizarSugestoesAdmin();
+    renderizarListaGenericaAdmin('gre_noticias', 'lista-noticias-admin', (item) => item.titulo);
+    renderizarListaGenericaAdmin('gre_agenda', 'lista-agenda-admin', (item) => `${item.data} - ${item.titulo}`);
+    renderizarListaGenericaAdmin('gre_projetos', 'lista-projetos-admin', (item) => `${item.icone} ${item.titulo}`);
+    renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', (item) => item.titulo);
+}
+
+// ==================== RENDERIZADOR GENERICO DE REMOÇÃO ====================
+function renderizarListaGenericaAdmin(chaveBanco, idContainer, funcaoTexto) {
+    const container = document.getElementById(idContainer);
+    if (!container) return;
+
+    const itens = JSON.parse(localStorage.getItem(chaveBanco)) || [];
+
+    if (itens.length === 0) {
+        container.innerHTML = '<p style="color: var(--texto-claro); font-style: italic; font-size:0.9rem;">Nenhum item publicado nesta categoria.</p>';
+        return;
+    }
+
+    let html = '';
+    itens.forEach((item, index) => {
+        html += `
+            <div class="item-moderacao" style="padding: 10px 15px; margin-bottom: 6px;">
+                <div class="info">
+                    <span style="font-size: 0.9rem; font-weight:500;">${funcaoTexto(item)}</span>
+                </div>
+                <div class="acoes">
+                    <button onclick="excluirItemPublicado('${chaveBanco}', ${index}, '${idContainer}')" class="btn btn-sm btn-perigo" style="padding: 4px 8px;"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+function excluirItemPublicado(chaveBanco, index, idContainer) {
+    if (confirm("Tem certeza que deseja apagar permanentemente este item do portal?")) {
+        let itens = JSON.parse(localStorage.getItem(chaveBanco)) || [];
+        itens.splice(index, 1);
+        localStorage.setItem(chaveBanco, JSON.stringify(itens));
+        renderizarTodasAsListasAdmin();
     }
 }
 
@@ -60,7 +106,21 @@ function moderarMensagem(index, acao) {
     }
 
     localStorage.setItem('gre_sugestoes', JSON.stringify(sugestoes));
-    renderizarSugestoesAdmin();
+    renderizarTodasAsListasAdmin();
+}
+
+// ==================== CONFIGURAÇÃO DO RODAPÉ (ADMIN) ====================
+function carregarDadosRodapeForm() {
+    const rodape = JSON.parse(localStorage.getItem('gre_rodape'));
+    if (!rodape) return;
+
+    if(document.getElementById('rodape-descricao')) document.getElementById('rodape-descricao').value = rodape.descricao || '';
+    if(document.getElementById('rodape-instagram')) document.getElementById('rodape-instagram').value = rodape.instagram || '';
+    if(document.getElementById('rodape-tiktok')) document.getElementById('rodape-tiktok').value = rodape.tiktok || '';
+    if(document.getElementById('rodape-whatsapp')) document.getElementById('rodape-whatsapp').value = rodape.whatsapp || '';
+    if(document.getElementById('rodape-email')) document.getElementById('rodape-email').value = rodape.email || '';
+    if(document.getElementById('rodape-localizacao')) document.getElementById('rodape-localizacao').value = rodape.localizacao || '';
+    if(document.getElementById('rodape-atendimento')) document.getElementById('rodape-atendimento').value = rodape.atendimento || '';
 }
 
 // ==================== PROCESSAMENTO DOS FORMULÁRIOS ====================
@@ -80,6 +140,7 @@ function configurarFormularios() {
             localStorage.setItem('gre_noticias', JSON.stringify(dados));
             alert("Notícia publicada com sucesso!");
             this.reset();
+            renderizarTodasAsListasAdmin();
         };
 
         if (fotoInput.files && fotoInput.files[0]) {
@@ -104,6 +165,7 @@ function configurarFormularios() {
 
         alert("Evento adicionado à agenda com sucesso!");
         this.reset();
+        renderizarTodasAsListasAdmin();
     });
 
     // 3. Projetos
@@ -119,9 +181,10 @@ function configurarFormularios() {
 
         alert("Novo projeto cadastrado com sucesso!");
         this.reset();
+        renderizarTodasAsListasAdmin();
     });
 
-    // 4. Transparência (ATUALIZADO COM LEITURA E VALIDAÇÃO DE ANEXO)
+    // 4. Transparência
     document.getElementById('form-nova-transparencia')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const titulo = document.getElementById('trans-titulo').value.trim();
@@ -133,24 +196,39 @@ function configurarFormularios() {
             dados.push({ titulo, descricao, arquivo: arquivoBase64, nomeArquivo });
             localStorage.setItem('gre_transparencia', JSON.stringify(dados));
 
-            alert("Documento de transparência publicado com sucesso! Ele já está disponível para download.");
+            alert("Documento de transparência publicado com sucesso!");
             this.reset();
+            renderizarTodasAsListasAdmin();
         };
 
         if (arquivoInput.files && arquivoInput.files[0]) {
             const file = arquivoInput.files[0];
-            
-            // Bloqueia arquivos maiores que 2MB para não estourar o LocalStorage
             if (file.size > 2 * 1024 * 1024) {
                 alert("O arquivo é muito grande! Por favor, anexe um PDF ou imagem de até 2MB.");
                 return;
             }
-
             const reader = new FileReader();
             reader.onload = (ev) => salvar(ev.target.result, file.name);
             reader.readAsDataURL(file);
         } else {
             salvar();
         }
+    });
+
+    // 6. Formulário do Rodapé
+    document.getElementById('form-config-rodape')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const novoRodape = {
+            descricao: document.getElementById('rodape-descricao').value.trim(),
+            instagram: document.getElementById('rodape-instagram').value.trim() || '#',
+            tiktok: document.getElementById('rodape-tiktok').value.trim() || '#',
+            whatsapp: document.getElementById('rodape-whatsapp').value.trim() || '#',
+            email: document.getElementById('rodape-email').value.trim(),
+            localizacao: document.getElementById('rodape-localizacao').value.trim(),
+            atendimento: document.getElementById('rodape-atendimento').value.trim()
+        };
+
+        localStorage.setItem('gre_rodape', JSON.stringify(novoRodape));
+        alert("Configurações do rodapé atualizadas com sucesso no portal!");
     });
 }
