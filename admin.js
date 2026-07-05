@@ -1,5 +1,4 @@
 // ==================== TRAVA DE SEGURANÇA IMEDIATA ====================
-// Executa na hora que o arquivo carrega, impedindo que a página renderize se não houver login.
 if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
     alert('Acesso negado! Por favor, faça login primeiro.');
     window.location.href = 'login.html';
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     configurarFormularios();
 });
 
-// Função para encerrar a sessão
 function fazerLogout() {
     if (confirm("Deseja realmente sair da conta administrativa?")) {
         sessionStorage.removeItem('gre_admin_logado');
@@ -25,7 +23,6 @@ function renderizarSugestoesAdmin() {
     if (!listaContainer) return;
 
     const sugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
-    // Mapeia mantendo o índice original para não excluir a mensagem errada após aplicar o filtro
     const pendentes = sugestoes.map((s, index) => ({...s, originalIndex: index})).filter(s => s.status === 'Pendente');
 
     if (pendentes.length === 0) {
@@ -58,7 +55,7 @@ function moderarMensagem(index, acao) {
         sugestoes[index].status = 'Aprovado';
         alert("Mensagem aprovada! Ela já está visível no Mural do Portal.");
     } else {
-        sugestoes.splice(index, 1); // Remove definitivamente se for recusada
+        sugestoes.splice(index, 1);
         alert("Mensagem descartada com sucesso.");
     }
 
@@ -69,7 +66,7 @@ function moderarMensagem(index, acao) {
 // ==================== PROCESSAMENTO DOS FORMULÁRIOS ====================
 function configurarFormularios() {
     
-    // 1. Envio de Notícias (Com conversão de foto para string Base64)
+    // 1. Notícias
     document.getElementById('form-nova-noticia')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const titulo = document.getElementById('noticia-titulo').value.trim();
@@ -94,7 +91,7 @@ function configurarFormularios() {
         }
     });
 
-    // 2. Envio de Agenda
+    // 2. Agenda
     document.getElementById('form-nova-agenda')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const data = document.getElementById('agenda-data').value;
@@ -109,7 +106,7 @@ function configurarFormularios() {
         this.reset();
     });
 
-    // 3. Envio de Projetos
+    // 3. Projetos
     document.getElementById('form-novo-projeto')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const icone = document.getElementById('projeto-icone').value;
@@ -124,17 +121,36 @@ function configurarFormularios() {
         this.reset();
     });
 
-    // 4. Envio de Transparência
+    // 4. Transparência (ATUALIZADO COM LEITURA E VALIDAÇÃO DE ANEXO)
     document.getElementById('form-nova-transparencia')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const titulo = document.getElementById('trans-titulo').value.trim();
         const descricao = document.getElementById('trans-descricao').value.trim();
+        const arquivoInput = document.getElementById('trans-arquivo');
 
-        let dados = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
-        dados.push({ titulo, descricao });
-        localStorage.setItem('gre_transparencia', JSON.stringify(dados));
+        const salvar = (arquivoBase64 = "", nomeArquivo = "") => {
+            let dados = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
+            dados.push({ titulo, descricao, arquivo: arquivoBase64, nomeArquivo });
+            localStorage.setItem('gre_transparencia', JSON.stringify(dados));
 
-        alert("Documento de transparência publicado com sucesso!");
-        this.reset();
+            alert("Documento de transparência publicado com sucesso! Ele já está disponível para download.");
+            this.reset();
+        };
+
+        if (arquivoInput.files && arquivoInput.files[0]) {
+            const file = arquivoInput.files[0];
+            
+            // Bloqueia arquivos maiores que 2MB para não estourar o LocalStorage
+            if (file.size > 2 * 1024 * 1024) {
+                alert("O arquivo é muito grande! Por favor, anexe um PDF ou imagem de até 2MB.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (ev) => salvar(ev.target.result, file.name);
+            reader.readAsDataURL(file);
+        } else {
+            salvar();
+        }
     });
 }
