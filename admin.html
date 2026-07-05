@@ -134,6 +134,27 @@
                 <div class="moderar-lista" id="lista-membros-admin"></div>
             </div>
 
+            <!-- NOVA SEÇÃO - MÓDULO 8: IDENTIDADE VISUAL -->
+            <div class="admin-box">
+                <h3><i class="fa-solid fa-palette"></i> Alterar Logo e Banner Principal</h3>
+                <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Customize o topo do site enviando arquivos de imagem direto do seu computador.</p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+                <form id="form-identidade-visual">
+                    <div class="admin-form-group">
+                        <label>Imagem do Logotipo (Substitui o topo esquerdo)</label>
+                        <input type="file" id="visual-logo" accept="image/*">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Imagem do Banner Principal (Fundo da seção de boas-vindas)</label>
+                        <input type="file" id="visual-banner" accept="image/*">
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button type="submit" class="btn" style="flex: 1;">Salvar Alterações Visuais</button>
+                        <button type="button" onclick="restaurarIdentidadeVisualPadrao()" class="btn btn-outline" style="border-color: #ef4444; color: #ef4444;"><i class="fa-solid fa-trash-arrow-up"></i> Resetar</button>
+                    </div>
+                </form>
+            </div>
+
             <!-- 4. MÓDULO: TRANSPARÊNCIA -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-file-invoice-dollar"></i> Publicar Documento de Transparência</h3>
@@ -165,7 +186,7 @@
                 <div class="moderar-lista" id="lista-sugestoes-pendentes"></div>
             </div>
 
-            <!-- 6. MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ (ATUALIZADO - APENAS INSTAGRAM) -->
+            <!-- 6. MÓDULO: EDITAR INFORMAÇÕES DO RODAPÉ -->
             <div class="admin-box">
                 <h3><i class="fa-solid fa-address-card"></i> Configurar Informações do Rodapé e Contatos</h3>
                 <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 10px;">Atualize o link social e dados institucionais exibidos na base do site.</p>
