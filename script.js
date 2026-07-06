@@ -1,78 +1,92 @@
-document.addEventListener('DOMContentLoaded', () => {
-    verificarEInicializarBanco();
+// =========================================================================
+// CONFIGURAÇÃO DO BANCO DE DADOS NA NUVEM - OFICIAL
+// =========================================================================
+const BANCO_NUVEM_URL = "https://visao-coletiva-default-rtdb.firebaseio.com";
 
-    renderizarIdentidadeVisual(); // Chamada adicionada para renderizar o Logo e Banner
-    renderizarPortalNoticias();
-    renderizarPortalAgenda();
-    renderizarPortalProjetos();
-    renderizarPortalMembros();
-    renderizarPortalMural();
-    renderizarPortalTransparencia();
-    renderizarPortalRodape();
+document.addEventListener('DOMContentLoaded', async () => {
+    // Inicializa os dados padrão caso a nuvem esteja vazia
+    await verificarEInicializarBancoNuvem();
+
+    // Renderiza cada seção trazendo os dados direto da nuvem
+    await renderizarIdentidadeVisual();
+    await renderizarPortalNoticias();
+    await renderizarPortalAgenda();
+    await renderizarPortalProjetos();
+    await renderizarPortalMembros();
+    await renderizarPortalMural();
+    await renderizarPortalTransparencia();
+    await renderizarPortalRodape();
 
     configurarFormularioEstudante();
     configurarRolagemSuave();
 });
 
-function verificarEInicializarBanco() {
-    if (!localStorage.getItem('gre_noticias')) {
-        const dadosPadrao = [
-            { titulo: "Festa Julina arrecada mais de R$ 5.000", data: "2026-07-15", texto: "O evento foi um sucesso de público estudantil.", foto: "" },
-            { titulo: "Inscrições para Olimpíada de Matemática", data: "2026-07-10", texto: "Participe dos grupos de estudo organizados pelo Grêmio.", foto: "" }
-        ];
-        localStorage.setItem('gre_noticias', JSON.stringify(dadosPadrao));
-    }
-    if (!localStorage.getItem('gre_agenda')) {
-        const agendaPadrao = [
-            { data: "2026-07-20", titulo: "Reunião Geral de Representantes", descricao: "Pauta sobre eventos do segundo semestre." }
-        ];
-        localStorage.setItem('gre_agenda', JSON.stringify(agendaPadrao));
-    }
-    if (!localStorage.getItem('gre_projetos')) {
-        const projetosPadrao = [
-            { icone: "📚", titulo: "Biblioteca Viva", descricao: "Clubes de leitura semanais e novos acervos." },
-            { icone: "🌱", titulo: "Escola Sustentável", descricao: "Coleta seletiva e horta orgânica ativa." }
-        ];
-        localStorage.setItem('gre_projetos', JSON.stringify(projetosPadrao));
-    }
-    if (!localStorage.getItem('gre_membros')) {
-        const membrosPadrao = [
-            { nome: "Ana Clara Silva", cargo: "Presidente", serie: "3º Ano A", foto: "" },
-            { nome: "Lucas Andrade", cargo: "Vice-Presidente", serie: "2º Ano B", foto: "" },
-            { nome: "Beatriz Souza", cargo: "Secretária Geral", serie: "3º Ano C", foto: "" },
-            { nome: "Mateus Rocha", cargo: "Diretor de Esportes", serie: "1º Ano Técnico", foto: "" }
-        ];
-        localStorage.setItem('gre_membros', JSON.stringify(membrosPadrao));
-    }
-    if (!localStorage.getItem('gre_sugestoes')) {
-        const muralPadrao = [
-            { texto: "Parabéns pela organização da Festa Julina!", autor: "Mariana T., 3ºB", status: "Aprovado" },
-            { texto: "Gostaria de mais bancos no pátio.", autor: "João P., 1ºC", status: "Aprovado" }
-        ];
-        localStorage.setItem('gre_sugestoes', JSON.stringify(muralPadrao));
-    }
-    if (!localStorage.getItem('gre_transparencia')) {
-        const transPadrao = [
-            { titulo: "Estatuto do Grêmio", descricao: "Estatuto oficial assinado em vigência.", arquivo: "", nomeArquivo: "" },
-            { titulo: "Prestação de Contas", descricao: "Balanço financeiro detalhado deste ano.", arquivo: "", nomeArquivo: "" }
-        ];
-        localStorage.setItem('gre_transparencia', JSON.stringify(transPadrao));
-    }
-    if (!localStorage.getItem('gre_rodape')) {
-        const rodapePadrao = {
-            descricao: "O Portal do Grêmio Estudantil é o principal canal de comunicação, participação e transparência para todos os estudantes.",
-            instagram: "#",
-            email: "contato@visaocoletiva.edu.br",
-            localizacao: "Sala do Grêmio (Pátio Principal)",
-            atendimento: "Seg a Sex, nos intervalos."
-        };
-        localStorage.setItem('gre_rodape', JSON.stringify(rodapePadrao));
+// FUNÇÕES AUXILIARES DE CONEXÃO COM A API REST DO FIREBASE
+async function buscarDadosNuvem(chave) {
+    try {
+        const resposta = await fetch(`${BANCO_NUVEM_URL}/${chave}.json`);
+        return await resposta.json();
+    } catch (erro) {
+        console.error(`Erro ao buscar ${chave}:`, erro);
+        return null;
     }
 }
 
-// NOVO: injeta o logo e banner do administrador dinamicamente se existirem no banco
-function renderizarIdentidadeVisual() {
-    const visual = JSON.parse(localStorage.getItem('gre_visual'));
+async function salvarDadosNuvem(chave, dados) {
+    try {
+        await fetch(`${BANCO_NUVEM_URL}/${chave}.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+    } catch (erro) {
+        console.error(`Erro ao salvar ${chave}:`, erro);
+    }
+}
+
+async function verificarEInicializarBancoNuvem() {
+    const noticias = await buscarDadosNuvem('gre_noticias');
+    if (!noticias) {
+        const dadosPadrao = [
+            { titulo: "Boas-vindas ao novo Portal do Grêmio!", data: "2026-02-15", texto: "Agora nosso portal está 100% online e sincronizado em tempo real na nuvem.", foto: "" }
+        ];
+        await salvarDadosNuvem('gre_noticias', dadosPadrao);
+    }
+    const agenda = await buscarDadosNuvem('gre_agenda');
+    if (!agenda) {
+        await salvarDadosNuvem('gre_agenda', [{ data: "2026-04-07", titulo: "Dia D de Combate ao Bullying", descricao: "Ações de conscientização nas salas." }]);
+    }
+    const projetos = await buscarDadosNuvem('gre_projetos');
+    if (!projetos) {
+        await salvarDadosNuvem('gre_projetos', [{ icone: "📢", titulo: "Voz Ativa", descricao: "Assembleias regulares com líderes de turma." }]);
+    }
+    const membros = await buscarDadosNuvem('gre_membros');
+    if (!membros) {
+        await salvarDadosNuvem('gre_membros', [{ nome: "Diretoria Visão Coletiva", cargo: "Gestão Atual", serie: "Ano Letivo 2026", foto: "" }]);
+    }
+    const sugestoes = await buscarDadosNuvem('gre_sugestoes');
+    if (!sugestoes) {
+        await salvarDadosNuvem('gre_sugestoes', [{ texto: "Portal oficial lançado com sucesso!", autor: "Grêmio Estudantil", status: "Aprovado" }]);
+    }
+    const transparencia = await buscarDadosNuvem('gre_transparencia');
+    if (!transparencia) {
+        await salvarDadosNuvem('gre_transparencia', [{ titulo: "Estatuto Oficial", descricao: "Regimento interno do Grêmio.", arquivo: "", nomeArquivo: "" }]);
+    }
+    const rodape = await buscarDadosNuvem('gre_rodape');
+    if (!rodape) {
+        const rodapePadrao = {
+            descricao: "O Portal do Grêmio Estudantil Visão Coletiva é o canal oficial de transparência e união dos estudantes.",
+            instagram: "#",
+            email: "contato@visaocoletiva.edu.br",
+            localizacao: "Sala do Grêmio",
+            atendimento: "Nos intervalos das aulas."
+        };
+        await salvarDadosNuvem('gre_rodape', rodapePadrao);
+    }
+}
+
+async function renderizarIdentidadeVisual() {
+    const visual = await buscarDadosNuvem('gre_visual');
     if (!visual) return;
 
     if (visual.logo) {
@@ -85,7 +99,6 @@ function renderizarIdentidadeVisual() {
     if (visual.banner) {
         const heroSection = document.getElementById('hero-banner-section');
         if (heroSection) {
-            // Aplica um filtro linear escuro para manter o texto em branco legível sobre qualquer imagem
             heroSection.style.backgroundImage = `linear-gradient(rgba(14, 34, 61, 0.75), rgba(14, 34, 61, 0.75)), url(${visual.banner})`;
             heroSection.style.backgroundSize = 'cover';
             heroSection.style.backgroundPosition = 'center';
@@ -93,8 +106,8 @@ function renderizarIdentidadeVisual() {
     }
 }
 
-function renderizarPortalNoticias() {
-    const noticias = JSON.parse(localStorage.getItem('gre_noticias')) || [];
+async function renderizarPortalNoticias() {
+    const noticias = await buscarDadosNuvem('gre_noticias') || [];
     const container = document.getElementById('noticias-container');
     if (!container) return;
 
@@ -107,7 +120,6 @@ function renderizarPortalNoticias() {
     noticias.forEach(item => {
         const partesData = item.data.split('-');
         const dataFormatada = partesData.length === 3 ? `${partesData[2]}/${partesData[1]}/${partesData[0]}` : item.data;
-        
         const mediaRender = item.foto 
             ? `<img src="${item.foto}" class="card-news-img" alt="Imagem da notícia">`
             : `<i class="fa-solid fa-bullhorn news-icon"></i>`;
@@ -124,8 +136,8 @@ function renderizarPortalNoticias() {
     container.innerHTML = html;
 }
 
-function renderizarPortalAgenda() {
-    const eventos = JSON.parse(localStorage.getItem('gre_agenda')) || [];
+async function renderizarPortalAgenda() {
+    const eventos = await buscarDadosNuvem('gre_agenda') || [];
     const container = document.getElementById('agenda-container');
     if (!container) return;
 
@@ -161,32 +173,27 @@ function renderizarPortalAgenda() {
     container.innerHTML = html;
 }
 
-function renderizarPortalProjetos() {
-    const projetos = JSON.parse(localStorage.getItem('gre_projetos')) || [];
+async function renderizarPortalProjetos() {
+    const projetos = await buscarDadosNuvem('gre_projetos') || [];
     const container = document.getElementById('projetos-container');
     if (!container) return;
 
     let html = '';
-    for(let i=0; i < projetos.length; i++){
+    projetos.forEach(proj => {
         html += `
             <div class="card">
-                <h3>${projetos[i].icone} ${projetos[i].titulo}</h3>
-                <p>${projetos[i].descricao}</p>
+                <h3>${proj.icone} ${proj.titulo}</h3>
+                <p>${proj.descricao}</p>
             </div>
         `;
-    }
+    });
     container.innerHTML = html;
 }
 
-function renderizarPortalMembros() {
-    const membros = JSON.parse(localStorage.getItem('gre_membros')) || [];
+async function renderizarPortalMembros() {
+    const membros = await buscarDadosNuvem('gre_membros') || [];
     const container = document.getElementById('diretoria-container');
     if (!container) return;
-
-    if(membros.length === 0) {
-        container.innerHTML = '<p style="color:var(--texto-claro); grid-column: 1/-1; text-align:center;">Informações da gestão em processo de atualização.</p>';
-        return;
-    }
 
     let html = '';
     membros.forEach(item => {
@@ -206,8 +213,8 @@ function renderizarPortalMembros() {
     container.innerHTML = html;
 }
 
-function renderizarPortalMural() {
-    const sugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
+async function renderizarPortalMural() {
+    const sugestoes = await buscarDadosNuvem('gre_sugestoes') || [];
     const container = document.getElementById('mural-container');
     if (!container) return;
 
@@ -230,8 +237,8 @@ function renderizarPortalMural() {
     container.innerHTML = html;
 }
 
-function renderizarPortalTransparencia() {
-    const docs = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
+async function renderizarPortalTransparencia() {
+    const docs = await buscarDadosNuvem('gre_transparencia') || [];
     const container = document.getElementById('transparencia-container');
     if (!container) return;
 
@@ -255,8 +262,8 @@ function renderizarPortalTransparencia() {
     container.innerHTML = html;
 }
 
-function baixarDocumentoTransparencia(index) {
-    const docs = JSON.parse(localStorage.getItem('gre_transparencia')) || [];
+async function baixarDocumentoTransparencia(index) {
+    const docs = await buscarDadosNuvem('gre_transparencia') || [];
     const doc = docs[index];
     
     if (doc && doc.arquivo) {
@@ -267,12 +274,12 @@ function baixarDocumentoTransparencia(index) {
         linkBaixar.click();
         document.body.removeChild(linkBaixar);
     } else {
-        alert('Este é um documento padrão de teste e não possui um arquivo real anexado.');
+        alert('Este documento não possui um arquivo real anexado.');
     }
 }
 
-function renderizarPortalRodape() {
-    const dados = JSON.parse(localStorage.getItem('gre_rodape'));
+async function renderizarPortalRodape() {
+    const dados = await buscarDadosNuvem('gre_rodape');
     if (!dados) return;
 
     const descEl = document.getElementById('footer-descricao');
@@ -280,9 +287,7 @@ function renderizarPortalRodape() {
 
     const sociaisContainer = document.getElementById('footer-sociais');
     if(sociaisContainer) {
-        sociaisContainer.innerHTML = `
-            <a href="${dados.instagram}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-        `;
+        sociaisContainer.innerHTML = `<a href="${dados.instagram}" target="_blank"><i class="fa-brands fa-instagram"></i></a>`;
     }
 
     const contatoContainer = document.getElementById('footer-contato');
@@ -299,7 +304,7 @@ function configurarFormularioEstudante() {
     const form = document.getElementById('student-sugestao-form');
     if (!form) return;
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const autorInput = document.getElementById('student-nome').value.trim();
@@ -312,23 +317,13 @@ function configurarFormularioEstudante() {
             status: "Pendente"
         };
 
-        let bancoSugestoes = JSON.parse(localStorage.getItem('gre_sugestoes')) || [];
+        let bancoSugestoes = await buscarDadosNuvem('gre_sugestoes') || [];
         bancoSugestoes.push(novaSugestao);
-        localStorage.setItem('gre_sugestoes', JSON.stringify(bancoSugestoes));
+        await salvarDadosNuvem('gre_sugestoes', bancoSugestoes);
 
-        alert("Obrigado! Sua sugestão foi encaminhada com sucesso para análise da diretoria do Grêmio.");
+        alert("Obrigado! Sua mensagem foi enviada para aprovação da diretoria.");
         form.reset();
     });
-}
-
-function focarFormulario(tipo) {
-    const select = document.getElementById('student-tipo');
-    const textarea = document.getElementById('student-msg');
-    if(select && textarea) {
-        select.value = tipo === 'Enquete' ? 'Sugestão' : tipo;
-        textarea.focus();
-        textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
 }
 
 function configurarRolagemSuave() {
@@ -337,16 +332,8 @@ function configurarRolagemSuave() {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - 80,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
             }
         });
     });
 }
-
-// Verifica se há atualizações a cada 10 segundos
-setInterval(() => {
-  carregarDadosAtualizados();
-}, 10000); 
