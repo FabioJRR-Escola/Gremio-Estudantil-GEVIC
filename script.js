@@ -345,3 +345,8 @@ function configurarRolagemSuave() {
         });
     });
 }
+
+// Verifica se há atualizações a cada 10 segundos
+setInterval(() => {
+  carregarDadosAtualizados();
+}, 10000); 
