@@ -9,7 +9,9 @@ if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await renderizarTodasAsListasAdmin();
+    // Liga a sincronização contínua das listas no painel admin
+    ativarOuvinteTempoRealAdmin();
+    
     configurarFormularios();
     await carregarDadosRodapeForm();
 });
@@ -19,6 +21,23 @@ function fazerLogout() {
         sessionStorage.removeItem('gre_admin_logado');
         window.location.href = 'login.html';
     }
+}
+
+// OUVINTE TEMPO REAL DO PAINEL ADMIN
+function activarOuvinteTempoRealAdmin() {
+    const fonteEventos = new EventSource(`${BANCO_NUVEM_URL}/.json`);
+    
+    fonteEventos.addEventListener('put', async (evento) => {
+        const dados = JSON.parse(evento.data);
+        const caminho = dados.path;
+        
+        if (caminho === '/' || caminho === '/gre_sugestoes') await renderizarSugestoesAdmin();
+        if (caminho === '/' || caminho === '/gre_noticias') await renderizarListaGenericaAdmin('gre_noticias', 'lista-noticias-admin', (item) => item.titulo);
+        if (caminho === '/' || caminho === '/gre_agenda') await renderizarListaGenericaAdmin('gre_agenda', 'lista-agenda-admin', (item) => `${item.data} - ${item.titulo}`);
+        if (caminho === '/' || caminho === '/gre_projetos') await renderizarListaGenericaAdmin('gre_projetos', 'lista-projetos-admin', (item) => `${item.icone} ${item.titulo}`);
+        if (caminho === '/' || caminho === '/gre_membros') await renderizarListaGenericaAdmin('gre_membros', 'lista-membros-admin', (item) => `${item.nome} (${item.cargo})`);
+        if (caminho === '/' || caminho === '/gre_transparencia') await renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', (item) => item.titulo);
+    });
 }
 
 // FUNÇÕES DE COMUNICAÇÃO HTTP COM FIREBASE
@@ -42,15 +61,6 @@ async function salvarDadosNuvem(chave, dados) {
     } catch (erro) {
         console.error(`Erro ao salvar ${chave}:`, erro);
     }
-}
-
-async function renderizarTodasAsListasAdmin() {
-    await renderizarSugestoesAdmin();
-    await renderizarListaGenericaAdmin('gre_noticias', 'lista-noticias-admin', (item) => item.titulo);
-    await renderizarListaGenericaAdmin('gre_agenda', 'lista-agenda-admin', (item) => `${item.data} - ${item.titulo}`);
-    await renderizarListaGenericaAdmin('gre_projetos', 'lista-projetos-admin', (item) => `${item.icone} ${item.titulo}`);
-    await renderizarListaGenericaAdmin('gre_membros', 'lista-membros-admin', (item) => `${item.nome} (${item.cargo})`);
-    await renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', (item) => item.titulo);
 }
 
 async function renderizarListaGenericaAdmin(chaveBanco, idContainer, funcaoTexto) {
@@ -85,7 +95,6 @@ async function excluirItemPublicado(chaveBanco, index) {
         let itens = await buscarDadosNuvem(chaveBanco) || [];
         itens.splice(index, 1);
         await salvarDadosNuvem(chaveBanco, itens);
-        await renderizarTodasAsListasAdmin();
     }
 }
 
@@ -124,14 +133,13 @@ async function moderarMensagem(index, acao) {
     
     if (acao === 'Aprovado') {
         sugestoes[index].status = 'Aprovado';
-        alert("Mensagem aprovada e enviada ao Mural do estudante!");
+        alert("Mensagem aprovada e enviada ao Mural!");
     } else {
         sugestoes.splice(index, 1);
-        alert("Mensagem recusada com sucesso.");
+        alert("Mensagem recusada.");
     }
 
     await salvarDadosNuvem('gre_sugestoes', sugestoes);
-    await renderizarTodasAsListasAdmin();
 }
 
 async function carregarDadosRodapeForm() {
@@ -169,7 +177,6 @@ function configurarFormularios() {
             await salvarDadosNuvem('gre_noticias', dados);
             alert("Notícia publicada na nuvem!");
             this.reset();
-            await renderizarTodasAsListasAdmin();
         };
 
         if (fotoInput.files && fotoInput.files[0]) {
@@ -194,7 +201,6 @@ function configurarFormularios() {
 
         alert("Evento adicionado à agenda global!");
         this.reset();
-        await renderizarTodasAsListasAdmin();
     });
 
     // Form Projetos
@@ -210,7 +216,6 @@ function configurarFormularios() {
 
         alert("Novo projeto cadastrado na nuvem!");
         this.reset();
-        await renderizarTodasAsListasAdmin();
     });
 
     // Form Integrantes Diretoria
@@ -228,7 +233,6 @@ function configurarFormularios() {
 
             alert("Novo integrante salvo globalmente!");
             this.reset();
-            await renderizarTodasAsListasAdmin();
         };
 
         if (fotoInput.files && fotoInput.files[0]) {
@@ -294,7 +298,6 @@ function configurarFormularios() {
 
             alert("Documento de transparência publicado na nuvem!");
             this.reset();
-            await renderizarTodasAsListasAdmin();
         };
 
         if (arquivoInput.files && arquivoInput.files[0]) {
