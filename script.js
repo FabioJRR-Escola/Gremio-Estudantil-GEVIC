@@ -4,24 +4,43 @@
 const BANCO_NUVEM_URL = "https://visao-coletiva-default-rtdb.firebaseio.com";
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Inicializa os dados padrão caso a nuvem esteja vazia
+    // Garante que a estrutura padrão existe antes de ligar o ouvinte
     await verificarEInicializarBancoNuvem();
 
-    // Renderiza cada seção trazendo os dados direto da nuvem
-    await renderizarIdentidadeVisual();
-    await renderizarPortalNoticias();
-    await renderizarPortalAgenda();
-    await renderizarPortalProjetos();
-    await renderizarPortalMembros();
-    await renderizarPortalMural();
-    await renderizarPortalTransparencia();
-    await renderizarPortalRodape();
+    // Liga a conexão em tempo real (substitui o carregamento estático inicial)
+    ativarOuvinteTempoReal();
 
     configurarFormularioEstudante();
     configurarRolagemSuave();
 });
 
-// FUNÇÕES AUXILIARES DE CONEXÃO COM A API REST DO FIREBASE
+// ESCUTA A NUVEM EM TEMPO REAL (MÁGICA DA ATUALIZAÇÃO INSTANTÂNEA)
+function ativarOuvinteTempoReal() {
+    // Abre um canal de comunicação contínuo com o Firebase
+    const fonteEventos = new EventSource(`${BANCO_NUVEM_URL}/.json`);
+
+    fonteEventos.addEventListener('put', async (evento) => {
+        const dadosAlterados = JSON.parse(evento.data);
+        const caminho = dadosAlterados.path;
+
+        // O Firebase envia '/' no primeiro carregamento ou quando o banco muda todo.
+        // Se mudar apenas uma tabela específica (ex: /gre_noticias), atualiza só ela instantaneamente.
+        if (caminho === '/' || caminho === '/gre_visual') await renderizarIdentidadeVisual();
+        if (caminho === '/' || caminho === '/gre_noticias') await renderizarPortalNoticias();
+        if (caminho === '/' || caminho === '/gre_agenda') await renderizarPortalAgenda();
+        if (caminho === '/' || caminho === '/gre_projetos') await renderizarPortalProjetos();
+        if (caminho === '/' || caminho === '/gre_membros') await renderizarPortalMembros();
+        if (caminho === '/' || caminho === '/gre_sugestoes') await renderizarPortalMural();
+        if (caminho === '/' || caminho === '/gre_transparencia') await renderizarPortalTransparencia();
+        if (caminho === '/' || caminho === '/gre_rodape') await renderizarPortalRodape();
+    });
+
+    fonteEventos.onerror = (erro) => {
+        console.error("Erro na conexão em tempo real, tentando reconectar...", erro);
+    };
+}
+
+// FUNÇÕES AUXILIARES DE CONEXÃO
 async function buscarDadosNuvem(chave) {
     try {
         const resposta = await fetch(`${BANCO_NUVEM_URL}/${chave}.json`);
