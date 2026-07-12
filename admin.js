@@ -1,20 +1,43 @@
 // =========================================================================
-// CONFIGURAÇÃO DO BANCO DE DADOS NA NUVEM - OFICIAL
+// CONFIGURAÇÃO OFICIAL DO BANCO DE DADOS (FIREBASE SDK)
 // =========================================================================
-const BANCO_NUVEM_URL = "https://visao-coletiva-default-rtdb.firebaseio.com";
+const firebaseConfig = {
+    databaseURL: "https://visao-coletiva-default-rtdb.firebaseio.com"
+};
 
 if (sessionStorage.getItem('gre_admin_logado') !== 'true') {
     alert('Acesso negado! Por favor, faça login primeiro.');
     window.location.href = 'login.html';
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // Liga a sincronização contínua das listas no painel admin
-    ativarOuvinteTempoRealAdmin();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Carrega dados iniciais do rodapé nos inputs apenas uma vez para não atrapalhar a digitação
+    db.ref('gre_rodape').once('value', snapshot => {
+        carregarDadosRodapeForm(snapshot.val());
+    });
+
+    // ESCUTA EM TEMPO REAL COMPLETA PARA PAINEL ADMIN
+    db.ref().on('value', (snapshot) => {
+        const dados = snapshot.val() || {};
+        
+        renderizarSugestoesAdmin(obterLista(dados.gre_sugestoes));
+        renderizarListaGenericaAdmin('gre_noticias', 'lista-noticias-admin', obterLista(dados.gre_noticias), (item) => item.titulo);
+        renderizarListaGenericaAdmin('gre_agenda', 'lista-agenda-admin', obterLista(dados.gre_agenda), (item) => `${item.data} - ${item.titulo}`);
+        renderizarListaGenericaAdmin('gre_projetos', 'lista-projetos-admin', obterLista(dados.gre_projetos), (item) => `${item.icone} ${item.titulo}`);
+        renderizarListaGenericaAdmin('gre_membros', 'lista-membros-admin', obterLista(dados.gre_membros), (item) => `${item.nome} (${item.cargo})`);
+        renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', obterLista(dados.gre_transparencia), (item) => item.titulo);
+    });
     
     configurarFormularios();
-    await carregarDadosRodapeForm();
 });
+
+function obterLista(dados) {
+    if (!dados) return [];
+    return Array.isArray(dados) ? dados : Object.values(dados);
+}
 
 function fazerLogout() {
     if (confirm("Deseja realmente sair da conta administrativa?")) {
@@ -23,51 +46,9 @@ function fazerLogout() {
     }
 }
 
-// OUVINTE TEMPO REAL DO PAINEL ADMIN
-function activarOuvinteTempoRealAdmin() {
-    const fonteEventos = new EventSource(`${BANCO_NUVEM_URL}/.json`);
-    
-    fonteEventos.addEventListener('put', async (evento) => {
-        const dados = JSON.parse(evento.data);
-        const caminho = dados.path;
-        
-        if (caminho === '/' || caminho === '/gre_sugestoes') await renderizarSugestoesAdmin();
-        if (caminho === '/' || caminho === '/gre_noticias') await renderizarListaGenericaAdmin('gre_noticias', 'lista-noticias-admin', (item) => item.titulo);
-        if (caminho === '/' || caminho === '/gre_agenda') await renderizarListaGenericaAdmin('gre_agenda', 'lista-agenda-admin', (item) => `${item.data} - ${item.titulo}`);
-        if (caminho === '/' || caminho === '/gre_projetos') await renderizarListaGenericaAdmin('gre_projetos', 'lista-projetos-admin', (item) => `${item.icone} ${item.titulo}`);
-        if (caminho === '/' || caminho === '/gre_membros') await renderizarListaGenericaAdmin('gre_membros', 'lista-membros-admin', (item) => `${item.nome} (${item.cargo})`);
-        if (caminho === '/' || caminho === '/gre_transparencia') await renderizarListaGenericaAdmin('gre_transparencia', 'lista-transparencia-admin', (item) => item.titulo);
-    });
-}
-
-// FUNÇÕES DE COMUNICAÇÃO HTTP COM FIREBASE
-async function buscarDadosNuvem(chave) {
-    try {
-        const resposta = await fetch(`${BANCO_NUVEM_URL}/${chave}.json`);
-        return await resposta.json();
-    } catch (erro) {
-        console.error(`Erro ao buscar ${chave}:`, erro);
-        return null;
-    }
-}
-
-async function salvarDadosNuvem(chave, dados) {
-    try {
-        await fetch(`${BANCO_NUVEM_URL}/${chave}.json`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
-        });
-    } catch (erro) {
-        console.error(`Erro ao salvar ${chave}:`, erro);
-    }
-}
-
-async function renderizarListaGenericaAdmin(chaveBanco, idContainer, funcaoTexto) {
+function renderizarListaGenericaAdmin(chaveBanco, idContainer, itens, funcaoTexto) {
     const container = document.getElementById(idContainer);
     if (!container) return;
-
-    const itens = await buscarDadosNuvem(chaveBanco) || [];
 
     if (itens.length === 0) {
         container.innerHTML = '<p style="color: var(--texto-claro); font-style: italic; font-size:0.9rem;">Nenhum item publicado.</p>';
@@ -90,19 +71,20 @@ async function renderizarListaGenericaAdmin(chaveBanco, idContainer, funcaoTexto
     container.innerHTML = html;
 }
 
-async function excluirItemPublicado(chaveBanco, index) {
+function excluirItemPublicado(chaveBanco, index) {
     if (confirm("Tem certeza que deseja apagar permanentemente este item do portal?")) {
-        let itens = await buscarDadosNuvem(chaveBanco) || [];
-        itens.splice(index, 1);
-        await salvarDadosNuvem(chaveBanco, itens);
+        db.ref(chaveBanco).once('value').then(snapshot => {
+            let itens = obterLista(snapshot.val());
+            itens.splice(index, 1);
+            return db.ref(chaveBanco).set(itens);
+        }).catch(err => console.error(err));
     }
 }
 
-async function renderizarSugestoesAdmin() {
+function renderizarSugestoesAdmin(sugestoes) {
     const listaContainer = document.getElementById('lista-sugestoes-pendentes');
     if (!listaContainer) return;
 
-    const sugestoes = await buscarDadosNuvem('gre_sugestoes') || [];
     const pendentes = sugestoes.map((s, index) => ({...s, originalIndex: index})).filter(s => s.status === 'Pendente');
 
     if (pendentes.length === 0) {
@@ -128,24 +110,22 @@ async function renderizarSugestoesAdmin() {
     listaContainer.innerHTML = html;
 }
 
-async function moderarMensagem(index, acao) {
-    let sugestoes = await buscarDadosNuvem('gre_sugestoes') || [];
-    
-    if (acao === 'Aprovado') {
-        sugestoes[index].status = 'Aprovado';
-        alert("Mensagem aprovada e enviada ao Mural!");
-    } else {
-        sugestoes.splice(index, 1);
-        alert("Mensagem recusada.");
-    }
-
-    await salvarDadosNuvem('gre_sugestoes', sugestoes);
+function moderarMensagem(index, acao) {
+    db.ref('gre_sugestoes').once('value').then(snapshot => {
+        let sugestoes = obterLista(snapshot.val());
+        if (acao === 'Aprovado') {
+            sugestoes[index].status = 'Aprovado';
+            alert("Mensagem aprovada e enviada ao Mural do estudante!");
+        } else {
+            sugestoes.splice(index, 1);
+            alert("Mensagem recusada.");
+        }
+        return db.ref('gre_sugestoes').set(sugestoes);
+    }).catch(err => console.error(err));
 }
 
-async function carregarDadosRodapeForm() {
-    const rodape = await buscarDadosNuvem('gre_rodape');
+function carregarDadosRodapeForm(rodape) {
     if (!rodape) return;
-
     if(document.getElementById('rodape-descricao')) document.getElementById('rodape-descricao').value = rodape.descricao || '';
     if(document.getElementById('rodape-instagram')) document.getElementById('rodape-instagram').value = rodape.instagram || '';
     if(document.getElementById('rodape-email')) document.getElementById('rodape-email').value = rodape.email || '';
@@ -153,86 +133,100 @@ async function carregarDadosRodapeForm() {
     if(document.getElementById('rodape-atendimento')) document.getElementById('rodape-atendimento').value = rodape.atendimento || '';
 }
 
-async function restaurarIdentidadeVisualPadrao() {
+function restaurarIdentidadeVisualPadrao() {
     if (confirm("Deseja redefinir a identidade visual do portal e voltar ao design padrão?")) {
-        await fetch(`${BANCO_NUVEM_URL}/gre_visual.json`, { method: 'DELETE' });
-        alert("Design padrão restaurado!");
-        window.location.reload();
+        db.ref('gre_visual').remove().then(() => {
+            alert("Design padrão restaurado!");
+            window.location.reload();
+        });
     }
 }
 
 function configurarFormularios() {
     
     // Form Notícias
-    document.getElementById('form-nova-noticia')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-nova-noticia')?.addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = this;
         const titulo = document.getElementById('noticia-titulo').value.trim();
         const texto = document.getElementById('noticia-texto').value.trim();
         const fotoInput = document.getElementById('noticia-foto');
         const dataHoje = new Date().toISOString().split('T')[0];
 
-        const salvar = async (fotoBase64 = "") => {
-            let dados = await buscarDadosNuvem('gre_noticias') || [];
-            dados.unshift({ titulo, texto, data: dataHoje, foto: fotoBase64 });
-            await salvarDadosNuvem('gre_noticias', dados);
-            alert("Notícia publicada na nuvem!");
-            this.reset();
+        const salvar = (fotoBase64 = "") => {
+            db.ref('gre_noticias').once('value').then(snapshot => {
+                let dados = obterLista(snapshot.val());
+                dados.unshift({ titulo, texto, data: dataHoje, foto: fotoBase64 });
+                return db.ref('gre_noticias').set(dados);
+            }).then(() => {
+                alert("Notícia publicada com sincronização rápida!");
+                form.reset();
+            }).catch(err => console.error(err));
         };
 
         if (fotoInput.files && fotoInput.files[0]) {
             const reader = new FileReader();
-            reader.onload = async (ev) => await salvar(ev.target.result);
+            reader.onload = (ev) => salvar(ev.target.result);
             reader.readAsDataURL(fotoInput.files[0]);
         } else {
-            await salvar();
+            salvar();
         }
     });
 
     // Form Agenda
-    document.getElementById('form-nova-agenda')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-nova-agenda')?.addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = this;
         const data = document.getElementById('agenda-data').value;
         const titulo = document.getElementById('agenda-titulo').value.trim();
         const descricao = document.getElementById('agenda-descricao').value.trim();
 
-        let dados = await buscarDadosNuvem('gre_agenda') || [];
-        dados.unshift({ data, titulo, descricao });
-        await salvarDadosNuvem('gre_agenda', dados);
-
-        alert("Evento adicionado à agenda global!");
-        this.reset();
+        db.ref('gre_agenda').once('value').then(snapshot => {
+            let dados = obterLista(snapshot.val());
+            dados.unshift({ data, titulo, descricao });
+            return db.ref('gre_agenda').set(dados);
+        }).then(() => {
+            alert("Evento adicionado à agenda global!");
+            form.reset();
+        }).catch(err => console.error(err));
     });
 
     // Form Projetos
-    document.getElementById('form-novo-projeto')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-novo-projeto')?.addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = this;
         const icone = document.getElementById('projeto-icone').value;
         const titulo = document.getElementById('projeto-titulo').value.trim();
         const descricao = document.getElementById('projeto-descricao').value.trim();
 
-        let dados = await buscarDadosNuvem('gre_projetos') || [];
-        dados.push({ icone, titulo, descricao });
-        await salvarDadosNuvem('gre_projetos', dados);
-
-        alert("Novo projeto cadastrado na nuvem!");
-        this.reset();
+        db.ref('gre_projetos').once('value').then(snapshot => {
+            let dados = obterLista(snapshot.val());
+            dados.push({ icone, titulo, descricao });
+            return db.ref('gre_projetos').set(dados);
+        }).then(() => {
+            alert("Novo projeto cadastrado!");
+            form.reset();
+        }).catch(err => console.error(err));
     });
 
     // Form Integrantes Diretoria
-    document.getElementById('form-novo-membro')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-novo-membro')?.addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = this;
         const nome = document.getElementById('membro-nome').value.trim();
         const cargo = document.getElementById('membro-cargo').value.trim();
         const serie = document.getElementById('membro-serie').value.trim();
         const fotoInput = document.getElementById('membro-foto');
 
-        const salvar = async (fotoBase64 = "") => {
-            let dados = await buscarDadosNuvem('gre_membros') || [];
-            dados.push({ nome, cargo, serie, foto: fotoBase64 });
-            await salvarDadosNuvem('gre_membros', dados);
-
-            alert("Novo integrante salvo globalmente!");
-            this.reset();
+        const salvar = (fotoBase64 = "") => {
+            db.ref('gre_membros').once('value').then(snapshot => {
+                let dados = obterLista(snapshot.val());
+                dados.push({ nome, cargo, serie, foto: fotoBase64 });
+                return db.ref('gre_membros').set(dados);
+            }).then(() => {
+                alert("Novo integrante salvo!");
+                form.reset();
+            }).catch(err => console.error(err));
         };
 
         if (fotoInput.files && fotoInput.files[0]) {
@@ -242,62 +236,69 @@ function configurarFormularios() {
                 return;
             }
             const reader = new FileReader();
-            reader.onload = async (ev) => await salvar(ev.target.result);
+            reader.onload = (ev) => salvar(ev.target.result);
             reader.readAsDataURL(file);
         } else {
-            await salvar();
+            salvar();
         }
     });
 
     // Form Identidade Visual (Logo e Banner)
-    document.getElementById('form-identidade-visual')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-identidade-visual')?.addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = this;
         const logoInput = document.getElementById('visual-logo');
         const bannerInput = document.getElementById('visual-banner');
 
-        let visualAtual = await buscarDadosNuvem('gre_visual') || { logo: "", banner: "" };
+        db.ref('gre_visual').once('value').then(snapshot => {
+            let visualAtual = snapshot.val() || { logo: "", banner: "" };
 
-        const processarLogo = () => {
-            return new Promise((resolve) => {
-                if (logoInput.files && logoInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => { visualAtual.logo = ev.target.result; resolve(); };
-                    reader.readAsDataURL(logoInput.files[0]);
-                } else { resolve(); }
+            const processarLogo = () => {
+                return new Promise((resolve) => {
+                    if (logoInput.files && logoInput.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => { visualAtual.logo = ev.target.result; resolve(); };
+                        reader.readAsDataURL(logoInput.files[0]);
+                    } else { resolve(); }
+                });
+            };
+
+            const processarBanner = () => {
+                return new Promise((resolve) => {
+                    if (bannerInput.files && bannerInput.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => { visualAtual.banner = ev.target.result; resolve(); };
+                        reader.readAsDataURL(bannerInput.files[0]);
+                    } else { resolve(); }
+                });
+            };
+
+            Promise.all([processarLogo(), processarBanner()]).then(() => {
+                db.ref('gre_visual').set(visualAtual).then(() => {
+                    alert("Identidade visual sincronizada instantaneamente!");
+                    form.reset();
+                });
             });
-        };
-
-        const processarBanner = () => {
-            return new Promise((resolve) => {
-                if (bannerInput.files && bannerInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => { visualAtual.banner = ev.target.result; resolve(); };
-                    reader.readAsDataURL(bannerInput.files[0]);
-                } else { resolve(); }
-            });
-        };
-
-        Promise.all([processarLogo(), processarBanner()]).then(async () => {
-            await salvarDadosNuvem('gre_visual', visualAtual);
-            alert("Identidade visual sincronizada na nuvem para todos!");
-            this.reset();
         });
     });
 
     // Form Documentos Transparência
-    document.getElementById('form-nova-transparencia')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-nova-transparencia')?.addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = this;
         const titulo = document.getElementById('trans-titulo').value.trim();
         const descricao = document.getElementById('trans-descricao').value.trim();
         const arquivoInput = document.getElementById('trans-arquivo');
 
-        const salvar = async (arquivoBase64 = "", nomeArquivo = "") => {
-            let dados = await buscarDadosNuvem('gre_transparencia') || [];
-            dados.push({ titulo, descricao, arquivo: arquivoBase64, nomeArquivo });
-            await salvarDadosNuvem('gre_transparencia', dados);
-
-            alert("Documento de transparência publicado na nuvem!");
-            this.reset();
+        const salvar = (arquivoBase64 = "", nomeArquivo = "") => {
+            db.ref('gre_transparencia').once('value').then(snapshot => {
+                let dados = obterLista(snapshot.val());
+                dados.push({ titulo, descricao, arquivo: arquivoBase64, nomeArquivo });
+                return db.ref('gre_transparencia').set(dados);
+            }).then(() => {
+                alert("Documento de transparência publicado!");
+                form.reset();
+            }).catch(err => console.error(err));
         };
 
         if (arquivoInput.files && arquivoInput.files[0]) {
@@ -307,7 +308,7 @@ function configurarFormularios() {
                 return;
             }
             const reader = new FileReader();
-            reader.onload = async (ev) => await salvar(ev.target.result, file.name);
+            reader.onload = (ev) => salvar(ev.target.result, file.name);
             reader.readAsDataURL(file);
         } else {
             alert("Por favor, selecione um arquivo.");
@@ -315,7 +316,7 @@ function configurarFormularios() {
     });
 
     // Form Rodapé e Configurações
-    document.getElementById('form-config-rodape')?.addEventListener('submit', async function(e) {
+    document.getElementById('form-config-rodape')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const novoRodape = {
             descricao: document.getElementById('rodape-descricao').value.trim(),
@@ -325,7 +326,8 @@ function configurarFormularios() {
             atendimento: document.getElementById('rodape-atendimento').value.trim()
         };
 
-        await salvarDadosNuvem('gre_rodape', novoRodape);
-        alert("Configurações do rodapé gravadas na nuvem!");
+        db.ref('gre_rodape').set(novoRodape).then(() => {
+            alert("Configurações do rodapé gravadas em tempo real!");
+        });
     });
 }
