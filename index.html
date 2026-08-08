@@ -54,6 +54,44 @@
         </div>
     </section>
 
+    <!-- ÁREA DE BANNER DE ATUALIZAÇÕES / DESTAQUES -->
+    <section class="banner-carousel-section">
+        <div class="container">
+            <div class="banner-slider">
+                <div class="banner-track" id="banner-track">
+                    <div class="banner-slide active">
+                        <div class="banner-content">
+                            <span class="banner-tag"><i class="fa-solid fa-bullhorn"></i> Novidade</span>
+                            <h3>Reestruturação do Grêmio Visão Coletiva 2026</h3>
+                            <p>Confira a nova composição da diretoria e os projetos voltados para o fortalecimento do movimento estudantil.</p>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <div class="banner-content">
+                            <span class="banner-tag"><i class="fa-solid fa-calendar-check"></i> Evento Próximo</span>
+                            <h3>Dia D de Combate ao Bullying</h3>
+                            <p>Participe das ações de conscientização e mobilização previstas para o mês de abril em nossa instituição.</p>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <div class="banner-content">
+                            <span class="banner-tag"><i class="fa-solid fa-graduation-cap"></i> Utilidade Pública</span>
+                            <h3>Emissão da Carteira de Estudante (DNE)</h3>
+                            <p>Garanta seus direitos à meia-entrada através dos canais oficiais orientados pelo grêmio.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="banner-control prev" id="banner-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="banner-control next" id="banner-next"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="banner-dots" id="banner-dots">
+                    <span class="dot active" data-index="0"></span>
+                    <span class="dot" data-index="1"></span>
+                    <span class="dot" data-index="2"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="institucional" class="section-light">
         <div class="container">
             <h2 class="section-title"><i class="fa-solid fa-bullseye"></i> Sobre a Entidade</h2>
@@ -64,11 +102,17 @@
         </div>
     </section>
 
-    <!-- SEÇÃO: MEMBROS -->
+    <!-- SEÇÃO: MEMBROS (COM CARROSSEL) -->
     <section id="membros" class="section-gray">
         <div class="container">
             <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Nossa Diretoria</h2>
-            <div id="membros-grid" class="members-grid"></div>
+            <div class="members-carousel-wrapper">
+                <button class="carousel-btn prev" id="member-prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="carousel-container">
+                    <div id="membros-grid" class="members-track"></div>
+                </div>
+                <button class="carousel-btn next" id="member-next" aria-label="Próximo"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
         </div>
     </section>
 
@@ -108,7 +152,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. CECM Santos Dumont E.F.M.</p>
+            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva.</p>
         </div>
     </footer>
 
