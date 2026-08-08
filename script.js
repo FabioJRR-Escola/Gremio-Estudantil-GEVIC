@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Menu Mobile (Três Barrinhas)
+    // Menu Mobile (Três Barrinhas no Canto)
     const mobileMenu = document.getElementById('mobile-menu');
     const navList = document.getElementById('nav-list');
     if (mobileMenu && navList) {
@@ -8,14 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
             navList.classList.toggle('active');
         });
 
-        // Fecha o menu ao clicar em qualquer link interno
         navList.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navList.classList.remove('active');
             });
         });
 
-        // Fecha o menu ao clicar fora dele
         document.addEventListener('click', (e) => {
             if (!mobileMenu.contains(e.target) && !navList.contains(e.target)) {
                 navList.classList.remove('active');
@@ -39,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Ferramentas de Acessibilidade (Alto Contraste e Tamanho de Texto)
+    // Ferramentas de Acessibilidade
     let fontSize = 16;
     const btnInc = document.getElementById('btn-increase-text');
     const btnDec = document.getElementById('btn-decrease-text');
@@ -51,8 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNorm) btnNorm.addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
     if (btnCont) btnCont.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
 
-    // Renderização de Dados Dinâmicos (Membros, Notícias e Eventos)
+    // Renderização Dinâmica com Campos Extras e Anexos
     if (document.getElementById('noticias-grid')) {
+        // Membros com bio / opções extras
         const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
         const membrosGrid = document.getElementById('membros-grid');
         if (membrosGrid && membros.length > 0) {
@@ -61,22 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="member-avatar">${m.nome.charAt(0)}</div>
                     <h3>${m.nome}</h3>
                     <p>${m.cargo}</p>
+                    ${m.bio ? `<p class="member-bio">${m.bio}</p>` : ''}
                 </div>
             `).join('');
         }
 
+        // Notícias com anexo/link opcional
         const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
         const noticiasGrid = document.getElementById('noticias-grid');
         if (noticiasGrid && noticias.length > 0) {
             noticiasGrid.innerHTML = noticias.map(n => `
                 <article class="card">
-                    <div class="card-tag">${n.categoria}</div>
-                    <h3>${n.titulo}</h3>
-                    <p>${n.conteudo}</p>
+                    <div>
+                        <div class="card-tag">${n.categoria || 'Geral'}</div>
+                        <h3>${n.titulo}</h3>
+                        ${n.data ? `<div class="card-meta">📅 ${n.data}</div>` : ''}
+                        <p>${n.conteudo}</p>
+                    </div>
+                    ${n.anexo ? `<a href="${n.anexo}" target="_blank" class="btn-attachment">📎 Ver Anexo / Documento</a>` : ''}
                 </article>
             `).join('');
         }
 
+        // Eventos com local, descrição e anexo
         const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
         const eventosList = document.getElementById('eventos-list');
         if (eventosList && eventos.length > 0) {
@@ -87,14 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const mes = isNaN(d.getMonth()) ? 'JAN' : meses[d.getMonth()];
                 return `
                 <div class="event-item">
-                    <div class="event-date">
-                        <span class="day">${dia}</span>
-                        <span class="month">${mes}</span>
+                    <div class="event-main-info">
+                        <div class="event-date">
+                            <span class="day">${dia}</span>
+                            <span class="month">${mes}</span>
+                        </div>
+                        <div class="event-details">
+                            <h3>${e.titulo}</h3>
+                            <p>📍 ${e.local || 'Local a definir'}</p>
+                            ${e.descricao ? `<p>${e.descricao}</p>` : ''}
+                        </div>
                     </div>
-                    <div class="event-details">
-                        <h3>${e.titulo}</h3>
-                        <p>📍 ${e.local}</p>
-                    </div>
+                    ${e.anexo ? `<a href="${e.anexo}" target="_blank" class="btn-attachment">🔗 Link / Anexo</a>` : ''}
                 </div>
             `}).join('');
         }
