@@ -7,7 +7,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="admin-body">
-    <div class="admin-layout">
+
+    <!-- TELA DE LOGIN (Oculta se já estiver logado) -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <h2>🔒 Área Restrita</h2>
+            <p>Faça login para gerenciar o portal</p>
+            <form id="form-login" class="admin-form">
+                <input type="text" id="login-usuario" placeholder="Usuário" required>
+                <input type="password" id="login-senha" placeholder="Senha" required>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+            <p id="login-erro" class="login-error" style="display: none;">Usuário ou senha incorretos!</p>
+            <a href="index.html" class="btn-secondary" style="margin-top: 15px; text-align: center; display: block; width: 100%;">&larr; Voltar ao Site</a>
+        </div>
+    </div>
+
+    <!-- PAINEL ADMINISTRATIVO (Oculto até fazer o login) -->
+    <div id="admin-panel" class="admin-layout" style="display: none;">
         <aside class="admin-sidebar">
             <div class="admin-logo">
                 <h2>⚙️ Painel Admin</h2>
@@ -16,9 +33,12 @@
             <nav class="admin-nav">
                 <button class="admin-tab active" onclick="openTab('tab-noticias')">Notícias</button>
                 <button class="admin-tab" onclick="openTab('tab-eventos')">Agenda/Eventos</button>
-                <button class="admin-tab" onclick="openTab('tab-membros')">Membros da Entidade</button>
+                <button class="admin-tab" onclick="openTab('tab-membros')">Membros</button>
             </nav>
-            <a href="index.html" class="btn-secondary" style="margin: 20px; text-align: center; display: block; border-color: white; color: white;">&larr; Voltar ao Site</a>
+            <div style="padding: 20px;">
+                <a href="index.html" class="btn-secondary" style="margin-bottom: 10px; text-align: center; display: block; border-color: white; color: white;">&larr; Ver Site</a>
+                <button onclick="logoutAdmin()" class="btn-secondary" style="text-align: center; display: block; width: 100%; border-color: #ef4444; color: #ef4444;">Sair</button>
+            </div>
         </aside>
 
         <main class="admin-content">
@@ -36,10 +56,12 @@
                     <textarea id="noticia-conteudo" rows="4" placeholder="Conteúdo da notícia..." required></textarea>
                     <button type="submit" class="btn-primary">Salvar Notícia</button>
                 </form>
-                <table class="admin-table">
-                    <thead><tr><th>Título</th><th>Categoria</th><th>Ações</th></tr></thead>
-                    <tbody id="tabela-noticias"></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Título</th><th>Categoria</th><th>Ações</th></tr></thead>
+                        <tbody id="tabela-noticias"></tbody>
+                    </table>
+                </div>
             </section>
 
             <!-- ABA EVENTOS -->
@@ -52,10 +74,12 @@
                     <input type="text" id="evento-local" placeholder="Local (Ex: Auditório)" required>
                     <button type="submit" class="btn-primary">Salvar Evento</button>
                 </form>
-                <table class="admin-table">
-                    <thead><tr><th>Data</th><th>Evento</th><th>Local</th><th>Ações</th></tr></thead>
-                    <tbody id="tabela-eventos"></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Data</th><th>Evento</th><th>Local</th><th>Ações</th></tr></thead>
+                        <tbody id="tabela-eventos"></tbody>
+                    </table>
+                </div>
             </section>
 
             <!-- ABA MEMBROS -->
@@ -67,10 +91,12 @@
                     <input type="text" id="membro-cargo" placeholder="Cargo (Ex: Presidente)" required>
                     <button type="submit" class="btn-primary">Salvar Membro</button>
                 </form>
-                <table class="admin-table">
-                    <thead><tr><th>Nome</th><th>Cargo</th><th>Ações</th></tr></thead>
-                    <tbody id="tabela-membros"></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Nome</th><th>Cargo</th><th>Ações</th></tr></thead>
+                        <tbody id="tabela-membros"></tbody>
+                    </table>
+                </div>
             </section>
         </main>
     </div>
