@@ -1,50 +1,123 @@
-/* --- VARIÁVEIS DE CORES --- */
+/* --- VARIÁVEIS DE CORES & TIPOGRAFIA (Clean & Profissional) --- */
 :root {
-    --bg-dark: #0f172a;
-    --bg-card: #1e293b;
-    --text-light: #f8fafc;
-    --blue-vibrant: #2563eb;
-    --cyan-bright: #06b6d4;
-    --green-slogan: #84cc16;
+    --bg-white: #ffffff;
+    --bg-light-gray: #f8fafc;
+    --text-main: #334155;
+    --text-dark: #0f172a;
+    --color-primary: #1e3a8a; /* Azul escuro inspirado na logo */
+    --color-accent: #06b6d4; /* Ciano da logo */
+    --color-green: #84cc16; /* Verde do slogan */
+    --border-color: #e2e8f0;
+    --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --base-size: 16px;
 }
 
-/* --- CONFIGURAÇÕES GERAIS --- */
+/* --- VARIÁVEIS DE ALTO CONTRASTE (Acessibilidade) --- */
+body.high-contrast {
+    --bg-white: #000000;
+    --bg-light-gray: #1a1a1a;
+    --text-main: #ffffff;
+    --text-dark: #ffff00;
+    --color-primary: #000000;
+    --color-accent: #ffff00;
+    --color-green: #ffff00;
+    --border-color: #ffffff;
+}
+
+body.high-contrast .btn-primary, body.high-contrast .btn-secondary {
+    background-color: #ffff00;
+    color: #000000;
+    border: 2px solid #ffff00;
+}
+
+body.high-contrast header {
+    background-color: #000000;
+    border-bottom: 2px solid #ffff00;
+}
+
+body.high-contrast .accessibility-bar {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+/* --- RESET & GERAL --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-light);
-    line-height: 1.6;
+    font-family: var(--font-base);
+    font-size: var(--base-size);
+    color: var(--text-main);
+    background-color: var(--bg-white);
+    line-height: 1.7;
+    transition: all 0.3s ease;
 }
 
 a {
     text-decoration: none;
-    color: var(--text-light);
     transition: color 0.3s ease;
 }
 
-a:hover {
-    color: var(--cyan-bright);
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5%;
 }
 
-/* --- CABEÇALHO (HEADER) E NAVEGAÇÃO --- */
+/* --- ACESSIBILIDADE --- */
+.accessibility-bar {
+    background-color: var(--bg-light-gray);
+    border-bottom: 1px solid var(--border-color);
+    padding: 5px 0;
+    font-size: 0.85rem;
+    position: relative;
+    z-index: 1001;
+}
+
+.acc-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.accessibility-bar button {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 3px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-main);
+    border-radius: 4px;
+}
+
+.accessibility-bar button:hover {
+    background-color: var(--border-color);
+}
+
+/* --- HEADER --- */
 header {
-    background-color: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(5px);
-    position: fixed;
-    width: 100%;
+    background-color: var(--bg-white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 2px solid var(--blue-vibrant);
+    padding: 15px 0;
+}
+
+.header-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 5%;
 }
 
 .logo-container {
@@ -54,249 +127,310 @@ header {
 }
 
 .logo-container img {
-    width: 60px;
+    width: 55px;
     height: auto;
 }
 
 .logo-text h1 {
-    font-size: 1.2rem;
-    color: var(--cyan-bright);
+    font-size: 1.3rem;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .logo-text p {
-    font-size: 0.8rem;
-    color: var(--text-light);
+    font-size: 0.75rem;
+    color: var(--text-main);
+    font-weight: 600;
 }
 
 nav ul {
     list-style: none;
     display: flex;
-    gap: 20px;
+    gap: 25px;
 }
 
 nav ul li a {
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.95rem;
     text-transform: uppercase;
-    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+nav ul li a:hover {
+    color: var(--color-accent);
 }
 
 .menu-toggle {
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    color: var(--cyan-bright);
+    color: var(--color-primary);
+}
+
+/* --- BOTÕES --- */
+.btn-primary, .btn-secondary {
+    display: inline-block;
+    padding: 12px 28px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: 2px solid var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--color-primary);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: #ffffff;
 }
 
 /* --- SEÇÕES GERAIS --- */
 section {
-    padding: 100px 5% 60px;
-    min-height: 100vh;
+    padding: 80px 0;
+}
+
+.section-light {
+    background-color: var(--bg-white);
+}
+
+.section-gray {
+    background-color: var(--bg-light-gray);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .section-title {
-    text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
+    color: var(--text-dark);
     margin-bottom: 40px;
-    color: var(--cyan-bright);
-    text-transform: uppercase;
-    border-bottom: 3px solid var(--green-slogan);
-    display: inline-block;
+    position: relative;
     padding-bottom: 10px;
 }
 
-.center-title {
-    text-align: center;
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-accent);
 }
 
-/* --- HOME --- */
-#home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.center-text {
+    margin-bottom: 30px;
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
     text-align: center;
-    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    padding: 100px 5%;
+    background-color: var(--bg-white);
+    display: flex;
+    justify-content: center;
+}
+
+.hero-content {
+    max-width: 800px;
 }
 
 .slogan-img {
-    max-width: 80%;
+    max-width: 90%;
     height: auto;
     margin-bottom: 30px;
-    filter: drop-shadow(0px 0px 15px rgba(6, 182, 212, 0.4));
-    animation: float 3s ease-in-out infinite;
 }
 
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+.hero-description {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    margin-bottom: 40px;
+    font-weight: 400;
 }
 
-.home-description {
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-    max-width: 600px;
-}
-
-.cta-button {
-    background-color: var(--blue-vibrant);
-    color: white;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 30px;
-    border: 2px solid var(--blue-vibrant);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
-}
-
-.cta-button:hover {
-    background-color: transparent;
-    color: var(--cyan-bright);
-    border-color: var(--cyan-bright);
-}
-
-/* --- QUEM SOMOS --- */
-#quem-somos {
-    background-color: var(--bg-card);
-}
-
-.about-content {
-    max-width: 800px;
-    margin: 0 auto;
+/* --- INSTITUCIONAL --- */
+.text-content {
+    column-count: 2;
+    column-gap: 40px;
     text-align: justify;
-    font-size: 1.1rem;
 }
 
-.about-content p {
-    margin-bottom: 20px;
+@media (max-width: 768px) {
+    .text-content {
+        column-count: 1;
+    }
 }
 
-/* --- NOTÍCIAS (MURAL) --- */
-.cards-grid {
+/* --- MURAL (CARDS) --- */
+.grid-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
 }
 
 .card {
-    background-color: var(--bg-card);
-    border-radius: 10px;
-    padding: 20px;
-    border-top: 4px solid var(--green-slogan);
-    transition: transform 0.3s ease;
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+.card-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.tag-blue { background-color: #e0f2fe; color: #0284c7; }
+.tag-green { background-color: #dcfce7; color: #16a34a; }
+.tag-cyan { background-color: #cffafe; color: #0891b2; }
+
 .card h3 {
-    color: var(--cyan-bright);
-    margin-bottom: 10px;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
 }
 
 .card-link {
     display: inline-block;
-    margin-top: 15px;
-    color: var(--blue-vibrant);
+    margin-top: 20px;
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* --- SERVIÇOS (CARTEIRINHA) --- */
+.service-box {
+    background-color: var(--bg-white);
+    border-left: 6px solid var(--color-green);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.service-box h3 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.steps-list {
+    list-style: none;
+    margin: 25px 0;
+}
+
+.steps-list li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.steps-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
     font-weight: bold;
 }
 
-/* --- SERVIÇOS (ESPAÇO DO ESTUDANTE) --- */
-#servicos {
-    background-color: var(--bg-card);
+/* --- FORMULÁRIO --- */
+.institutional-form {
+    max-width: 700px;
+    background-color: var(--bg-white);
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.services-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 600px;
-    margin: 0 auto;
+.form-group {
+    margin-bottom: 20px;
 }
 
-.service-item {
-    background-color: var(--bg-dark);
-    padding: 20px;
-    border-left: 5px solid var(--blue-vibrant);
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
 }
 
-.service-desc {
-    font-size: 0.9rem;
-    color: #94a3b8;
-    margin-top: 5px;
-}
-
-.service-btn {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-}
-
-/* --- CONTATO --- */
-.contact-desc {
-    margin-bottom: 30px;
-}
-
-.contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.contact-form input, .contact-form textarea {
+.form-group input, .form-group select, .form-group textarea {
     width: 100%;
-    padding: 15px;
-    border: 1px solid #334155;
-    background-color: var(--bg-card);
-    color: white;
-    border-radius: 5px;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-family: inherit;
     font-size: 1rem;
+    background-color: var(--bg-white);
+    color: var(--text-main);
 }
 
-.contact-form input:focus, .contact-form textarea:focus {
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     outline: none;
-    border-color: var(--cyan-bright);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 
-/* --- RODAPÉ --- */
+/* --- FOOTER --- */
 footer {
-    background-color: #020617;
+    background-color: var(--text-dark);
+    color: #ffffff;
     text-align: center;
-    padding: 20px;
-    border-top: 1px solid #334155;
+    padding: 30px 0;
     font-size: 0.9rem;
 }
 
-/* --- RESPONSIVIDADE (CELULARES) --- */
+.footer-sub {
+    color: var(--color-accent);
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-    }
+    .menu-toggle { display: block; }
     nav ul {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 70px;
+        top: 100%;
         left: 0;
         width: 100%;
-        background-color: rgba(15, 23, 42, 0.98);
-        text-align: center;
-        padding: 20px 0;
-        border-bottom: 2px solid var(--blue-vibrant);
+        background-color: var(--bg-white);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        padding: 20px 5%;
     }
-    nav ul.active {
-        display: flex;
-    }
-    .slogan-img {
-        max-width: 100%;
-    }
+    nav ul.active { display: flex; }
+    nav ul li a { display: block; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+    .hero-section { padding: 60px 5%; }
+    .service-box { padding: 20px; }
 }
