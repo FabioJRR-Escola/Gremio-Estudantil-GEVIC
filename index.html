@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- BARRA DE ACESSIBILIDADE -->
+    <!-- BARRA DE ACESSIBILIDADE E LINK ADMIN -->
     <div class="accessibility-bar">
         <div class="acc-container">
             <span>Acessibilidade:</span>
@@ -16,6 +15,8 @@
             <button id="btn-normal-text" title="Tamanho normal">A</button>
             <button id="btn-increase-text" title="Aumentar texto">A+</button>
             <button id="btn-contrast" title="Alto Contraste">◐ Contraste</button>
+            <span style="margin: 0 15px; color: #cbd5e1;">|</span>
+            <a href="admin.html" class="admin-link">⚙️ Área Restrita</a>
         </div>
     </div>
 
@@ -34,123 +35,77 @@
                 <ul id="nav-list">
                     <li><a href="#home">Início</a></li>
                     <li><a href="#institucional">Institucional</a></li>
-                    <li><a href="#mural">Mural</a></li>
+                    <li><a href="#membros">Diretoria</a></li>
+                    <li><a href="#noticias">Notícias</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
                     <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#contato">Ouvidoria</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- SEÇÃO 1: INÍCIO (HERO SECTION) -->
     <section id="home" class="hero-section">
         <div class="hero-content">
             <img src="1000092994_2.png" alt="A visão de um se fortalece na coletividade" class="slogan-img">
-            <p class="hero-description">
-                O portal oficial de comunicação institucional, transparência e defesa dos direitos dos estudantes do CECM Santos Dumont E.F.M.
-            </p>
-            <a href="#mural" class="btn-primary">Acompanhar Ações</a>
+            <p class="hero-description">O portal oficial de comunicação institucional, transparência e defesa dos direitos dos estudantes do CECM Santos Dumont E.F.M.</p>
         </div>
     </section>
 
-    <!-- SEÇÃO 2: INSTITUCIONAL -->
     <section id="institucional" class="section-light">
         <div class="container">
             <h2 class="section-title">Sobre a Entidade</h2>
             <div class="text-content">
-                <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> atua como a voz legítima do corpo discente do CECM Santos Dumont. Nossa estrutura é desenhada para promover o debate qualificado, a formulação de políticas internas e a representação ativa dos estudantes perante a direção e instâncias governamentais.</p>
-                <p>Guiados pela premissa de que a coletividade fortalece o indivíduo, trabalhamos focados na transparência administrativa, na criação de projetos de impacto social e no aprimoramento contínuo do ambiente acadêmico.</p>
+                <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> atua como a voz legítima do corpo discente. Nossa estrutura é desenhada para promover o debate qualificado, a formulação de políticas internas e a representação ativa dos estudantes.</p>
+                <p>Guiados pela premissa de que a coletividade fortalece o indivíduo, trabalhamos focados na transparência administrativa, na criação de projetos de impacto e no aprimoramento contínuo do ambiente acadêmico.</p>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO 3: MURAL DE AÇÕES -->
-    <section id="mural" class="section-gray">
+    <!-- NOVA SEÇÃO: MEMBROS (Gerada pelo JS) -->
+    <section id="membros" class="section-gray">
         <div class="container">
-            <h2 class="section-title">Ações e Comunicados</h2>
-            <div class="grid-cards">
-                <article class="card">
-                    <div class="card-tag tag-blue">Comunicado Oficial</div>
-                    <h3>Reestruturação da Diretoria</h3>
-                    <p>A partir desta presente data, o Grêmio Estudantil Visão Coletiva anuncia a reestruturação em sua composição de membros para otimizar o atendimento aos estudantes.</p>
-                    <a href="#" class="card-link">Ler documento na íntegra &rarr;</a>
-                </article>
-                <article class="card">
-                    <div class="card-tag tag-green">Campanha</div>
-                    <h3>Dia D de Combate ao Bullying</h3>
-                    <p>No dia 07 de abril, promoveremos ações de conscientização em toda a escola. Construir um debate saudável e um ambiente seguro é responsabilidade de todos.</p>
-                    <a href="#" class="card-link">Ver cronograma &rarr;</a>
-                </article>
-                <article class="card">
-                    <div class="card-tag tag-cyan">Representação</div>
-                    <h3>Agenda de Projetos Externos</h3>
-                    <p>Acompanhe o andamento das propostas elaboradas pela nossa gestão para parcerias com o poder público estadual e melhorias na infraestrutura escolar.</p>
-                    <a href="#" class="card-link">Acompanhar pautas &rarr;</a>
-                </article>
-            </div>
+            <h2 class="section-title">Nossa Diretoria</h2>
+            <div id="membros-grid" class="members-grid"></div>
         </div>
     </section>
 
-    <!-- SEÇÃO 4: SERVIÇOS (CARTEIRINHA) -->
+    <!-- SEÇÃO: NOTÍCIAS (Gerada pelo JS) -->
+    <section id="noticias" class="section-light">
+        <div class="container">
+            <h2 class="section-title">Mural de Notícias</h2>
+            <div id="noticias-grid" class="grid-cards"></div>
+        </div>
+    </section>
+
+    <!-- NOVA SEÇÃO: EVENTOS E CALENDÁRIO (Gerada pelo JS) -->
+    <section id="agenda" class="section-gray">
+        <div class="container">
+            <h2 class="section-title">Agenda e Eventos</h2>
+            <div id="eventos-list" class="events-list"></div>
+        </div>
+    </section>
+
     <section id="servicos" class="section-light">
         <div class="container">
             <h2 class="section-title">Documento do Estudante (DNE)</h2>
             <div class="service-box">
                 <div class="service-info">
                     <h3>Como emitir sua Carteira de Identificação Estudantil</h3>
-                    <p>A carteirinha garante o direito à meia-entrada em eventos culturais, esportivos e de lazer, conforme a Lei Federal. O Grêmio orienta que a emissão seja feita exclusivamente pelos canais oficiais.</p>
-                    
+                    <p>A carteirinha garante o direito à meia-entrada. O Grêmio orienta que a emissão seja feita exclusivamente pelos canais oficiais.</p>
                     <ul class="steps-list">
-                        <li><strong>Passo 1:</strong> Tenha em mãos seu RG, CPF e uma declaração de matrícula atualizada (solicite na secretaria).</li>
-                        <li><strong>Passo 2:</strong> Acesse o portal oficial da entidade nacional (UBES) ou instituição emissora autorizada através do botão abaixo.</li>
-                        <li><strong>Passo 3:</strong> Preencha o formulário online, anexe os documentos e efetue o pagamento da taxa de emissão.</li>
-                        <li><strong>Passo 4:</strong> Acompanhe o status pelo site oficial até a entrega do documento físico na sua residência.</li>
+                        <li><strong>Passo 1:</strong> Tenha em mãos RG, CPF e declaração de matrícula.</li>
+                        <li><strong>Passo 2:</strong> Acesse o portal oficial através do botão abaixo.</li>
+                        <li><strong>Passo 3:</strong> Preencha o formulário online e pague a taxa.</li>
                     </ul>
-                    
-                    <a href="https://www.documentodoestudante.com.br/" target="_blank" rel="noopener noreferrer" class="btn-secondary">Acessar Portal Oficial de Emissão</a>
+                    <a href="https://www.documentodoestudante.com.br/" target="_blank" class="btn-secondary">Acessar Portal Oficial</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO 5: OUVIDORIA / CONTATO -->
-    <section id="contato" class="section-gray">
-        <div class="container">
-            <h2 class="section-title">Ouvidoria</h2>
-            <p class="center-text">Utilize este canal oficial para encaminhar requisições, propostas de projetos ou relatar ocorrências na instituição.</p>
-            
-            <form class="institutional-form">
-                <div class="form-group">
-                    <label for="nome">Nome Completo (Opcional)</label>
-                    <input type="text" id="nome" placeholder="Para denúncias anônimas, deixe em branco">
-                </div>
-                <div class="form-group">
-                    <label for="turma">Série / Turma</label>
-                    <input type="text" id="turma" placeholder="Ex: 2º Ano A">
-                </div>
-                <div class="form-group">
-                    <label for="assunto">Assunto</label>
-                    <select id="assunto">
-                        <option>Proposta de Projeto</option>
-                        <option>Reclamação/Denúncia</option>
-                        <option>Dúvida sobre Serviços</option>
-                        <option>Outros</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="mensagem">Mensagem</label>
-                    <textarea id="mensagem" rows="6" placeholder="Descreva sua solicitação com clareza..."></textarea>
-                </div>
-                <button type="submit" class="btn-primary">Protocolar Mensagem</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- RODAPÉ -->
     <footer>
         <div class="container">
             <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. CECM Santos Dumont E.F.M.</p>
-            <p class="footer-sub">A visão de um se fortalece na coletividade.</p>
         </div>
     </footer>
 
