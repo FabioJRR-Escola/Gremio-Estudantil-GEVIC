@@ -3,327 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grêmio Estudantil Visão Coletiva | CECM Santos Dumont</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>Grêmio Estudantil Visão Coletiva | CECM Santos Dumont E.F.M</title>
+    <!-- Aqui chamamos o arquivo CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Cabeçalho -->
-    <header class="header">
-        <div class="container nav-container">
-            <a href="#home" class="logo">
-                <div class="logo-text">
-                    <span class="brand-title">VISÃO <span>COLETIVA</span></span>
-                    <span class="brand-sub">CECM Santos Dumont E.F.M</span>
-                </div>
-            </a>
-            <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
-                <span class="hamburger"></span>
-            </button>
-            <nav class="nav-menu" id="navMenu">
-                <ul>
-                    <li><a href="#home" class="nav-link">Início</a></li>
-                    <li><a href="#quem-somos" class="nav-link">Quem Somos</a></li>
-                    <li><a href="#noticias" class="nav-link">Notícias</a></li>
-                    <li><a href="#agenda" class="nav-link">Agenda</a></li>
-                    <li><a href="#carteirinha" class="nav-link highlight">Carteirinha UBES</a></li>
-                    <li><a href="#transparencia" class="nav-link">Transparência</a></li>
-                    <li><a href="#ouvidoria" class="nav-link">Ouvidoria</a></li>
-                </ul>
-            </nav>
+    <!-- CABEÇALHO -->
+    <header>
+        <div class="logo-container">
+            <img src="1000103178.png" alt="Logo Grêmio Visão Coletiva">
+            <div class="logo-text">
+                <h1>Visão Coletiva</h1>
+                <p>CECM Santos Dumont</p>
+            </div>
         </div>
+        <div class="menu-toggle" id="mobile-menu">☰</div>
+        <nav>
+            <ul id="nav-list">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#quem-somos">Quem Somos</a></li>
+                <li><a href="#noticias">Mural</a></li>
+                <li><a href="#servicos">Estudante</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main>
-        <!-- Hero / Início -->
-        <section id="home" class="hero-section">
-            <div class="container hero-content">
-                <span class="hero-tag">Grêmio Estudantil Visão Coletiva</span>
-                <h1 class="slogan-title">A visão de um se fortalece na <span>coletividade</span></h1>
-                <p>Portal oficial de informação, participação e transparência dos estudantes do Colégio Estadual Cívico-Militar Santos Dumont.</p>
-                <div class="hero-buttons">
-                    <a href="#carteirinha" class="btn btn-primary">Como Pedir a Carteirinha UBES</a>
-                    <a href="#ouvidoria" class="btn btn-secondary">Enviar Sugestão / Denúncia</a>
-                </div>
+    <!-- SEÇÃO 1: INÍCIO -->
+    <section id="home">
+        <img src="1000092994.png" alt="A visão de um se fortalece na coletividade" class="slogan-img">
+        <p class="home-description">
+            O portal oficial de comunicação, lutas e conquistas dos estudantes do CECM Santos Dumont E.F.M.
+        </p>
+        <a href="#noticias"><button class="cta-button">Ver Últimas Notícias</button></a>
+    </section>
+
+    <!-- SEÇÃO 2: QUEM SOMOS -->
+    <section id="quem-somos">
+        <div class="center-title">
+            <h2 class="section-title">Nossa Entidade</h2>
+        </div>
+        <div class="about-content">
+            <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> é a representação máxima dos estudantes do CECM Santos Dumont. Acreditamos que a educação transforma realidades e que a voz do aluno deve ser ouvida e respeitada em todas as esferas escolares.</p>
+            <p>Nossa gestão é pautada na transparência, na inclusão e na ação coletiva. Organizamos eventos culturais, campeonatos esportivos e reivindicamos melhorias estruturais e pedagógicas para a nossa escola.</p>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 3: NOTÍCIAS (MURAL) -->
+    <section id="noticias">
+        <div class="center-title">
+            <h2 class="section-title">Mural de Avisos</h2>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>🗓️ Calendário de Provas</h3>
+                <p>Confira as datas oficiais das avaliações do trimestre atualizadas pela direção.</p>
+                <a href="#" class="card-link">Leia mais +</a>
             </div>
-        </section>
-
-        <!-- Mural de Avisos Rápidos -->
-        <section class="notices-section">
-            <div class="container">
-                <h2 class="section-title">Mural de Avisos Rápidos</h2>
-                <div class="notices-grid">
-                    <div class="notice-card warning">
-                        <span class="tag">Importante</span>
-                        <h3>Inscrições Interclasses 2026</h3>
-                        <p>Abertas as inscrições para as equipes de Futsal e Vôlei do CECM Santos Dumont até a próxima sexta-feira.</p>
-                    </div>
-                    <div class="notice-card info">
-                        <span class="tag">Reunião</span>
-                        <h3>Assembleia Geral Estudantil</h3>
-                        <p>Encontro no anfiteatro para discussão de pautas da comunidade escolar e eventos do semestre.</p>
-                    </div>
-                </div>
+            <div class="card">
+                <h3>⚽ Interclasses 2026</h3>
+                <p>As inscrições para os jogos interclasses estão abertas. Monte seu time e procure a Diretoria de Esportes.</p>
+                <a href="#" class="card-link">Leia mais +</a>
             </div>
-        </section>
-
-        <!-- Quem Somos -->
-        <section id="quem-somos" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Quem Somos</h2>
-                <p class="section-subtitle">Conheça a gestão da chapa Visão Coletiva no CECM Santos Dumont E.F.M.</p>
-
-                <div class="about-grid">
-                    <div class="about-card">
-                        <h3>Nossa Missão</h3>
-                        <p>Representar a voz de cada aluno, promovendo união, respeito, incentivo aos estudos, cultura e esporte dentro da nossa escola.</p>
-                    </div>
-                    <div class="about-card">
-                        <h3>Estatuto Social</h3>
-                        <p>Acesse o estatuto do Grêmio Estudantil Visão Coletiva e conheça os direitos e deveres do estudante.</p>
-                        <a href="#" class="link-btn">Baixar Estatuto (PDF) &rarr;</a>
-                    </div>
-                </div>
-
-                <h3 class="subsection-title">Membros da Diretoria</h3>
-                <div class="team-grid">
-                    <div class="team-card">
-                        <div class="avatar-placeholder">P</div>
-                        <h4>Presidência</h4>
-                        <p>Representação Geral</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="avatar-placeholder">VP</div>
-                        <h4>Vice-Presidência</h4>
-                        <p>Coordenação Interna</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="avatar-placeholder">C</div>
-                        <h4>Comunicação</h4>
-                        <p>Mídias e Informativos</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="avatar-placeholder">E</div>
-                        <h4>Esportes e Cultura</h4>
-                        <p>Eventos e Torneios</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Notícias -->
-        <section id="noticias" class="section">
-            <div class="container">
-                <h2 class="section-title">Notícias e Ações</h2>
-                <div class="cards-grid">
-                    <article class="card">
-                        <div class="card-body">
-                            <span class="card-date">05 de Maio, 2026</span>
-                            <h3>Melhorias nos Espaços Comuns da Escola</h3>
-                            <p>O Grêmio dialogou com a direção escolar para revitalização e novas demarcações nas áreas de convivência.</p>
-                        </div>
-                    </article>
-                    <article class="card">
-                        <div class="card-body">
-                            <span class="card-date">28 de Abril, 2026</span>
-                            <h3>Aulões e Preparatório para Exames</h3>
-                            <p>Dicas de estudo e cronograma de revisões em parceria com os professores da instituição.</p>
-                        </div>
-                    </article>
-                    <article class="card">
-                        <div class="card-body">
-                            <span class="card-date">12 de Abril, 2026</span>
-                            <h3>Projetos Culturais e Sociais</h3>
-                            <p>Confira os destaques das apresentações e atividades desenvolvidas pelos alunos neste mês.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- Agenda -->
-        <section id="agenda" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Agenda do Estudante</h2>
-                <div class="events-list">
-                    <div class="event-item">
-                        <div class="event-date">
-                            <span class="day">15</span>
-                            <span class="month">MAI</span>
-                        </div>
-                        <div class="event-info">
-                            <h3>Abertura do Interclasses</h3>
-                            <p>Horário: 08:00 | Local: Quadra da Escola</p>
-                        </div>
-                    </div>
-                    <div class="event-item">
-                        <div class="event-date">
-                            <span class="day">22</span>
-                            <span class="month">MAI</span>
-                        </div>
-                        <div class="event-info">
-                            <h3>Roda de Conversa Estudantil</h3>
-                            <p>Horário: 14:00 | Local: Auditório</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Carteirinha UBES -->
-        <section id="carteirinha" class="section ubes-section">
-            <div class="container">
-                <div class="ubes-box">
-                    <span class="badge">Documento Oficial</span>
-                    <h2>Como Retirar sua Carteirinha do Estudante (UBES)</h2>
-                    <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> orienta os alunos do CECM Santos Dumont na emissão do Documento Nacional do Estudante da <strong>UBES</strong>, garantindo o direito à meia-entrada em eventos em todo o país.</p>
-                    
-                    <div class="steps-grid">
-                        <div class="step-card">
-                            <div class="step-number">1</div>
-                            <h4>Documentação</h4>
-                            <p>Foto 3x4 recente, documento com foto (RG) e Comprovante de Matrícula.</p>
-                        </div>
-                        <div class="step-card">
-                            <div class="step-number">2</div>
-                            <h4>Acesse o Portal UBES</h4>
-                            <p>Clique no botão oficial abaixo para ir ao sistema de solicitação.</p>
-                        </div>
-                        <div class="step-card">
-                            <div class="step-number">3</div>
-                            <h4>Cadastro e Pagamento</h4>
-                            <p>Preencha seus dados, envie as fotos dos documentos e quite a taxa da entidade.</p>
-                        </div>
-                        <div class="step-card">
-                            <div class="step-number">4</div>
-                            <h4>Receba a Carteirinha</h4>
-                            <p>Acompanhe a emissão e utilize a versão digital no app oficial.</p>
-                        </div>
-                    </div>
-
-                    <div class="ubes-cta">
-                        <a href="https://ubes.org.br" target="_blank" rel="noopener noreferrer" class="btn btn-ubes">
-                            Solicitar Carteirinha no Site Oficial da UBES &rarr;
-                        </a>
-                        <small>Você será redirecionado para o portal oficial (ubes.org.br)</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Transparência -->
-        <section id="transparencia" class="section">
-            <div class="container">
-                <h2 class="section-title">Transparência e Prestação de Contas</h2>
-                <p class="section-subtitle">Prestação de contas e relatórios financeiros do Grêmio Visão Coletiva.</p>
-
-                <div class="table-container">
-                    <h3>Balancetes Simplificados</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Mês/Ano</th>
-                                <th>Entradas (R$)</th>
-                                <th>Saídas (R$)</th>
-                                <th>Saldo (R$)</th>
-                                <th>Relatório</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Abril/2026</td>
-                                <td>R$ 450,00</td>
-                                <td>R$ 120,00</td>
-                                <td>R$ 330,00</td>
-                                <td><a href="#">Baixar PDF</a></td>
-                            </tr>
-                            <tr>
-                                <td>Março/2026</td>
-                                <td>R$ 800,00</td>
-                                <td>R$ 650,00</td>
-                                <td>R$ 150,00</td>
-                                <td><a href="#">Baixar PDF</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Ouvidoria -->
-        <section id="ouvidoria" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Ouvidoria Estudantil</h2>
-                <p class="section-subtitle">Sua opinião é fundamental para fortalecermos nossa coletividade.</p>
-
-                <form class="ouvidoria-form" id="ouvidoriaForm">
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" id="anonymousCheck"> Enviar mensagem de forma anônima
-                        </label>
-                    </div>
-
-                    <div class="form-row" id="personalFields">
-                        <div class="form-group">
-                            <label for="nome">Nome Completo</label>
-                            <input type="text" id="nome" placeholder="Seu nome">
-                        </div>
-                        <div class="form-group">
-                            <label for="turma">Turma / Ano</label>
-                            <input type="text" id="turma" placeholder="Ex: 2º Ano A">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="assunto">Assunto *</label>
-                        <select id="assunto" required>
-                            <option value="">Selecione uma opção</option>
-                            <option value="sugestao">Sugestão</option>
-                            <option value="reclamacao">Reclamação/Denúncia</option>
-                            <option value="duvida">Dúvida</option>
-                            <option value="outro">Outro</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mensagem">Sua Mensagem *</label>
-                        <textarea id="mensagem" rows="5" required placeholder="Escreva aqui sua sugestão ou mensagem..."></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
-                    <div id="formStatus" class="form-status"></div>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <!-- Rodapé -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <h3>Grêmio Estudantil Visão Coletiva</h3>
-                <p>CECM Santos Dumont E.F.M</p>
-                <p class="footer-slogan">"A visão de um se fortalece na coletividade"</p>
-            </div>
-            <div class="footer-links">
-                <h4>Navegação</h4>
-                <ul>
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#quem-somos">Quem Somos</a></li>
-                    <li><a href="#carteirinha">Carteirinha UBES</a></li>
-                    <li><a href="#transparencia">Transparência</a></li>
-                    <li><a href="#ouvidoria">Ouvidoria</a></li>
-                </ul>
+            <div class="card">
+                <h3>📢 Reunião Aberta</h3>
+                <p>Convidamos todos os representantes de turma para a assembleia geral nesta sexta-feira no auditório.</p>
+                <a href="#" class="card-link">Leia mais +</a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. Todos os direitos reservados.</p>
+    </section>
+
+    <!-- SEÇÃO 4: SERVIÇOS DO ESTUDANTE -->
+    <section id="servicos">
+        <div class="center-title">
+            <h2 class="section-title">Espaço do Estudante</h2>
         </div>
+        <div class="services-list">
+            <div class="service-item">
+                <div>
+                    <h4>Estatuto do Grêmio</h4>
+                    <p class="service-desc">Conheça as regras que regem nossa entidade.</p>
+                </div>
+                <a href="#"><button class="cta-button service-btn">Baixar PDF</button></a>
+            </div>
+            <div class="service-item">
+                <div>
+                    <h4>Carteira de Estudante</h4>
+                    <p class="service-desc">Saiba como garantir o seu direito à meia-entrada.</p>
+                </div>
+                <a href="#"><button class="cta-button service-btn">Solicitar</button></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 5: CONTATO -->
+    <section id="contato">
+        <div class="center-title">
+            <h2 class="section-title">Fale Conosco</h2>
+        </div>
+        <p class="center-title contact-desc">Tem alguma ideia, denúncia ou sugestão? Deixe sua mensagem!</p>
+        
+        <form class="contact-form">
+            <input type="text" placeholder="Seu Nome (Opcional - deixe em branco para anônimo)">
+            <input type="text" placeholder="Sua Turma">
+            <textarea rows="5" placeholder="Sua mensagem, sugestão ou reclamação..."></textarea>
+            <button type="submit" class="cta-button">Enviar Mensagem</button>
+        </form>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 Grêmio Estudantil Visão Coletiva - CECM Santos Dumont E.F.M. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- Aqui chamamos o arquivo JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
