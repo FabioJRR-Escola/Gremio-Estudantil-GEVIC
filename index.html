@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- BARRA DE ACESSIBILIDADE E LINK ADMIN -->
+    <!-- BARRA DE ACESSIBILIDADE COMPACTA -->
     <div class="accessibility-bar">
         <div class="acc-container">
-            <span>Acessibilidade:</span>
-            <button id="btn-decrease-text" title="Diminuir texto">A-</button>
-            <button id="btn-normal-text" title="Tamanho normal">A</button>
-            <button id="btn-increase-text" title="Aumentar texto">A+</button>
-            <button id="btn-contrast" title="Alto Contraste">◐ Contraste</button>
-            <span style="margin: 0 15px; color: #cbd5e1;">|</span>
-            <a href="admin.html" class="admin-link">⚙️ Área Restrita</a>
+            <div class="accessibility-dropdown-wrapper">
+                <button id="btn-toggle-accessibility" class="acc-main-btn">♿ Acessibilidade</button>
+                <div id="accessibility-menu" class="accessibility-menu">
+                    <button id="btn-decrease-text" title="Diminuir texto">A-</button>
+                    <button id="btn-normal-text" title="Tamanho normal">A</button>
+                    <button id="btn-increase-text" title="Aumentar texto">A+</button>
+                    <button id="btn-contrast" title="Alto Contraste">◐ Contraste</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -25,7 +27,7 @@
         <div class="header-container">
             <div class="logo-container">
                 <img src="gevic.png" alt="Logo Grêmio Visão Coletiva">
-              </div>
+            </div>
             <div class="menu-toggle" id="mobile-menu">☰</div>
             <nav>
                 <ul id="nav-list">
@@ -35,6 +37,7 @@
                     <li><a href="#noticias">Notícias</a></li>
                     <li><a href="#agenda">Agenda</a></li>
                     <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="admin.html" class="admin-nav-link">⚙️ Área Restrita</a></li>
                 </ul>
             </nav>
         </div>
@@ -57,7 +60,7 @@
         </div>
     </section>
 
-    <!-- NOVA SEÇÃO: MEMBROS (Gerada pelo JS) -->
+    <!-- SEÇÃO: MEMBROS (Gerada pelo JS) -->
     <section id="membros" class="section-gray">
         <div class="container">
             <h2 class="section-title">Nossa Diretoria</h2>
@@ -73,7 +76,7 @@
         </div>
     </section>
 
-    <!-- NOVA SEÇÃO: EVENTOS E CALENDÁRIO (Gerada pelo JS) -->
+    <!-- SEÇÃO: EVENTOS E CALENDÁRIO (Gerada pelo JS) -->
     <section id="agenda" class="section-gray">
         <div class="container">
             <h2 class="section-title">Agenda e Eventos</h2>
@@ -101,7 +104,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. CECM Santos Dumont E.F.M.</p>
+            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva.</p>
         </div>
     </footer>
 
