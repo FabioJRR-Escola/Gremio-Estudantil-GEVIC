@@ -4,96 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo | Grêmio Visão Coletiva</title>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
         .admin-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-        .admin-card { background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .admin-card h2 { margin-bottom: 20px; color: var(--color-primary); font-size: 1.4rem; border-bottom: 2px solid var(--color-accent); padding-bottom: 8px; }
+        .admin-card { background: white; border: 1px solid var(--border-color); border-top: 4px solid var(--color-primary); border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 6px 15px rgba(0,0,0,0.04); }
+        .admin-card h2 { margin-bottom: 20px; color: var(--color-primary); font-size: 1.3rem; border-bottom: 2px solid var(--color-secondary); padding-bottom: 8px; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; }
+        .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="password"], .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.95rem; }
+        .form-group input[type="file"] { border: 2px dashed var(--border-color); padding: 12px; width: 100%; border-radius: 6px; background: #f8fafc; cursor: pointer; }
         .form-group textarea { resize: vertical; height: 90px; }
-        .btn-save { background: var(--color-primary); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .btn-save:hover { background: var(--color-accent); }
-        .back-link { display: inline-block; margin-bottom: 20px; font-weight: 600; color: var(--color-primary); }
+        .btn-save { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(79,70,229,0.2); }
+        .btn-save:hover { opacity: 0.9; }
+        .back-link { display: inline-block; margin-bottom: 20px; font-weight: 700; color: var(--color-primary); }
         .item-list { margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; }
-        .item-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 15px; border-radius: 4px; margin-bottom: 8px; border: 1px solid var(--border-color); font-size: 0.9rem; }
-        .btn-del { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--border-color); font-size: 0.9rem; }
+        .btn-del { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+        
+        #login-screen { max-width: 420px; margin: 80px auto; padding: 35px; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; border-top: 5px solid var(--color-primary); }
+        #login-screen h2 { color: var(--color-primary); margin-bottom: 15px; font-size: 1.5rem; font-weight: 800; }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <a href="index.html" class="back-link">← Voltar para o Site Principal</a>
-        <h1>Painel de Controle Administrativo</h1>
-        <p style="margin-bottom: 30px; color: #64748b;">Gerencie os conteúdos, diretoria, agenda e anexos do portal do Grêmio.</p>
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen">
+        <h2><i class="fa-solid fa-lock"></i> Área Restrita</h2>
+        <p style="margin-bottom: 20px; color: #64748b; font-size: 0.9rem;">Insira a senha administrativa para continuar:</p>
+        <input type="password" id="admin-senha" placeholder="Senha de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem;">
+        <button onclick="verificarSenha()" class="btn-save" style="width: 100%;"><i class="fa-solid fa-right-to-bracket"></i> Entrar no Painel</button>
+        <br><br>
+        <a href="index.html" class="back-link" style="font-size: 0.85rem;"><i class="fa-solid fa-arrow-left"></i> Voltar ao site principal</a>
+    </div>
 
-        <!-- GERENCIAR NOTÍCIAS -->
+    <!-- PAINEL ADMINISTRATIVO -->
+    <div id="admin-content" style="display: none;" class="admin-container">
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para o Site Principal</a>
+        <h1><i class="fa-solid fa-gauge-high"></i> Painel de Controle Administrativo</h1>
+        <p style="margin-bottom: 30px; color: #64748b;">Gerencie os conteúdos, diretoria, agenda e imagens direto do seu dispositivo.</p>
+
+        <!-- NOTÍCIAS -->
         <div class="admin-card">
-            <h2>Adicionar Notícia / Comunicado</h2>
+            <h2><i class="fa-solid fa-newspaper"></i> Adicionar Notícia / Comunicado</h2>
             <form id="form-noticia">
                 <div class="form-group"><label>Título:</label><input type="text" id="noticia-titulo" required></div>
                 <div class="form-group"><label>Categoria (Ex: Aviso, Projeto):</label><input type="text" id="noticia-categoria" required></div>
                 <div class="form-group"><label>Data:</label><input type="date" id="noticia-data"></div>
                 <div class="form-group"><label>Conteúdo:</label><textarea id="noticia-conteudo" required></textarea></div>
-                <div class="form-group"><label>Link de Anexo / Documento (Opcional):</label><input type="url" id="noticia-anexo" placeholder="https://exemplo.com/arquivo.pdf"></div>
-                <button type="submit" class="btn-save">Cadastrar Notícia</button>
+                <div class="form-group"><label>Anexar Imagem do Arquivo:</label><input type="file" id="noticia-imagem" accept="image/*"></div>
+                <button type="submit" class="btn-save"><i class="fa-solid fa-plus"></i> Cadastrar Notícia</button>
             </form>
             <div class="item-list" id="lista-noticias"></div>
         </div>
 
-        <!-- GERENCIAR EVENTOS -->
+        <!-- EVENTOS -->
         <div class="admin-card">
-            <h2>Adicionar Evento na Agenda</h2>
+            <h2><i class="fa-solid fa-calendar-days"></i> Adicionar Evento na Agenda</h2>
             <form id="form-evento">
                 <div class="form-group"><label>Título do Evento:</label><input type="text" id="evento-titulo" required></div>
                 <div class="form-group"><label>Data:</label><input type="date" id="evento-data" required></div>
                 <div class="form-group"><label>Local:</label><input type="text" id="evento-local" required></div>
                 <div class="form-group"><label>Descrição Completa:</label><textarea id="evento-descricao"></textarea></div>
-                <div class="form-group"><label>Link de Anexo / Inscrição (Opcional):</label><input type="url" id="evento-anexo" placeholder="https://exemplo.com/inscricao"></div>
-                <button type="submit" class="btn-save">Cadastrar Evento</button>
+                <div class="form-group"><label>Anexar Imagem do Arquivo:</label><input type="file" id="evento-imagem" accept="image/*"></div>
+                <button type="submit" class="btn-save"><i class="fa-solid fa-plus"></i> Cadastrar Evento</button>
             </form>
             <div class="item-list" id="lista-eventos"></div>
         </div>
 
-        <!-- GERENCIAR MEMBROS -->
+        <!-- MEMBROS -->
         <div class="admin-card">
-            <h2>Adicionar Membro da Diretoria</h2>
+            <h2><i class="fa-solid fa-user-tie"></i> Adicionar Membro da Diretoria</h2>
             <form id="form-membro">
                 <div class="form-group"><label>Nome Completo:</label><input type="text" id="membro-nome" required></div>
                 <div class="form-group"><label>Cargo (Ex: Presidente, Tesoureiro):</label><input type="text" id="membro-cargo" required></div>
                 <div class="form-group"><label>Breve Descrição / Bio (Opcional):</label><input type="text" id="membro-bio"></div>
-                <button type="submit" class="btn-save">Cadastrar Membro</button>
+                <div class="form-group"><label>Foto do Membro (Arquivo):</label><input type="file" id="membro-foto" accept="image/*"></div>
+                <button type="submit" class="btn-save"><i class="fa-solid fa-plus"></i> Cadastrar Membro</button>
             </form>
             <div class="item-list" id="lista-membros"></div>
         </div>
     </div>
 
     <script>
+        const SENHA_ADMIN = "gremio2026";
+
+        function verificarSenha() {
+            const senhaDigitada = document.getElementById('admin-senha').value;
+            if (senhaDigitada === SENHA_ADMIN) {
+                sessionStorage.setItem('admin_logado', 'true');
+                liberarPainel();
+            } else {
+                alert('Senha incorreta! Tente novamente.');
+            }
+        }
+
+        function liberarPainel() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            carregarDadosAdmin();
+        }
+
+        if (sessionStorage.getItem('admin_logado') === 'true') {
+            liberarPainel();
+        }
+
         function carregarDadosAdmin() {
-            // Notícias
             const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
             document.getElementById('lista-noticias').innerHTML = noticias.map((n, i) => `
                 <div class="item-row">
                     <span><strong>${n.titulo}</strong> (${n.categoria})</span>
-                    <button class="btn-del" onclick="removerItem('gremio_noticias', ${i})">Excluir</button>
+                    <button class="btn-del" onclick="removerItem('gremio_noticias', ${i})"><i class="fa-solid fa-trash"></i> Excluir</button>
                 </div>
             `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhuma notícia cadastrada.</p>';
 
-            // Eventos
             const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
             document.getElementById('lista-eventos').innerHTML = eventos.map((e, i) => `
                 <div class="item-row">
                     <span><strong>${e.titulo}</strong> - ${e.data}</span>
-                    <button class="btn-del" onclick="removerItem('gremio_eventos', ${i})">Excluir</button>
+                    <button class="btn-del" onclick="removerItem('gremio_eventos', ${i})"><i class="fa-solid fa-trash"></i> Excluir</button>
                 </div>
             `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhum evento cadastrado.</p>';
 
-            // Membros
             const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
             document.getElementById('lista-membros').innerHTML = membros.map((m, i) => `
                 <div class="item-row">
                     <span><strong>${m.nome}</strong> - ${m.cargo}</span>
-                    <button class="btn-del" onclick="removerItem('gremio_membros', ${i})">Excluir</button>
+                    <button class="btn-del" onclick="removerItem('gremio_membros', ${i})"><i class="fa-solid fa-trash"></i> Excluir</button>
                 </div>
             `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhum membro cadastrado.</p>';
         }
@@ -105,53 +142,71 @@
             carregarDadosAdmin();
         }
 
+        function converterArquivoParaBase64(inputID, callback) {
+            const input = document.getElementById(inputID);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    callback(e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                callback('');
+            }
+        }
+
         document.getElementById('form-noticia').addEventListener('submit', (e) => {
             e.preventDefault();
-            const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
-            noticias.push({
-                titulo: document.getElementById('noticia-titulo').value,
-                categoria: document.getElementById('noticia-categoria').value,
-                data: document.getElementById('noticia-data').value,
-                conteudo: document.getElementById('noticia-conteudo').value,
-                anexo: document.getElementById('noticia-anexo').value
+            converterArquivoParaBase64('noticia-imagem', (base64Img) => {
+                const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
+                noticias.push({
+                    titulo: document.getElementById('noticia-titulo').value,
+                    categoria: document.getElementById('noticia-categoria').value,
+                    data: document.getElementById('noticia-data').value,
+                    conteudo: document.getElementById('noticia-conteudo').value,
+                    imagem: base64Img
+                });
+                localStorage.setItem('gremio_noticias', JSON.stringify(noticias));
+                e.target.reset();
+                carregarDadosAdmin();
+                alert('Notícia adicionada com sucesso!');
             });
-            localStorage.setItem('gremio_noticias', JSON.stringify(noticias));
-            e.target.reset();
-            carregarDadosAdmin();
-            alert('Notícia adicionada com sucesso!');
         });
 
         document.getElementById('form-evento').addEventListener('submit', (e) => {
             e.preventDefault();
-            const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
-            eventos.push({
-                titulo: document.getElementById('evento-titulo').value,
-                data: document.getElementById('evento-data').value,
-                local: document.getElementById('evento-local').value,
-                descricao: document.getElementById('evento-descricao').value,
-                anexo: document.getElementById('evento-anexo').value
+            converterArquivoParaBase64('evento-imagem', (base64Img) => {
+                const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
+                eventos.push({
+                    titulo: document.getElementById('evento-titulo').value,
+                    data: document.getElementById('evento-data').value,
+                    local: document.getElementById('evento-local').value,
+                    descricao: document.getElementById('evento-descricao').value,
+                    imagem: base64Img
+                });
+                localStorage.setItem('gremio_eventos', JSON.stringify(eventos));
+                e.target.reset();
+                carregarDadosAdmin();
+                alert('Evento adicionado com sucesso!');
             });
-            localStorage.setItem('gremio_eventos', JSON.stringify(eventos));
-            e.target.reset();
-            carregarDadosAdmin();
-            alert('Evento adicionado com sucesso!');
         });
 
         document.getElementById('form-membro').addEventListener('submit', (e) => {
             e.preventDefault();
-            const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
-            membros.push({
-                nome: document.getElementById('membro-nome').value,
-                cargo: document.getElementById('membro-cargo').value,
-                bio: document.getElementById('membro-bio').value
+            converterArquivoParaBase64('membro-foto', (base64Img) => {
+                const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
+                membros.push({
+                    nome: document.getElementById('membro-nome').value,
+                    cargo: document.getElementById('membro-cargo').value,
+                    bio: document.getElementById('membro-bio').value,
+                    foto: base64Img
+                });
+                localStorage.setItem('gremio_membros', JSON.stringify(membros));
+                e.target.reset();
+                carregarDadosAdmin();
+                alert('Membro adicionado com sucesso!');
             });
-            localStorage.setItem('gremio_membros', JSON.stringify(membros));
-            e.target.reset();
-            carregarDadosAdmin();
-            alert('Membro adicionado com sucesso!');
         });
-
-        carregarDadosAdmin();
     </script>
 </body>
 </html>
