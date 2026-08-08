@@ -11,12 +11,12 @@
     <div class="accessibility-bar">
         <div class="acc-container">
             <div class="accessibility-dropdown-wrapper">
-                <button id="btn-toggle-accessibility" class="acc-main-btn">♿ Acessibilidade</button>
+                <button id="btn-toggle-accessibility" class="acc-main-btn" type="button">♿ Acessibilidade</button>
                 <div id="accessibility-menu" class="accessibility-menu">
-                    <button id="btn-decrease-text" title="Diminuir texto">A-</button>
-                    <button id="btn-normal-text" title="Tamanho normal">A</button>
-                    <button id="btn-increase-text" title="Aumentar texto">A+</button>
-                    <button id="btn-contrast" title="Alto Contraste">◐ Contraste</button>
+                    <button id="btn-decrease-text" type="button" title="Diminuir texto">A-</button>
+                    <button id="btn-normal-text" type="button" title="Tamanho normal">A</button>
+                    <button id="btn-increase-text" type="button" title="Aumentar texto">A+</button>
+                    <button id="btn-contrast" type="button" title="Alto Contraste">◐ Contraste</button>
                 </div>
             </div>
         </div>
@@ -28,18 +28,20 @@
             <div class="logo-container">
                 <img src="gevic.png" alt="Logo Grêmio Visão Coletiva">
             </div>
-            <div class="menu-toggle" id="mobile-menu">☰</div>
-            <nav>
-                <ul id="nav-list">
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#institucional">Institucional</a></li>
-                    <li><a href="#membros">Diretoria</a></li>
-                    <li><a href="#noticias">Notícias</a></li>
-                    <li><a href="#agenda">Agenda</a></li>
-                    <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="admin.html" class="admin-nav-link">⚙️ Área Restrita</a></li>
-                </ul>
-            </nav>
+            <div class="header-right">
+                <div class="menu-toggle" id="mobile-menu" aria-label="Abrir Menu">☰</div>
+                <nav>
+                    <ul id="nav-list">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#institucional">Institucional</a></li>
+                        <li><a href="#membros">Diretoria</a></li>
+                        <li><a href="#noticias">Notícias</a></li>
+                        <li><a href="#agenda">Agenda</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="admin.html" class="admin-nav-link">⚙️ Área Restrita</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -104,7 +106,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva.</p>
+            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. CECM Santos Dumont E.F.M.</p>
         </div>
     </footer>
 
