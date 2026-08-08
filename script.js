@@ -1,60 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Controle do Menu Hamburguer
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
+// Abrir e fechar o menu no mobile
+const mobileMenu = document.getElementById('mobile-menu');
+const navList = document.getElementById('nav-list');
 
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
+mobileMenu.addEventListener('click', () => {
+    navList.classList.toggle('active');
+});
 
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+// Fechar menu ao clicar em um link (no celular)
+const navLinks = document.querySelectorAll('#nav-list li a');
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            navList.classList.remove('active');
+        }
+    });
+});
+
+// Rolagem suave (Smooth Scroll) ao clicar nos itens do menu
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth'
             });
-        });
-    }
-
-    // 2. Alternância de Campos Anônimos na Ouvidoria
-    const anonymousCheck = document.getElementById('anonymousCheck');
-    const personalFields = document.getElementById('personalFields');
-    const nomeInput = document.getElementById('nome');
-
-    if (anonymousCheck && personalFields) {
-        anonymousCheck.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                personalFields.style.opacity = '0.4';
-                personalFields.style.pointerEvents = 'none';
-                nomeInput.value = '';
-            } else {
-                personalFields.style.opacity = '1';
-                personalFields.style.pointerEvents = 'auto';
-            }
-        });
-    }
-
-    // 3. Simulação de Envio do Formulário
-    const ouvidoriaForm = document.getElementById('ouvidoriaForm');
-    const formStatus = document.getElementById('formStatus');
-
-    if (ouvidoriaForm) {
-        ouvidoriaForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            formStatus.style.color = '#0077b6';
-            formStatus.textContent = 'Enviando sua mensagem para o Grêmio Visão Coletiva...';
-
-            setTimeout(() => {
-                formStatus.style.color = '#38b000';
-                formStatus.textContent = 'Mensagem enviada com sucesso! Agradecemos sua colaboração.';
-                ouvidoriaForm.reset();
-
-                if (anonymousCheck.checked) {
-                    personalFields.style.opacity = '1';
-                    personalFields.style.pointerEvents = 'auto';
-                }
-            }, 1200);
-        });
-    }
+        }
+    });
 });
