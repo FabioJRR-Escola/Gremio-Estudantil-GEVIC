@@ -42,7 +42,18 @@
     <div id="admin-content" style="display: none;" class="admin-container">
         <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para o Site Principal</a>
         <h1><i class="fa-solid fa-gauge-high"></i> Painel de Controle Administrativo</h1>
-        <p style="margin-bottom: 30px; color: #64748b;">Gerencie os conteúdos, diretoria, agenda e imagens direto do seu dispositivo.</p>
+        <p style="margin-bottom: 30px; color: #64748b;">Gerencie os banners, notícias, agenda e membros direto do seu dispositivo.</p>
+
+        <!-- BANNERS DO CARROSSEL -->
+        <div class="admin-card">
+            <h2><i class="fa-solid fa-images"></i> Adicionar Banner ao Carrossel</h2>
+            <form id="form-banner">
+                <div class="form-group"><label>Descrição / Slogan (Opcional):</label><input type="text" id="banner-descricao" placeholder="Ex: Rumo a novas conquistas!"></div>
+                <div class="form-group"><label>Anexar Imagem do Banner (Arquivo):</label><input type="file" id="banner-imagem" accept="image/*" required></div>
+                <button type="submit" class="btn-save"><i class="fa-solid fa-plus"></i> Adicionar Banner</button>
+            </form>
+            <div class="item-list" id="lista-banners"></div>
+        </div>
 
         <!-- NOTÍCIAS -->
         <div class="admin-card">
@@ -110,6 +121,14 @@
         }
 
         function carregarDadosAdmin() {
+            const banners = JSON.parse(localStorage.getItem('gremio_banners')) || [];
+            document.getElementById('lista-banners').innerHTML = banners.map((b, i) => `
+                <div class="item-row">
+                    <span><strong>Banner ${i+1}</strong> (${b.descricao || 'Sem descrição'})</span>
+                    <button class="btn-del" onclick="removerItem('gremio_banners', ${i})"><i class="fa-solid fa-trash"></i> Excluir</button>
+                </div>
+            `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhum banner adicional cadastrado.</p>';
+
             const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
             document.getElementById('lista-noticias').innerHTML = noticias.map((n, i) => `
                 <div class="item-row">
@@ -154,6 +173,21 @@
                 callback('');
             }
         }
+
+        document.getElementById('form-banner').addEventListener('submit', (e) => {
+            e.preventDefault();
+            converterArquivoParaBase64('banner-imagem', (base64Img) => {
+                const banners = JSON.parse(localStorage.getItem('gremio_banners')) || [];
+                banners.push({
+                    descricao: document.getElementById('banner-descricao').value,
+                    imagem: base64Img
+                });
+                localStorage.setItem('gremio_banners', JSON.stringify(banners));
+                e.target.reset();
+                carregarDadosAdmin();
+                alert('Banner adicionado com sucesso!');
+            });
+        });
 
         document.getElementById('form-noticia').addEventListener('submit', (e) => {
             e.preventDefault();
