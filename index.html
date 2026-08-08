@@ -49,13 +49,9 @@
 
     <!-- CARROSSEL DE BANNERS -->
     <section id="home" class="hero-section">
-        <div class="banner-carousel-container">
+        <div class="banner-carousel-container" id="banner-container">
             <div class="banner-track" id="banner-track">
-                <!-- Banners padrão inseridos via HTML/JS -->
-                <div class="banner-slide active">
-                    <img src="1780189057214.png" alt="A visão de um se fortalece na coletividade" class="slogan-img">
-                    <p class="hero-description">O portal oficial de comunicação institucional, transparência e defesa dos direitos dos estudantes do CECM Santos Dumont E.F.M.</p>
-                </div>
+                <!-- Banners inseridos via JS -->
             </div>
             <button class="carousel-control prev" id="banner-prev" aria-label="Banner anterior"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="carousel-control next" id="banner-next" aria-label="Próximo banner"><i class="fa-solid fa-chevron-right"></i></button>
@@ -73,13 +69,13 @@
         </div>
     </section>
 
-    <!-- SEÇÃO: MEMBROS (CARROSSEL) -->
+    <!-- SEÇÃO: MEMBROS (CARROSSEL ARRASTÁVEL) -->
     <section id="membros" class="section-gray">
         <div class="container">
             <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Nossa Diretoria</h2>
             <div class="members-carousel-wrapper">
                 <button class="member-control prev" id="member-prev" aria-label="Membro anterior"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="members-viewport">
+                <div class="members-viewport" id="members-viewport">
                     <div id="membros-grid" class="members-track"></div>
                 </div>
                 <button class="member-control next" id="member-next" aria-label="Próximo membro"><i class="fa-solid fa-chevron-right"></i></button>
@@ -123,7 +119,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva.</p>
+            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. CECM Santos Dumont E.F.M.</p>
         </div>
     </footer>
 
