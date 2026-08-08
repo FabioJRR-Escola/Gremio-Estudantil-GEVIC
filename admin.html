@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Visão Coletiva</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>⚙️ Painel Admin</h2>
+                <p>Visão Coletiva</p>
+            </div>
+            <nav class="admin-nav">
+                <button class="admin-tab active" onclick="openTab('tab-noticias')">Notícias</button>
+                <button class="admin-tab" onclick="openTab('tab-eventos')">Agenda/Eventos</button>
+                <button class="admin-tab" onclick="openTab('tab-membros')">Membros da Entidade</button>
+            </nav>
+            <a href="index.html" class="btn-secondary" style="margin: 20px; text-align: center; display: block; border-color: white; color: white;">&larr; Voltar ao Site</a>
+        </aside>
+
+        <main class="admin-content">
+            <!-- ABA NOTÍCIAS -->
+            <section id="tab-noticias" class="admin-section active">
+                <h2>Gerenciar Notícias</h2>
+                <form id="form-noticia" class="admin-form">
+                    <input type="hidden" id="noticia-id">
+                    <input type="text" id="noticia-titulo" placeholder="Título da Notícia" required>
+                    <select id="noticia-categoria" required>
+                        <option value="Comunicado Oficial">Comunicado Oficial</option>
+                        <option value="Campanha">Campanha</option>
+                        <option value="Representação">Representação</option>
+                    </select>
+                    <textarea id="noticia-conteudo" rows="4" placeholder="Conteúdo da notícia..." required></textarea>
+                    <button type="submit" class="btn-primary">Salvar Notícia</button>
+                </form>
+                <table class="admin-table">
+                    <thead><tr><th>Título</th><th>Categoria</th><th>Ações</th></tr></thead>
+                    <tbody id="tabela-noticias"></tbody>
+                </table>
+            </section>
+
+            <!-- ABA EVENTOS -->
+            <section id="tab-eventos" class="admin-section">
+                <h2>Gerenciar Agenda/Eventos</h2>
+                <form id="form-evento" class="admin-form">
+                    <input type="hidden" id="evento-id">
+                    <input type="text" id="evento-titulo" placeholder="Nome do Evento" required>
+                    <input type="date" id="evento-data" required>
+                    <input type="text" id="evento-local" placeholder="Local (Ex: Auditório)" required>
+                    <button type="submit" class="btn-primary">Salvar Evento</button>
+                </form>
+                <table class="admin-table">
+                    <thead><tr><th>Data</th><th>Evento</th><th>Local</th><th>Ações</th></tr></thead>
+                    <tbody id="tabela-eventos"></tbody>
+                </table>
+            </section>
+
+            <!-- ABA MEMBROS -->
+            <section id="tab-membros" class="admin-section">
+                <h2>Gerenciar Diretoria e Membros</h2>
+                <form id="form-membro" class="admin-form">
+                    <input type="hidden" id="membro-id">
+                    <input type="text" id="membro-nome" placeholder="Nome do Membro" required>
+                    <input type="text" id="membro-cargo" placeholder="Cargo (Ex: Presidente)" required>
+                    <button type="submit" class="btn-primary">Salvar Membro</button>
+                </form>
+                <table class="admin-table">
+                    <thead><tr><th>Nome</th><th>Cargo</th><th>Ações</th></tr></thead>
+                    <tbody id="tabela-membros"></tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
