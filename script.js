@@ -24,7 +24,7 @@ initData();
 
 // Funções utilitárias de Data
 const formatarData = (dataString) => {
-    const data = new Date(dataString + 'T12:00:00'); // Evita bug de fuso horário
+    const data = new Date(dataString + 'T12:00:00'); 
     const dia = String(data.getDate()).padStart(2, '0');
     const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
     const mes = meses[data.getMonth()];
@@ -36,59 +36,108 @@ if (document.getElementById('noticias-grid')) {
     // Renderizar Membros
     const membros = JSON.parse(localStorage.getItem('gremio_membros'));
     const membrosGrid = document.getElementById('membros-grid');
-    membrosGrid.innerHTML = membros.map(m => `
-        <div class="member-card">
-            <div class="member-avatar">${m.nome.charAt(0)}</div>
-            <h3>${m.nome}</h3>
-            <p>${m.cargo}</p>
-        </div>
-    `).join('');
+    if (membrosGrid) {
+        membrosGrid.innerHTML = membros.map(m => `
+            <div class="member-card">
+                <div class="member-avatar">${m.nome.charAt(0)}</div>
+                <h3>${m.nome}</h3>
+                <p>${m.cargo}</p>
+            </div>
+        `).join('');
+    }
 
     // Renderizar Notícias
     const noticias = JSON.parse(localStorage.getItem('gremio_noticias'));
     const noticiasGrid = document.getElementById('noticias-grid');
-    noticiasGrid.innerHTML = noticias.map(n => `
-        <article class="card">
-            <div class="card-tag">${n.categoria}</div>
-            <h3>${n.titulo}</h3>
-            <p>${n.conteudo}</p>
-        </article>
-    `).join('');
+    if (noticiasGrid) {
+        noticiasGrid.innerHTML = noticias.map(n => `
+            <article class="card">
+                <div class="card-tag">${n.categoria}</div>
+                <h3>${n.titulo}</h3>
+                <p>${n.conteudo}</p>
+            </article>
+        `).join('');
+    }
 
     // Renderizar Eventos
     const eventos = JSON.parse(localStorage.getItem('gremio_eventos'));
     const eventosList = document.getElementById('eventos-list');
-    eventosList.innerHTML = eventos.sort((a,b) => new Date(a.data) - new Date(b.data)).map(e => {
-        const { dia, mes } = formatarData(e.data);
-        return `
-        <div class="event-item">
-            <div class="event-date">
-                <span class="day">${dia}</span>
-                <span class="month">${mes}</span>
+    if (eventosList) {
+        eventosList.innerHTML = eventos.sort((a,b) => new Date(a.data) - new Date(b.data)).map(e => {
+            const { dia, mes } = formatarData(e.data);
+            return `
+            <div class="event-item">
+                <div class="event-date">
+                    <span class="day">${dia}</span>
+                    <span class="month">${mes}</span>
+                </div>
+                <div class="event-details">
+                    <h3>${e.titulo}</h3>
+                    <p>📍 ${e.local}</p>
+                </div>
             </div>
-            <div class="event-details">
-                <h3>${e.titulo}</h3>
-                <p>📍 ${e.local}</p>
-            </div>
-        </div>
-    `}).join('');
+        `}).join('');
+    }
 
     // Menu Mobile
-    document.getElementById('mobile-menu').addEventListener('click', () => {
-        document.getElementById('nav-list').classList.toggle('active');
-    });
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', () => {
+            document.getElementById('nav-list').classList.toggle('active');
+        });
+    }
 
     // Acessibilidade (Alto Contraste e Texto)
     let fontSize = 16;
-    document.getElementById('btn-increase-text').addEventListener('click', () => { if(fontSize < 24) { fontSize+=2; document.body.style.fontSize = fontSize+'px'; }});
-    document.getElementById('btn-decrease-text').addEventListener('click', () => { if(fontSize > 12) { fontSize-=2; document.body.style.fontSize = fontSize+'px'; }});
-    document.getElementById('btn-normal-text').addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
-    document.getElementById('btn-contrast').addEventListener('click', () => document.body.classList.toggle('high-contrast'));
+    const btnInc = document.getElementById('btn-increase-text');
+    const btnDec = document.getElementById('btn-decrease-text');
+    const btnNorm = document.getElementById('btn-normal-text');
+    const btnCont = document.getElementById('btn-contrast');
+
+    if (btnInc) btnInc.addEventListener('click', () => { if(fontSize < 24) { fontSize+=2; document.body.style.fontSize = fontSize+'px'; }});
+    if (btnDec) btnDec.addEventListener('click', () => { if(fontSize > 12) { fontSize-=2; document.body.style.fontSize = fontSize+'px'; }});
+    if (btnNorm) btnNorm.addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
+    if (btnCont) btnCont.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
 }
 
-// --- 3. LÓGICA DO PAINEL ADMINISTRATIVO (Backend Simulado) ---
-if (document.getElementById('tabela-noticias')) {
-    
+// --- 3. LÓGICA DO PAINEL ADMINISTRATIVO E LOGIN ---
+if (document.getElementById('login-screen')) {
+
+    // Verificar se já está logado na sessão atual
+    const checkLogin = () => {
+        if (sessionStorage.getItem('gremio_logado') === 'true') {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            renderAdminTables();
+        }
+    };
+    checkLogin();
+
+    // Ação de Login
+    document.getElementById('form-login').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const usuarioInput = document.getElementById('login-usuario').value;
+        const senhaInput = document.getElementById('login-senha').value;
+
+        // Credenciais padrão de acesso
+        const usuarioCorreto = 'admin';
+        const senhaCorreta = 'visãocoletiva';
+
+        if (usuarioInput === usuarioCorreto && senhaInput === senhaCorreta) {
+            sessionStorage.setItem('gremio_logado', 'true');
+            document.getElementById('login-erro').style.display = 'none';
+            checkLogin();
+        } else {
+            document.getElementById('login-erro').style.display = 'block';
+        }
+    });
+
+    // Função de Logout
+    window.logoutAdmin = () => {
+        sessionStorage.removeItem('gremio_logado');
+        location.reload();
+    };
+
     // Trocar Abas no Admin
     window.openTab = (tabId) => {
         document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
@@ -144,7 +193,7 @@ if (document.getElementById('tabela-noticias')) {
         }
     };
 
-    // Função de Editar Notícia (Carrega no formulário)
+    // Função de Editar Notícia
     window.editarNoticia = (id) => {
         const noticias = JSON.parse(localStorage.getItem('gremio_noticias'));
         const noticia = noticias.find(n => n.id === id);
@@ -167,9 +216,9 @@ if (document.getElementById('tabela-noticias')) {
             conteudo: document.getElementById('noticia-conteudo').value
         };
 
-        if(idAtual) { // Atualizando
+        if(idAtual) {
             noticias = noticias.map(n => n.id === parseInt(idAtual) ? novaNoticia : n);
-        } else { // Criando
+        } else {
             noticias.push(novaNoticia);
         }
         
@@ -207,7 +256,4 @@ if (document.getElementById('tabela-noticias')) {
         e.target.reset();
         renderAdminTables();
     });
-
-    // Inicia a renderização
-    renderAdminTables();
 }
