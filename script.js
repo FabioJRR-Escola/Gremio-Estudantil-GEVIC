@@ -46,20 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNorm) btnNorm.addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
     if (btnCont) btnCont.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
 
-    // CARROSSEL DE BANNERS
+    // CARROSSEL DE BANNERS (15 SEGUNDOS + ARRASTAR / SWIPE)
     const bannerTrack = document.getElementById('banner-track');
+    const bannerContainer = document.getElementById('banner-container');
     const bannerPrev = document.getElementById('banner-prev');
     const bannerNext = document.getElementById('banner-next');
     const bannerDotsContainer = document.getElementById('banner-dots');
 
-    // Banners padrão + banners salvos no LocalStorage
     let bannersPadrao = [
         { imagem: '1780189057214.png', descricao: 'O portal oficial de comunicação institucional, transparência e defesa dos direitos dos estudantes do CECM Santos Dumont E.F.M.' }
     ];
     let bannersSalvos = JSON.parse(localStorage.getItem('gremio_banners')) || [];
     let todosBanners = [...bannersPadrao, ...bannersSalvos];
 
-    if (bannerTrack) {
+    if (bannerTrack && bannerContainer) {
         bannerTrack.innerHTML = todosBanners.map((b, index) => `
             <div class="banner-slide ${index === 0 ? 'active' : ''}">
                 <img src="${b.imagem}" alt="Banner Institucional" class="slogan-img">
@@ -107,19 +107,75 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Auto-play do carrossel de banners a cada 5 segundos
-        if (slides.length > 1) {
-            setInterval(() => {
+        // Auto-play de 15 segundos
+        let bannerInterval = setInterval(() => {
+            let nextIndex = (currentBanner + 1) % slides.length;
+            showBanner(nextIndex);
+        }, 15000);
+
+        // Pausar auto-play ao interagir
+        bannerContainer.addEventListener('mouseenter', () => clearInterval(bannerInterval));
+        bannerContainer.addEventListener('mouseleave', () => {
+            if (slides.length > 1) {
+                bannerInterval = setInterval(() => {
+                    let nextIndex = (currentBanner + 1) % slides.length;
+                    showBanner(nextIndex);
+                }, 15000);
+            }
+        });
+
+        // Suporte a arrastar (Touch / Mouse Swipe) nos banners
+        let startX = 0;
+        let isDraggingBanner = false;
+
+        bannerContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDraggingBanner = true;
+        });
+
+        bannerContainer.addEventListener('touchmove', (e) => {
+            if (!isDraggingBanner) return;
+        });
+
+        bannerContainer.addEventListener('touchend', (e) => {
+            if (!isDraggingBanner) return;
+            let endX = e.changedTouches[0].clientX;
+            handleBannerSwipe(startX, endX);
+            isDraggingBanner = false;
+        });
+
+        bannerContainer.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDraggingBanner = true;
+        });
+
+        bannerContainer.addEventListener('mouseup', (e) => {
+            if (!isDraggingBanner) return;
+            let endX = e.clientX;
+            handleBannerSwipe(startX, endX);
+            isDraggingBanner = false;
+        });
+
+        function handleBannerSwipe(startX, endX) {
+            let threshold = 50;
+            if (startX - endX > threshold) {
+                // Arrastou para a esquerda (próximo)
                 let nextIndex = (currentBanner + 1) % slides.length;
                 showBanner(nextIndex);
-            }, 5000);
+            } else if (endX - startX > threshold) {
+                // Arrastou para a direita (anterior)
+                let prevIndex = (currentBanner - 1 + slides.length) % slides.length;
+                showBanner(prevIndex);
+            }
         }
     }
 
     if (document.getElementById('noticias-grid')) {
-        // Renderizar Membros em Carrossel
+        // Renderizar Membros em Carrossel Arrastável
         const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
         const membrosGrid = document.getElementById('membros-grid');
+        const membrosViewport = document.getElementById('members-viewport');
+
         if (membrosGrid && membros.length > 0) {
             membrosGrid.innerHTML = membros.map(m => `
                 <div class="member-card">
@@ -132,22 +188,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
 
-            // Controle de navegação do carrossel de membros
+            // Navegação por botões discretos
             const memberPrev = document.getElementById('member-prev');
             const memberNext = document.getElementById('member-next');
-            if (memberPrev && memberNext) {
+            if (memberPrev && memberNext && membrosViewport) {
                 memberPrev.addEventListener('click', () => {
-                    membrosGrid.scrollBy({ left: -250, behavior: 'smooth' });
+                    membrosViewport.scrollBy({ left: -260, behavior: 'smooth' });
                 });
                 memberNext.addEventListener('click', () => {
-                    membrosGrid.scrollBy({ left: 250, behavior: 'smooth' });
+                    membrosViewport.scrollBy({ left: 260, behavior: 'smooth' });
+                });
+            }
+
+            // Suporte a arrastar com o mouse (Drag to scroll)
+            if (membrosViewport) {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                membrosViewport.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    membrosViewport.classList.add('active');
+                    startX = e.pageX - membrosViewport.offsetLeft;
+                    scrollLeft = membrosViewport.scrollLeft;
+                });
+
+                membrosViewport.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    membrosViewport.classList.remove('active');
+                });
+
+                membrosViewport.addEventListener('mouseup', () => {
+                    isDown = false;
+                    membrosViewport.classList.remove('active');
+                });
+
+                membrosViewport.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - membrosViewport.offsetLeft;
+                    const walk = (x - startX) * 2; // Velocidade do arraste
+                    membrosViewport.scrollLeft = scrollLeft - walk;
                 });
             }
         } else if (membrosGrid) {
             membrosGrid.innerHTML = `<p style="text-align:center; width:100%; color:#64748b; font-size:0.9rem;">Nenhum membro cadastrado na diretoria ainda.</p>`;
         }
 
-        // Renderizar Notícias com imagem anexada
+        // Renderizar Notícias
         const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
         const noticiasGrid = document.getElementById('noticias-grid');
         if (noticiasGrid && noticias.length > 0) {
@@ -164,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
         }
 
-        // Renderizar Eventos com imagem anexada
+        // Renderizar Eventos
         const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
         const eventosList = document.getElementById('eventos-list');
         if (eventosList && eventos.length > 0) {
