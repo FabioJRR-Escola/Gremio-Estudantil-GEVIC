@@ -46,8 +46,78 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNorm) btnNorm.addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
     if (btnCont) btnCont.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
 
+    // CARROSSEL DE BANNERS
+    const bannerTrack = document.getElementById('banner-track');
+    const bannerPrev = document.getElementById('banner-prev');
+    const bannerNext = document.getElementById('banner-next');
+    const bannerDotsContainer = document.getElementById('banner-dots');
+
+    // Banners padrão + banners salvos no LocalStorage
+    let bannersPadrao = [
+        { imagem: '1780189057214.png', descricao: 'O portal oficial de comunicação institucional, transparência e defesa dos direitos dos estudantes do CECM Santos Dumont E.F.M.' }
+    ];
+    let bannersSalvos = JSON.parse(localStorage.getItem('gremio_banners')) || [];
+    let todosBanners = [...bannersPadrao, ...bannersSalvos];
+
+    if (bannerTrack) {
+        bannerTrack.innerHTML = todosBanners.map((b, index) => `
+            <div class="banner-slide ${index === 0 ? 'active' : ''}">
+                <img src="${b.imagem}" alt="Banner Institucional" class="slogan-img">
+                ${b.descricao ? `<p class="hero-description">${b.descricao}</p>` : ''}
+            </div>
+        `).join('');
+
+        if (todosBanners.length > 1 && bannerDotsContainer) {
+            bannerDotsContainer.innerHTML = todosBanners.map((_, index) => `
+                <button class="carousel-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></button>
+            `).join('');
+        }
+
+        let currentBanner = 0;
+        const slides = bannerTrack.querySelectorAll('.banner-slide');
+        const dots = bannerDotsContainer ? bannerDotsContainer.querySelectorAll('.carousel-dot') : [];
+
+        function showBanner(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentBanner = index;
+        }
+
+        if (bannerNext) {
+            bannerNext.addEventListener('click', () => {
+                let nextIndex = (currentBanner + 1) % slides.length;
+                showBanner(nextIndex);
+            });
+        }
+
+        if (bannerPrev) {
+            bannerPrev.addEventListener('click', () => {
+                let prevIndex = (currentBanner - 1 + slides.length) % slides.length;
+                showBanner(prevIndex);
+            });
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                showBanner(parseInt(e.target.dataset.index));
+            });
+        });
+
+        // Auto-play do carrossel de banners a cada 5 segundos
+        if (slides.length > 1) {
+            setInterval(() => {
+                let nextIndex = (currentBanner + 1) % slides.length;
+                showBanner(nextIndex);
+            }, 5000);
+        }
+    }
+
     if (document.getElementById('noticias-grid')) {
-        // Renderizar Membros com foto anexada ou inicial
+        // Renderizar Membros em Carrossel
         const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
         const membrosGrid = document.getElementById('membros-grid');
         if (membrosGrid && membros.length > 0) {
@@ -61,6 +131,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${m.bio ? `<p class="member-bio">${m.bio}</p>` : ''}
                 </div>
             `).join('');
+
+            // Controle de navegação do carrossel de membros
+            const memberPrev = document.getElementById('member-prev');
+            const memberNext = document.getElementById('member-next');
+            if (memberPrev && memberNext) {
+                memberPrev.addEventListener('click', () => {
+                    membrosGrid.scrollBy({ left: -250, behavior: 'smooth' });
+                });
+                memberNext.addEventListener('click', () => {
+                    membrosGrid.scrollBy({ left: 250, behavior: 'smooth' });
+                });
+            }
+        } else if (membrosGrid) {
+            membrosGrid.innerHTML = `<p style="text-align:center; width:100%; color:#64748b; font-size:0.9rem;">Nenhum membro cadastrado na diretoria ainda.</p>`;
         }
 
         // Renderizar Notícias com imagem anexada
