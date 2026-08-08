@@ -1,60 +1,213 @@
-// --- FUNCIONALIDADE DO MENU MOBILE ---
-const mobileMenu = document.getElementById('mobile-menu');
-const navList = document.getElementById('nav-list');
+// --- 1. DADOS INICIAIS (Se não houver nada salvo) ---
+const initData = () => {
+    if (!localStorage.getItem('gremio_noticias')) {
+        localStorage.setItem('gremio_noticias', JSON.stringify([
+            { id: 1, titulo: 'Reestruturação da Diretoria', categoria: 'Comunicado Oficial', conteudo: 'A partir desta presente data, o Grêmio Estudantil Visão Coletiva anuncia a reestruturação em sua composição de membros para otimizar os projetos deste ano.' },
+            { id: 2, titulo: 'Dia D de Combate ao Bullying', categoria: 'Campanha', conteudo: 'No dia 07 de abril, promoveremos ações de conscientização. Construir um debate saudável na escola e nas redes é responsabilidade de todos nós.' }
+        ]));
+    }
+    if (!localStorage.getItem('gremio_eventos')) {
+        localStorage.setItem('gremio_eventos', JSON.stringify([
+            { id: 1, titulo: 'Reunião com Assessoria Estadual', data: '2026-03-15', local: 'Auditório' },
+            { id: 2, titulo: 'Oficina Jovem Senador 2026', data: '2026-04-10', local: 'Biblioteca' }
+        ]));
+    }
+    if (!localStorage.getItem('gremio_membros')) {
+        localStorage.setItem('gremio_membros', JSON.stringify([
+            { id: 1, nome: 'João Pedro', cargo: 'Presidência' },
+            { id: 2, nome: 'Ana Costa', cargo: 'Dir. de Comunicação' }
+        ]));
+    }
+};
 
-mobileMenu.addEventListener('click', () => {
-    navList.classList.toggle('active');
-});
+initData();
 
-const navLinks = document.querySelectorAll('#nav-list li a');
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-            navList.classList.remove('active');
-        }
+// Funções utilitárias de Data
+const formatarData = (dataString) => {
+    const data = new Date(dataString + 'T12:00:00'); // Evita bug de fuso horário
+    const dia = String(data.getDate()).padStart(2, '0');
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const mes = meses[data.getMonth()];
+    return { dia, mes };
+};
+
+// --- 2. LÓGICA DO SITE PÚBLICO (Frontend) ---
+if (document.getElementById('noticias-grid')) {
+    // Renderizar Membros
+    const membros = JSON.parse(localStorage.getItem('gremio_membros'));
+    const membrosGrid = document.getElementById('membros-grid');
+    membrosGrid.innerHTML = membros.map(m => `
+        <div class="member-card">
+            <div class="member-avatar">${m.nome.charAt(0)}</div>
+            <h3>${m.nome}</h3>
+            <p>${m.cargo}</p>
+        </div>
+    `).join('');
+
+    // Renderizar Notícias
+    const noticias = JSON.parse(localStorage.getItem('gremio_noticias'));
+    const noticiasGrid = document.getElementById('noticias-grid');
+    noticiasGrid.innerHTML = noticias.map(n => `
+        <article class="card">
+            <div class="card-tag">${n.categoria}</div>
+            <h3>${n.titulo}</h3>
+            <p>${n.conteudo}</p>
+        </article>
+    `).join('');
+
+    // Renderizar Eventos
+    const eventos = JSON.parse(localStorage.getItem('gremio_eventos'));
+    const eventosList = document.getElementById('eventos-list');
+    eventosList.innerHTML = eventos.sort((a,b) => new Date(a.data) - new Date(b.data)).map(e => {
+        const { dia, mes } = formatarData(e.data);
+        return `
+        <div class="event-item">
+            <div class="event-date">
+                <span class="day">${dia}</span>
+                <span class="month">${mes}</span>
+            </div>
+            <div class="event-details">
+                <h3>${e.titulo}</h3>
+                <p>📍 ${e.local}</p>
+            </div>
+        </div>
+    `}).join('');
+
+    // Menu Mobile
+    document.getElementById('mobile-menu').addEventListener('click', () => {
+        document.getElementById('nav-list').classList.toggle('active');
     });
-});
 
-// --- SCROLL SUAVE ---
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    // Acessibilidade (Alto Contraste e Texto)
+    let fontSize = 16;
+    document.getElementById('btn-increase-text').addEventListener('click', () => { if(fontSize < 24) { fontSize+=2; document.body.style.fontSize = fontSize+'px'; }});
+    document.getElementById('btn-decrease-text').addEventListener('click', () => { if(fontSize > 12) { fontSize-=2; document.body.style.fontSize = fontSize+'px'; }});
+    document.getElementById('btn-normal-text').addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
+    document.getElementById('btn-contrast').addEventListener('click', () => document.body.classList.toggle('high-contrast'));
+}
+
+// --- 3. LÓGICA DO PAINEL ADMINISTRATIVO (Backend Simulado) ---
+if (document.getElementById('tabela-noticias')) {
+    
+    // Trocar Abas no Admin
+    window.openTab = (tabId) => {
+        document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    };
+
+    // Renderizar Tabelas Admin
+    const renderAdminTables = () => {
+        // Tabela Notícias
+        const noticias = JSON.parse(localStorage.getItem('gremio_noticias'));
+        document.getElementById('tabela-noticias').innerHTML = noticias.map(n => `
+            <tr>
+                <td>${n.titulo}</td><td>${n.categoria}</td>
+                <td>
+                    <button class="btn-action btn-edit" onclick="editarNoticia(${n.id})">Editar</button>
+                    <button class="btn-action btn-delete" onclick="deletarItem('gremio_noticias', ${n.id})">X</button>
+                </td>
+            </tr>
+        `).join('');
+
+        // Tabela Eventos
+        const eventos = JSON.parse(localStorage.getItem('gremio_eventos'));
+        document.getElementById('tabela-eventos').innerHTML = eventos.map(e => `
+            <tr>
+                <td>${e.data}</td><td>${e.titulo}</td><td>${e.local}</td>
+                <td>
+                    <button class="btn-action btn-delete" onclick="deletarItem('gremio_eventos', ${e.id})">X</button>
+                </td>
+            </tr>
+        `).join('');
+
+        // Tabela Membros
+        const membros = JSON.parse(localStorage.getItem('gremio_membros'));
+        document.getElementById('tabela-membros').innerHTML = membros.map(m => `
+            <tr>
+                <td>${m.nome}</td><td>${m.cargo}</td>
+                <td>
+                    <button class="btn-action btn-delete" onclick="deletarItem('gremio_membros', ${m.id})">X</button>
+                </td>
+            </tr>
+        `).join('');
+    };
+
+    // Função global de deletar
+    window.deletarItem = (chave, id) => {
+        if(confirm('Tem certeza que deseja apagar?')) {
+            let dados = JSON.parse(localStorage.getItem(chave));
+            dados = dados.filter(item => item.id !== id);
+            localStorage.setItem(chave, JSON.stringify(dados));
+            renderAdminTables();
+        }
+    };
+
+    // Função de Editar Notícia (Carrega no formulário)
+    window.editarNoticia = (id) => {
+        const noticias = JSON.parse(localStorage.getItem('gremio_noticias'));
+        const noticia = noticias.find(n => n.id === id);
+        document.getElementById('noticia-id').value = noticia.id;
+        document.getElementById('noticia-titulo').value = noticia.titulo;
+        document.getElementById('noticia-categoria').value = noticia.categoria;
+        document.getElementById('noticia-conteudo').value = noticia.conteudo;
+    };
+
+    // Submissão: Nova Notícia / Editar
+    document.getElementById('form-noticia').addEventListener('submit', (e) => {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
+        let noticias = JSON.parse(localStorage.getItem('gremio_noticias'));
+        const idAtual = document.getElementById('noticia-id').value;
+        
+        const novaNoticia = {
+            id: idAtual ? parseInt(idAtual) : Date.now(),
+            titulo: document.getElementById('noticia-titulo').value,
+            categoria: document.getElementById('noticia-categoria').value,
+            conteudo: document.getElementById('noticia-conteudo').value
+        };
+
+        if(idAtual) { // Atualizando
+            noticias = noticias.map(n => n.id === parseInt(idAtual) ? novaNoticia : n);
+        } else { // Criando
+            noticias.push(novaNoticia);
         }
+        
+        localStorage.setItem('gremio_noticias', JSON.stringify(noticias));
+        e.target.reset();
+        document.getElementById('noticia-id').value = '';
+        renderAdminTables();
     });
-});
 
-// --- FUNÇÕES DE ACESSIBILIDADE ---
-let currentFontSize = 16;
-const bodyElement = document.body;
+    // Submissão: Novo Evento
+    document.getElementById('form-evento').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const eventos = JSON.parse(localStorage.getItem('gremio_eventos'));
+        eventos.push({
+            id: Date.now(),
+            titulo: document.getElementById('evento-titulo').value,
+            data: document.getElementById('evento-data').value,
+            local: document.getElementById('evento-local').value
+        });
+        localStorage.setItem('gremio_eventos', JSON.stringify(eventos));
+        e.target.reset();
+        renderAdminTables();
+    });
 
-// Aumentar Texto
-document.getElementById('btn-increase-text').addEventListener('click', () => {
-    if (currentFontSize < 24) {
-        currentFontSize += 2;
-        bodyElement.style.fontSize = currentFontSize + 'px';
-    }
-});
+    // Submissão: Novo Membro
+    document.getElementById('form-membro').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const membros = JSON.parse(localStorage.getItem('gremio_membros'));
+        membros.push({
+            id: Date.now(),
+            nome: document.getElementById('membro-nome').value,
+            cargo: document.getElementById('membro-cargo').value
+        });
+        localStorage.setItem('gremio_membros', JSON.stringify(membros));
+        e.target.reset();
+        renderAdminTables();
+    });
 
-// Diminuir Texto
-document.getElementById('btn-decrease-text').addEventListener('click', () => {
-    if (currentFontSize > 12) {
-        currentFontSize -= 2;
-        bodyElement.style.fontSize = currentFontSize + 'px';
-    }
-});
-
-// Tamanho Normal
-document.getElementById('btn-normal-text').addEventListener('click', () => {
-    currentFontSize = 16;
-    bodyElement.style.fontSize = currentFontSize + 'px';
-});
-
-// Alternar Alto Contraste
-document.getElementById('btn-contrast').addEventListener('click', () => {
-    bodyElement.classList.toggle('high-contrast');
-});
+    // Inicia a renderização
+    renderAdminTables();
+}
