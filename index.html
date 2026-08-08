@@ -3,200 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Grêmio Estudantil Visão Coletiva</title>
-    <!-- Google Fonts: Poppins (Títulos) e Inter (Textos) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome para Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Arquivo CSS Externo -->
-    <link rel="stylesheet" href="style.css">
+    <title>Grêmio Estudantil Visão Coletiva | CECM Santos Dumont</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- CABEÇALHO -->
-    <header>
-        <div class="container header-content">
-            <a href="#" class="logo" id="portal-logo">
-                <i class="fa-solid fa-users-viewfinder"></i>
-                Visão Coletiva
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#home" class="logo">
+                <div class="logo-text">
+                    <span class="brand-title">VISÃO <span>COLETIVA</span></span>
+                    <span class="brand-sub">CECM Santos Dumont E.F.M</span>
+                </div>
             </a>
-            
-            <nav>
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+                <span class="hamburger"></span>
+            </button>
+            <nav class="nav-menu" id="navMenu">
                 <ul>
-                    <li><a href="#noticias">Notícias</a></li>
-                    <li><a href="#agenda">Agenda</a></li>
-                    <li><a href="#projetos">Projetos</a></li>
-                    <li><a href="#diretoria">Diretoria</a></li>
-                    <li><a href="#participacao">Participação</a></li>
-                    <li><a href="#transparencia">Transparência</a></li>
+                    <li><a href="#home" class="nav-link">Início</a></li>
+                    <li><a href="#quem-somos" class="nav-link">Quem Somos</a></li>
+                    <li><a href="#noticias" class="nav-link">Notícias</a></li>
+                    <li><a href="#agenda" class="nav-link">Agenda</a></li>
+                    <li><a href="#carteirinha" class="nav-link highlight">Carteirinha UBES</a></li>
+                    <li><a href="#transparencia" class="nav-link">Transparência</a></li>
+                    <li><a href="#ouvidoria" class="nav-link">Ouvidoria</a></li>
                 </ul>
             </nav>
-
-            <div class="header-actions">
-                <div class="search-bar">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" placeholder="Buscar no portal...">
-                </div>
-                <a href="login.html" class="btn btn-admin-nav"><i class="fa-solid fa-user-lock"></i> Painel Admin</a>
-            </div>
         </div>
     </header>
 
-    <!-- BANNER PRINCIPAL (Identificado com ID para troca de imagem) -->
-    <section class="hero" id="hero-banner-section">
-        <div class="container">
-            <h1>Bem-vindo ao Portal do Grêmio Estudantil Visão Coletiva</h1>
-            <p>Informação, participação e representação estudantil. Construindo juntos a nossa escola.</p>
-            <div class="hero-btns">
-                <a href="#noticias" class="btn">Últimas Notícias</a>
-                <a href="#participacao" class="btn btn-outline">Participe Agora</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- NOTÍCIAS EM DESTAQUE -->
-    <section id="noticias" class="container">
-        <h2 class="section-title">Notícias em Destaque</h2>
-        <div class="grid-3" id="noticias-container">
-            <!-- Inserido dinamicamente via script.js -->
-        </div>
-    </section>
-
-    <!-- AGENDA -->
-    <section id="agenda" style="background-color: var(--branco);">
-        <div class="container">
-            <h2 class="section-title">Agenda Estudantil</h2>
-            <div class="agenda-container" id="agenda-container">
-                <!-- Inserido dinamicamente via script.js -->
-            </div>
-        </div>
-    </section>
-
-    <!-- PROJETOS -->
-    <section id="projetos" class="container">
-        <h2 class="section-title">Nossos Projetos</h2>
-        <div class="grid-3" id="projetos-container">
-            <!-- Inserido dinamicamente via script.js -->
-        </div>
-    </section>
-
-    <!-- DIRETORIA / MEMBROS -->
-    <section id="diretoria" style="background-color: var(--branco);">
-        <div class="container">
-            <h2 class="section-title">Quem Somos — Diretoria do Grêmio</h2>
-            <p style="text-align: center; color: var(--texto-claro); margin-bottom: 40px; margin-top: -20px;">Conheça os estudantes eleitos para representar a sua voz neste ano letivo.</p>
-            <div class="grid-4" id="diretoria-container">
-                <!-- Inserido dinamicamente via script.js -->
-            </div>
-        </div>
-    </section>
-
-    <!-- PARTICIPAÇÃO -->
-    <section id="participacao">
-        <div class="container">
-            <h2 class="section-title">Sua Voz no Grêmio</h2>
-            <div class="grid-4">
-                <div class="card participacao-card" onclick="focarFormulario('Ideia')">
-                    <i class="fa-regular fa-lightbulb"></i>
-                    <h3>Enviar uma Ideia</h3>
-                    <p>Tem um projeto legal para a escola? Compartilhe.</p>
-                </div>
-                <div class="card participacao-card" onclick="focarFormulario('Sugestão')">
-                    <i class="fa-solid fa-bullhorn"></i>
-                    <h3>Fazer uma Sugestão</h3>
-                    <p>Reclamações ou melhorias na infraestrutura.</p>
-                </div>
-                <div class="card participacao-card" onclick="focarFormulario('Enquete')">
-                    <i class="fa-solid fa-check-to-slot"></i>
-                    <h3>Participar de Enquetes</h3>
-                    <p>Vote nas decisões importantes do Grêmio.</p>
-                </div>
-                <div class="card participacao-card" onclick="focarFormulario('Dúvida')">
-                    <i class="fa-regular fa-circle-question"></i>
-                    <h3>Tirar Dúvidas</h3>
-                    <p>Pergunte à diretoria sobre direitos e regras.</p>
+    <main>
+        <!-- Hero / Início -->
+        <section id="home" class="hero-section">
+            <div class="container hero-content">
+                <span class="hero-tag">Grêmio Estudantil Visão Coletiva</span>
+                <h1 class="slogan-title">A visão de um se fortalece na <span>coletividade</span></h1>
+                <p>Portal oficial de informação, participação e transparência dos estudantes do Colégio Estadual Cívico-Militar Santos Dumont.</p>
+                <div class="hero-buttons">
+                    <a href="#carteirinha" class="btn btn-primary">Como Pedir a Carteirinha UBES</a>
+                    <a href="#ouvidoria" class="btn btn-secondary">Enviar Sugestão / Denúncia</a>
                 </div>
             </div>
+        </section>
 
-            <!-- FORMULÁRIO DE ENVIO -->
-            <div class="form-sugestao-box">
-                <h3>Envie sua mensagem diretamente para a Diretoria</h3>
-                <form id="student-sugestao-form">
-                    <div class="form-row">
-                        <div class="form-group-student">
-                            <label for="student-nome">Seu Nome / Turma (Opcional)</label>
-                            <input type="text" id="student-nome" placeholder="Ex: Carlos do 2ºB (ou deixe em branco)">
+        <!-- Mural de Avisos Rápidos -->
+        <section class="notices-section">
+            <div class="container">
+                <h2 class="section-title">Mural de Avisos Rápidos</h2>
+                <div class="notices-grid">
+                    <div class="notice-card warning">
+                        <span class="tag">Importante</span>
+                        <h3>Inscrições Interclasses 2026</h3>
+                        <p>Abertas as inscrições para as equipes de Futsal e Vôlei do CECM Santos Dumont até a próxima sexta-feira.</p>
+                    </div>
+                    <div class="notice-card info">
+                        <span class="tag">Reunião</span>
+                        <h3>Assembleia Geral Estudantil</h3>
+                        <p>Encontro no anfiteatro para discussão de pautas da comunidade escolar e eventos do semestre.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quem Somos -->
+        <section id="quem-somos" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Quem Somos</h2>
+                <p class="section-subtitle">Conheça a gestão da chapa Visão Coletiva no CECM Santos Dumont E.F.M.</p>
+
+                <div class="about-grid">
+                    <div class="about-card">
+                        <h3>Nossa Missão</h3>
+                        <p>Representar a voz de cada aluno, promovendo união, respeito, incentivo aos estudos, cultura e esporte dentro da nossa escola.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>Estatuto Social</h3>
+                        <p>Acesse o estatuto do Grêmio Estudantil Visão Coletiva e conheça os direitos e deveres do estudante.</p>
+                        <a href="#" class="link-btn">Baixar Estatuto (PDF) &rarr;</a>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Membros da Diretoria</h3>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="avatar-placeholder">P</div>
+                        <h4>Presidência</h4>
+                        <p>Representação Geral</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="avatar-placeholder">VP</div>
+                        <h4>Vice-Presidência</h4>
+                        <p>Coordenação Interna</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="avatar-placeholder">C</div>
+                        <h4>Comunicação</h4>
+                        <p>Mídias e Informativos</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="avatar-placeholder">E</div>
+                        <h4>Esportes e Cultura</h4>
+                        <p>Eventos e Torneios</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notícias -->
+        <section id="noticias" class="section">
+            <div class="container">
+                <h2 class="section-title">Notícias e Ações</h2>
+                <div class="cards-grid">
+                    <article class="card">
+                        <div class="card-body">
+                            <span class="card-date">05 de Maio, 2026</span>
+                            <h3>Melhorias nos Espaços Comuns da Escola</h3>
+                            <p>O Grêmio dialogou com a direção escolar para revitalização e novas demarcações nas áreas de convivência.</p>
                         </div>
-                        <div class="form-group-student">
-                            <label for="student-tipo">Tipo de Envio</label>
-                            <select id="student-tipo">
-                                <option value="Ideia">💡 Ideia de Projeto</option>
-                                <option value="Sugestão" selected>📢 Sugestão / Reclamação</option>
-                                <option value="Dúvida">❓ Dúvida para a Diretoria</option>
-                            </select>
+                    </article>
+                    <article class="card">
+                        <div class="card-body">
+                            <span class="card-date">28 de Abril, 2026</span>
+                            <h3>Aulões e Preparatório para Exames</h3>
+                            <p>Dicas de estudo e cronograma de revisões em parceria com os professores da instituição.</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card-body">
+                            <span class="card-date">12 de Abril, 2026</span>
+                            <h3>Projetos Culturais e Sociais</h3>
+                            <p>Confira os destaques das apresentações e atividades desenvolvidas pelos alunos neste mês.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agenda -->
+        <section id="agenda" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Agenda do Estudante</h2>
+                <div class="events-list">
+                    <div class="event-item">
+                        <div class="event-date">
+                            <span class="day">15</span>
+                            <span class="month">MAI</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>Abertura do Interclasses</h3>
+                            <p>Horário: 08:00 | Local: Quadra da Escola</p>
                         </div>
                     </div>
-                    <div class="form-group-student">
-                        <label for="student-msg">Escreva sua mensagem</label>
-                        <textarea id="student-msg" rows="4" placeholder="Digite aqui o que você gostaria de dizer ao Grêmio..." required></textarea>
+                    <div class="event-item">
+                        <div class="event-date">
+                            <span class="day">22</span>
+                            <span class="month">MAI</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>Roda de Conversa Estudantil</h3>
+                            <p>Horário: 14:00 | Local: Auditório</p>
+                        </div>
                     </div>
-                    <button type="submit" class="btn">Enviar Mensagem</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carteirinha UBES -->
+        <section id="carteirinha" class="section ubes-section">
+            <div class="container">
+                <div class="ubes-box">
+                    <span class="badge">Documento Oficial</span>
+                    <h2>Como Retirar sua Carteirinha do Estudante (UBES)</h2>
+                    <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> orienta os alunos do CECM Santos Dumont na emissão do Documento Nacional do Estudante da <strong>UBES</strong>, garantindo o direito à meia-entrada em eventos em todo o país.</p>
+                    
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h4>Documentação</h4>
+                            <p>Foto 3x4 recente, documento com foto (RG) e Comprovante de Matrícula.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h4>Acesse o Portal UBES</h4>
+                            <p>Clique no botão oficial abaixo para ir ao sistema de solicitação.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h4>Cadastro e Pagamento</h4>
+                            <p>Preencha seus dados, envie as fotos dos documentos e quite a taxa da entidade.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <h4>Receba a Carteirinha</h4>
+                            <p>Acompanhe a emissão e utilize a versão digital no app oficial.</p>
+                        </div>
+                    </div>
+
+                    <div class="ubes-cta">
+                        <a href="https://ubes.org.br" target="_blank" rel="noopener noreferrer" class="btn btn-ubes">
+                            Solicitar Carteirinha no Site Oficial da UBES &rarr;
+                        </a>
+                        <small>Você será redirecionado para o portal oficial (ubes.org.br)</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transparência -->
+        <section id="transparencia" class="section">
+            <div class="container">
+                <h2 class="section-title">Transparência e Prestação de Contas</h2>
+                <p class="section-subtitle">Prestação de contas e relatórios financeiros do Grêmio Visão Coletiva.</p>
+
+                <div class="table-container">
+                    <h3>Balancetes Simplificados</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Mês/Ano</th>
+                                <th>Entradas (R$)</th>
+                                <th>Saídas (R$)</th>
+                                <th>Saldo (R$)</th>
+                                <th>Relatório</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Abril/2026</td>
+                                <td>R$ 450,00</td>
+                                <td>R$ 120,00</td>
+                                <td>R$ 330,00</td>
+                                <td><a href="#">Baixar PDF</a></td>
+                            </tr>
+                            <tr>
+                                <td>Março/2026</td>
+                                <td>R$ 800,00</td>
+                                <td>R$ 650,00</td>
+                                <td>R$ 150,00</td>
+                                <td><a href="#">Baixar PDF</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ouvidoria -->
+        <section id="ouvidoria" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Ouvidoria Estudantil</h2>
+                <p class="section-subtitle">Sua opinião é fundamental para fortalecermos nossa coletividade.</p>
+
+                <form class="ouvidoria-form" id="ouvidoriaForm">
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="anonymousCheck"> Enviar mensagem de forma anônima
+                        </label>
+                    </div>
+
+                    <div class="form-row" id="personalFields">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" placeholder="Seu nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="turma">Turma / Ano</label>
+                            <input type="text" id="turma" placeholder="Ex: 2º Ano A">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assunto">Assunto *</label>
+                        <select id="assunto" required>
+                            <option value="">Selecione uma opção</option>
+                            <option value="sugestao">Sugestão</option>
+                            <option value="reclamacao">Reclamação/Denúncia</option>
+                            <option value="duvida">Dúvida</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensagem">Sua Mensagem *</label>
+                        <textarea id="mensagem" rows="5" required placeholder="Escreva aqui sua sugestão ou mensagem..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                    <div id="formStatus" class="form-status"></div>
                 </form>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- MURAL DOS ESTUDANTES -->
-    <section id="mural" class="container">
-        <h2 class="section-title">Mural dos Estudantes</h2>
-        <div class="mural-grid" id="mural-container">
-            <!-- Inserido dinamicamente via script.js -->
-        </div>
-    </section>
-
-    <!-- TRANSPARÊNCIA -->
-    <section id="transparencia" style="background-color: var(--branco);">
-        <div class="container">
-            <h2 class="section-title">Transparência</h2>
-            <div class="grid-3" id="transparencia-container">
-                <!-- Inserido dinamicamente via script.js -->
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>Grêmio Estudantil Visão Coletiva</h3>
+                <p>CECM Santos Dumont E.F.M</p>
+                <p class="footer-slogan">"A visão de um se fortalece na coletividade"</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#quem-somos">Quem Somos</a></li>
+                    <li><a href="#carteirinha">Carteirinha UBES</a></li>
+                    <li><a href="#transparencia">Transparência</a></li>
+                    <li><a href="#ouvidoria">Ouvidoria</a></li>
+                </ul>
             </div>
         </div>
-    </section>
-
-    <!-- RODAPÉ -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="footer-logo">Visão <span>Coletiva</span></div>
-                    <p id="footer-descricao"><!-- Inserido via JS --></p>
-                    <div class="social-links" id="footer-sociais">
-                        <!-- Inserido via JS -->
-                    </div>
-                </div>
-                <div>
-                    <h3>Links Rápidos</h3>
-                    <ul>
-                        <li><a href="#noticias">Notícias</a></li>
-                        <li><a href="#projetos">Projetos</a></li>
-                        <li><a href="#transparencia">Documentos Oficiais</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Contato e Localização</h3>
-                    <ul id="footer-contato">
-                        <!-- Inserido via JS -->
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. Todos os direitos reservados.</p>
-            </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva. Todos os direitos reservados.</p>
         </div>
     </footer>
 
-    <!-- Arquivo JavaScript Externo -->
     <script src="script.js"></script>
 </body>
 </html>
