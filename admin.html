@@ -3,104 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo | Visão Coletiva</title>
+    <title>Painel Administrativo | Grêmio Visão Coletiva</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .admin-card { background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .admin-card h2 { margin-bottom: 20px; color: var(--color-primary); font-size: 1.4rem; border-bottom: 2px solid var(--color-accent); padding-bottom: 8px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; }
+        .form-group textarea { resize: vertical; height: 90px; }
+        .btn-save { background: var(--color-primary); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-save:hover { background: var(--color-accent); }
+        .back-link { display: inline-block; margin-bottom: 20px; font-weight: 600; color: var(--color-primary); }
+        .item-list { margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 15px; border-radius: 4px; margin-bottom: 8px; border: 1px solid var(--border-color); font-size: 0.9rem; }
+        .btn-del { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+    </style>
 </head>
-<body class="admin-body">
+<body>
+    <div class="admin-container">
+        <a href="index.html" class="back-link">← Voltar para o Site Principal</a>
+        <h1>Painel de Controle Administrativo</h1>
+        <p style="margin-bottom: 30px; color: #64748b;">Gerencie os conteúdos, diretoria, agenda e anexos do portal do Grêmio.</p>
 
-    <!-- TELA DE LOGIN (Oculta se já estiver logado) -->
-    <div id="login-screen" class="login-container">
-        <div class="login-card">
-            <h2>🔒 Área Restrita</h2>
-            <p>Faça login para gerenciar o portal</p>
-            <form id="form-login" class="admin-form">
-                <input type="text" id="login-usuario" placeholder="Usuário" required>
-                <input type="password" id="login-senha" placeholder="Senha" required>
-                <button type="submit" class="btn-primary">Entrar</button>
+        <!-- GERENCIAR NOTÍCIAS -->
+        <div class="admin-card">
+            <h2>Adicionar Notícia / Comunicado</h2>
+            <form id="form-noticia">
+                <div class="form-group"><label>Título:</label><input type="text" id="noticia-titulo" required></div>
+                <div class="form-group"><label>Categoria (Ex: Aviso, Projeto):</label><input type="text" id="noticia-categoria" required></div>
+                <div class="form-group"><label>Data:</label><input type="date" id="noticia-data"></div>
+                <div class="form-group"><label>Conteúdo:</label><textarea id="noticia-conteudo" required></textarea></div>
+                <div class="form-group"><label>Link de Anexo / Documento (Opcional):</label><input type="url" id="noticia-anexo" placeholder="https://exemplo.com/arquivo.pdf"></div>
+                <button type="submit" class="btn-save">Cadastrar Notícia</button>
             </form>
-            <p id="login-erro" class="login-error" style="display: none;">Usuário ou senha incorretos!</p>
-            <a href="index.html" class="btn-secondary" style="margin-top: 15px; text-align: center; display: block; width: 100%;">&larr; Voltar ao Site</a>
+            <div class="item-list" id="lista-noticias"></div>
+        </div>
+
+        <!-- GERENCIAR EVENTOS -->
+        <div class="admin-card">
+            <h2>Adicionar Evento na Agenda</h2>
+            <form id="form-evento">
+                <div class="form-group"><label>Título do Evento:</label><input type="text" id="evento-titulo" required></div>
+                <div class="form-group"><label>Data:</label><input type="date" id="evento-data" required></div>
+                <div class="form-group"><label>Local:</label><input type="text" id="evento-local" required></div>
+                <div class="form-group"><label>Descrição Completa:</label><textarea id="evento-descricao"></textarea></div>
+                <div class="form-group"><label>Link de Anexo / Inscrição (Opcional):</label><input type="url" id="evento-anexo" placeholder="https://exemplo.com/inscricao"></div>
+                <button type="submit" class="btn-save">Cadastrar Evento</button>
+            </form>
+            <div class="item-list" id="lista-eventos"></div>
+        </div>
+
+        <!-- GERENCIAR MEMBROS -->
+        <div class="admin-card">
+            <h2>Adicionar Membro da Diretoria</h2>
+            <form id="form-membro">
+                <div class="form-group"><label>Nome Completo:</label><input type="text" id="membro-nome" required></div>
+                <div class="form-group"><label>Cargo (Ex: Presidente, Tesoureiro):</label><input type="text" id="membro-cargo" required></div>
+                <div class="form-group"><label>Breve Descrição / Bio (Opcional):</label><input type="text" id="membro-bio"></div>
+                <button type="submit" class="btn-save">Cadastrar Membro</button>
+            </form>
+            <div class="item-list" id="lista-membros"></div>
         </div>
     </div>
 
-    <!-- PAINEL ADMINISTRATIVO (Oculto até fazer o login) -->
-    <div id="admin-panel" class="admin-layout" style="display: none;">
-        <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <h2>⚙️ Painel Admin</h2>
-                <p>Visão Coletiva</p>
-            </div>
-            <nav class="admin-nav">
-                <button class="admin-tab active" onclick="openTab('tab-noticias')">Notícias</button>
-                <button class="admin-tab" onclick="openTab('tab-eventos')">Agenda/Eventos</button>
-                <button class="admin-tab" onclick="openTab('tab-membros')">Membros</button>
-            </nav>
-            <div style="padding: 20px;">
-                <a href="index.html" class="btn-secondary" style="margin-bottom: 10px; text-align: center; display: block; border-color: white; color: white;">&larr; Ver Site</a>
-                <button onclick="logoutAdmin()" class="btn-secondary" style="text-align: center; display: block; width: 100%; border-color: #ef4444; color: #ef4444;">Sair</button>
-            </div>
-        </aside>
-
-        <main class="admin-content">
-            <!-- ABA NOTÍCIAS -->
-            <section id="tab-noticias" class="admin-section active">
-                <h2>Gerenciar Notícias</h2>
-                <form id="form-noticia" class="admin-form">
-                    <input type="hidden" id="noticia-id">
-                    <input type="text" id="noticia-titulo" placeholder="Título da Notícia" required>
-                    <select id="noticia-categoria" required>
-                        <option value="Comunicado Oficial">Comunicado Oficial</option>
-                        <option value="Campanha">Campanha</option>
-                        <option value="Representação">Representação</option>
-                    </select>
-                    <textarea id="noticia-conteudo" rows="4" placeholder="Conteúdo da notícia..." required></textarea>
-                    <button type="submit" class="btn-primary">Salvar Notícia</button>
-                </form>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead><tr><th>Título</th><th>Categoria</th><th>Ações</th></tr></thead>
-                        <tbody id="tabela-noticias"></tbody>
-                    </table>
+    <script>
+        function carregarDadosAdmin() {
+            // Notícias
+            const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
+            document.getElementById('lista-noticias').innerHTML = noticias.map((n, i) => `
+                <div class="item-row">
+                    <span><strong>${n.titulo}</strong> (${n.categoria})</span>
+                    <button class="btn-del" onclick="removerItem('gremio_noticias', ${i})">Excluir</button>
                 </div>
-            </section>
+            `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhuma notícia cadastrada.</p>';
 
-            <!-- ABA EVENTOS -->
-            <section id="tab-eventos" class="admin-section">
-                <h2>Gerenciar Agenda/Eventos</h2>
-                <form id="form-evento" class="admin-form">
-                    <input type="hidden" id="evento-id">
-                    <input type="text" id="evento-titulo" placeholder="Nome do Evento" required>
-                    <input type="date" id="evento-data" required>
-                    <input type="text" id="evento-local" placeholder="Local (Ex: Auditório)" required>
-                    <button type="submit" class="btn-primary">Salvar Evento</button>
-                </form>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead><tr><th>Data</th><th>Evento</th><th>Local</th><th>Ações</th></tr></thead>
-                        <tbody id="tabela-eventos"></tbody>
-                    </table>
+            // Eventos
+            const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
+            document.getElementById('lista-eventos').innerHTML = eventos.map((e, i) => `
+                <div class="item-row">
+                    <span><strong>${e.titulo}</strong> - ${e.data}</span>
+                    <button class="btn-del" onclick="removerItem('gremio_eventos', ${i})">Excluir</button>
                 </div>
-            </section>
+            `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhum evento cadastrado.</p>';
 
-            <!-- ABA MEMBROS -->
-            <section id="tab-membros" class="admin-section">
-                <h2>Gerenciar Diretoria e Membros</h2>
-                <form id="form-membro" class="admin-form">
-                    <input type="hidden" id="membro-id">
-                    <input type="text" id="membro-nome" placeholder="Nome do Membro" required>
-                    <input type="text" id="membro-cargo" placeholder="Cargo (Ex: Presidente)" required>
-                    <button type="submit" class="btn-primary">Salvar Membro</button>
-                </form>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead><tr><th>Nome</th><th>Cargo</th><th>Ações</th></tr></thead>
-                        <tbody id="tabela-membros"></tbody>
-                    </table>
+            // Membros
+            const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
+            document.getElementById('lista-membros').innerHTML = membros.map((m, i) => `
+                <div class="item-row">
+                    <span><strong>${m.nome}</strong> - ${m.cargo}</span>
+                    <button class="btn-del" onclick="removerItem('gremio_membros', ${i})">Excluir</button>
                 </div>
-            </section>
-        </main>
-    </div>
+            `).join('') || '<p style="font-size:0.85rem; color:#64748b;">Nenhum membro cadastrado.</p>';
+        }
 
-    <script src="script.js"></script>
+        function removerItem(chave, index) {
+            let dados = JSON.parse(localStorage.getItem(chave)) || [];
+            dados.splice(index, 1);
+            localStorage.setItem(chave, JSON.stringify(dados));
+            carregarDadosAdmin();
+        }
+
+        document.getElementById('form-noticia').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
+            noticias.push({
+                titulo: document.getElementById('noticia-titulo').value,
+                categoria: document.getElementById('noticia-categoria').value,
+                data: document.getElementById('noticia-data').value,
+                conteudo: document.getElementById('noticia-conteudo').value,
+                anexo: document.getElementById('noticia-anexo').value
+            });
+            localStorage.setItem('gremio_noticias', JSON.stringify(noticias));
+            e.target.reset();
+            carregarDadosAdmin();
+            alert('Notícia adicionada com sucesso!');
+        });
+
+        document.getElementById('form-evento').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
+            eventos.push({
+                titulo: document.getElementById('evento-titulo').value,
+                data: document.getElementById('evento-data').value,
+                local: document.getElementById('evento-local').value,
+                descricao: document.getElementById('evento-descricao').value,
+                anexo: document.getElementById('evento-anexo').value
+            });
+            localStorage.setItem('gremio_eventos', JSON.stringify(eventos));
+            e.target.reset();
+            carregarDadosAdmin();
+            alert('Evento adicionado com sucesso!');
+        });
+
+        document.getElementById('form-membro').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
+            membros.push({
+                nome: document.getElementById('membro-nome').value,
+                cargo: document.getElementById('membro-cargo').value,
+                bio: document.getElementById('membro-bio').value
+            });
+            localStorage.setItem('gremio_membros', JSON.stringify(membros));
+            e.target.reset();
+            carregarDadosAdmin();
+            alert('Membro adicionado com sucesso!');
+        });
+
+        carregarDadosAdmin();
+    </script>
 </body>
 </html>
