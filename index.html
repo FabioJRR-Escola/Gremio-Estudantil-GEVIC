@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grêmio Estudantil Visão Coletiva | Portal Oficial</title>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,12 +13,12 @@
     <div class="accessibility-bar">
         <div class="acc-container">
             <div class="accessibility-dropdown-wrapper">
-                <button id="btn-toggle-accessibility" class="acc-main-btn" type="button">♿ Acessibilidade</button>
+                <button id="btn-toggle-accessibility" class="acc-main-btn" type="button"><i class="fa-solid fa-universal-access"></i> Acessibilidade</button>
                 <div id="accessibility-menu" class="accessibility-menu">
                     <button id="btn-decrease-text" type="button" title="Diminuir texto">A-</button>
                     <button id="btn-normal-text" type="button" title="Tamanho normal">A</button>
                     <button id="btn-increase-text" type="button" title="Aumentar texto">A+</button>
-                    <button id="btn-contrast" type="button" title="Alto Contraste">◐ Contraste</button>
+                    <button id="btn-contrast" type="button" title="Alto Contraste"><i class="fa-solid fa-circle-half-stroke"></i> Contraste</button>
                 </div>
             </div>
         </div>
@@ -29,16 +31,16 @@
                 <a href="#home"><img src="gevic.png" alt="Logo Grêmio Visão Coletiva"></a>
             </div>
             <div class="header-right">
-                <div class="menu-toggle" id="mobile-menu" aria-label="Abrir Menu">☰</div>
+                <div class="menu-toggle" id="mobile-menu" aria-label="Abrir Menu"><i class="fa-solid fa-bars"></i></div>
                 <nav>
                     <ul id="nav-list">
-                        <li><a href="#home">Início</a></li>
-                        <li><a href="#institucional">Institucional</a></li>
-                        <li><a href="#membros">Diretoria</a></li>
-                        <li><a href="#noticias">Notícias</a></li>
-                        <li><a href="#agenda">Agenda</a></li>
-                        <li><a href="#servicos">Serviços</a></li>
-                        <li><a href="admin.html" class="admin-nav-link">⚙️ Área Restrita</a></li>
+                        <li><a href="#home"><i class="fa-solid fa-house"></i> Início</a></li>
+                        <li><a href="#institucional"><i class="fa-solid fa-users-rectangle"></i> Institucional</a></li>
+                        <li><a href="#membros"><i class="fa-solid fa-user-tie"></i> Diretoria</a></li>
+                        <li><a href="#noticias"><i class="fa-solid fa-newspaper"></i> Notícias</a></li>
+                        <li><a href="#agenda"><i class="fa-solid fa-calendar-days"></i> Agenda</a></li>
+                        <li><a href="#servicos"><i class="fa-solid fa-id-card"></i> Serviços</a></li>
+                        <li><a href="admin.html" class="admin-nav-link"><i class="fa-solid fa-gear"></i> Área Restrita</a></li>
                     </ul>
                 </nav>
             </div>
@@ -54,7 +56,7 @@
 
     <section id="institucional" class="section-light">
         <div class="container">
-            <h2 class="section-title">Sobre a Entidade</h2>
+            <h2 class="section-title"><i class="fa-solid fa-bullseye"></i> Sobre a Entidade</h2>
             <div class="text-content">
                 <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> atua como a voz legítima do corpo discente. Nossa estrutura é desenhada para promover o debate qualificado, a formulação de políticas internas e a representação ativa dos estudantes.</p>
                 <p>Guiados pela premissa de que a coletividade fortalece o indivíduo, trabalhamos focados na transparência administrativa, na criação de projetos de impacto e no aprimoramento contínuo do ambiente acadêmico.</p>
@@ -65,7 +67,7 @@
     <!-- SEÇÃO: MEMBROS -->
     <section id="membros" class="section-gray">
         <div class="container">
-            <h2 class="section-title">Nossa Diretoria</h2>
+            <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Nossa Diretoria</h2>
             <div id="membros-grid" class="members-grid"></div>
         </div>
     </section>
@@ -73,7 +75,7 @@
     <!-- SEÇÃO: NOTÍCIAS -->
     <section id="noticias" class="section-light">
         <div class="container">
-            <h2 class="section-title">Mural de Notícias</h2>
+            <h2 class="section-title"><i class="fa-solid fa-bullhorn"></i> Mural de Notícias</h2>
             <div id="noticias-grid" class="grid-cards"></div>
         </div>
     </section>
@@ -81,14 +83,14 @@
     <!-- SEÇÃO: AGENDA -->
     <section id="agenda" class="section-gray">
         <div class="container">
-            <h2 class="section-title">Agenda e Eventos</h2>
+            <h2 class="section-title"><i class="fa-solid fa-calendar-check"></i> Agenda e Eventos</h2>
             <div id="eventos-list" class="events-list"></div>
         </div>
     </section>
 
     <section id="servicos" class="section-light">
         <div class="container">
-            <h2 class="section-title">Documento do Estudante (DNE)</h2>
+            <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Documento do Estudante (DNE)</h2>
             <div class="service-box">
                 <div class="service-info">
                     <h3>Como emitir sua Carteira de Identificação Estudantil</h3>
@@ -98,7 +100,7 @@
                         <li><strong>Passo 2:</strong> Acesse o portal oficial através do botão abaixo.</li>
                         <li><strong>Passo 3:</strong> Preencha o formulário online e pague a taxa.</li>
                     </ul>
-                    <a href="https://www.documentodoestudante.com.br/" target="_blank" class="btn-secondary">Acessar Portal Oficial</a>
+                    <a href="https://www.documentodoestudante.com.br/" target="_blank" class="btn-secondary"><i class="fa-solid fa-external-link-alt"></i> Acessar Portal Oficial</a>
                 </div>
             </div>
         </div>
