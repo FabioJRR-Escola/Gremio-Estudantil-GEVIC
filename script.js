@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. EFEITO STICKY SHRINK NO HEADER ---
+    const headerElement = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            headerElement.classList.add('scrolled');
+        } else {
+            headerElement.classList.remove('scrolled');
+        }
+    });
+
+    // --- 2. ANIMAÇÕES DE FADE-IN NAS SEÇÕES ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('section').forEach(section => {
+        section.classList.add('animate-on-scroll');
+        observer.observe(section);
+    });
+
+    // --- 3. MENU MOBILE ---
     const mobileMenu = document.getElementById('mobile-menu');
     const navList = document.getElementById('nav-list');
     if (mobileMenu && navList) {
@@ -20,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 4. ACESSIBILIDADE ---
     const btnToggleAcc = document.getElementById('btn-toggle-accessibility');
     const accMenu = document.getElementById('accessibility-menu');
     if (btnToggleAcc && accMenu) {
@@ -46,11 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNorm) btnNorm.addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
     if (btnCont) btnCont.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
 
-    // CARROSSEL DE BANNERS (15 SEGUNDOS + ARRASTAR / SWIPE)
+    // --- 5. CARROSSEL DE BANNERS (SWIPE + 15 SEGUNDOS) ---
     const bannerTrack = document.getElementById('banner-track');
     const bannerContainer = document.getElementById('banner-container');
-    const bannerPrev = document.getElementById('banner-prev');
-    const bannerNext = document.getElementById('banner-next');
     const bannerDotsContainer = document.getElementById('banner-dots');
 
     let bannersPadrao = [
@@ -78,27 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const dots = bannerDotsContainer ? bannerDotsContainer.querySelectorAll('.carousel-dot') : [];
 
         function showBanner(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            slides.forEach((slide, i) => { slide.classList.toggle('active', i === index); });
+            dots.forEach((dot, i) => { dot.classList.toggle('active', i === index); });
             currentBanner = index;
-        }
-
-        if (bannerNext) {
-            bannerNext.addEventListener('click', () => {
-                let nextIndex = (currentBanner + 1) % slides.length;
-                showBanner(nextIndex);
-            });
-        }
-
-        if (bannerPrev) {
-            bannerPrev.addEventListener('click', () => {
-                let prevIndex = (currentBanner - 1 + slides.length) % slides.length;
-                showBanner(prevIndex);
-            });
         }
 
         dots.forEach(dot => {
@@ -107,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Auto-play de 15 segundos
+        // Temporizador de 15 segundos
         let bannerInterval = setInterval(() => {
             let nextIndex = (currentBanner + 1) % slides.length;
             showBanner(nextIndex);
@@ -128,50 +134,31 @@ document.addEventListener('DOMContentLoaded', () => {
         let startX = 0;
         let isDraggingBanner = false;
 
-        bannerContainer.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isDraggingBanner = true;
-        });
-
-        bannerContainer.addEventListener('touchmove', (e) => {
-            if (!isDraggingBanner) return;
-        });
-
+        bannerContainer.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDraggingBanner = true; }, {passive: true});
         bannerContainer.addEventListener('touchend', (e) => {
             if (!isDraggingBanner) return;
-            let endX = e.changedTouches[0].clientX;
-            handleBannerSwipe(startX, endX);
+            handleBannerSwipe(startX, e.changedTouches[0].clientX);
             isDraggingBanner = false;
         });
-
-        bannerContainer.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            isDraggingBanner = true;
-        });
-
+        bannerContainer.addEventListener('mousedown', (e) => { startX = e.clientX; isDraggingBanner = true; });
         bannerContainer.addEventListener('mouseup', (e) => {
             if (!isDraggingBanner) return;
-            let endX = e.clientX;
-            handleBannerSwipe(startX, endX);
+            handleBannerSwipe(startX, e.clientX);
             isDraggingBanner = false;
         });
 
         function handleBannerSwipe(startX, endX) {
             let threshold = 50;
             if (startX - endX > threshold) {
-                // Arrastou para a esquerda (próximo)
-                let nextIndex = (currentBanner + 1) % slides.length;
-                showBanner(nextIndex);
+                showBanner((currentBanner + 1) % slides.length);
             } else if (endX - startX > threshold) {
-                // Arrastou para a direita (anterior)
-                let prevIndex = (currentBanner - 1 + slides.length) % slides.length;
-                showBanner(prevIndex);
+                showBanner((currentBanner - 1 + slides.length) % slides.length);
             }
         }
     }
 
+    // --- 6. RENDERIZAÇÃO E CARROSSEL DE MEMBROS ---
     if (document.getElementById('noticias-grid')) {
-        // Renderizar Membros em Carrossel Arrastável
         const membros = JSON.parse(localStorage.getItem('gremio_membros')) || [];
         const membrosGrid = document.getElementById('membros-grid');
         const membrosViewport = document.getElementById('members-viewport');
@@ -188,19 +175,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
 
-            // Navegação por botões discretos
             const memberPrev = document.getElementById('member-prev');
             const memberNext = document.getElementById('member-next');
             if (memberPrev && memberNext && membrosViewport) {
-                memberPrev.addEventListener('click', () => {
-                    membrosViewport.scrollBy({ left: -260, behavior: 'smooth' });
-                });
-                memberNext.addEventListener('click', () => {
-                    membrosViewport.scrollBy({ left: 260, behavior: 'smooth' });
-                });
+                memberPrev.addEventListener('click', () => membrosViewport.scrollBy({ left: -260, behavior: 'smooth' }));
+                memberNext.addEventListener('click', () => membrosViewport.scrollBy({ left: 260, behavior: 'smooth' }));
             }
 
-            // Suporte a arrastar com o mouse (Drag to scroll)
+            // Suporte a arrastar no carrossel de membros
             if (membrosViewport) {
                 let isDown = false;
                 let startX;
@@ -212,22 +194,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     startX = e.pageX - membrosViewport.offsetLeft;
                     scrollLeft = membrosViewport.scrollLeft;
                 });
-
-                membrosViewport.addEventListener('mouseleave', () => {
-                    isDown = false;
-                    membrosViewport.classList.remove('active');
-                });
-
-                membrosViewport.addEventListener('mouseup', () => {
-                    isDown = false;
-                    membrosViewport.classList.remove('active');
-                });
-
+                membrosViewport.addEventListener('mouseleave', () => { isDown = false; membrosViewport.classList.remove('active'); });
+                membrosViewport.addEventListener('mouseup', () => { isDown = false; membrosViewport.classList.remove('active'); });
                 membrosViewport.addEventListener('mousemove', (e) => {
                     if (!isDown) return;
                     e.preventDefault();
                     const x = e.pageX - membrosViewport.offsetLeft;
-                    const walk = (x - startX) * 2; // Velocidade do arraste
+                    const walk = (x - startX) * 2;
                     membrosViewport.scrollLeft = scrollLeft - walk;
                 });
             }
@@ -235,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             membrosGrid.innerHTML = `<p style="text-align:center; width:100%; color:#64748b; font-size:0.9rem;">Nenhum membro cadastrado na diretoria ainda.</p>`;
         }
 
-        // Renderizar Notícias
+        // --- 7. RENDERIZAÇÃO DE NOTÍCIAS ---
         const noticias = JSON.parse(localStorage.getItem('gremio_noticias')) || [];
         const noticiasGrid = document.getElementById('noticias-grid');
         if (noticiasGrid && noticias.length > 0) {
@@ -252,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
         }
 
-        // Renderizar Eventos
+        // --- 8. RENDERIZAÇÃO DE EVENTOS ---
         const eventos = JSON.parse(localStorage.getItem('gremio_eventos')) || [];
         const eventosList = document.getElementById('eventos-list');
         if (eventosList && eventos.length > 0) {
