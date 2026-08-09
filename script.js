@@ -72,22 +72,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNorm) btnNorm.addEventListener('click', () => { fontSize = 16; document.body.style.fontSize = '16px'; });
     if (btnCont) btnCont.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
 
-    // --- 5. CARROSSEL DE BANNERS (SWIPE + 15 SEGUNDOS) ---
+        // --- 5. CARROSSEL DE BANNERS (SWIPE + 15 SEGUNDOS, SEM TEXTO) ---
     const bannerTrack = document.getElementById('banner-track');
     const bannerContainer = document.getElementById('banner-container');
     const bannerDotsContainer = document.getElementById('banner-dots');
 
+    // Agora o banner padrão tem apenas a imagem
     let bannersPadrao = [
-        { imagem: '1780189057214.png', descricao: 'O portal oficial de comunicação institucional, transparência e defesa dos direitos dos estudantes do CECM Santos Dumont E.F.M.' }
+        { imagem: '1780189057214.png' } 
     ];
+    
+    // Puxa os banners salvos no admin
     let bannersSalvos = JSON.parse(localStorage.getItem('gremio_banners')) || [];
     let todosBanners = [...bannersPadrao, ...bannersSalvos];
 
     if (bannerTrack && bannerContainer) {
+        // Injeta apenas a tag <img>
         bannerTrack.innerHTML = todosBanners.map((b, index) => `
             <div class="banner-slide ${index === 0 ? 'active' : ''}">
-                <img src="${b.imagem}" alt="Banner Institucional" class="slogan-img">
-                ${b.descricao ? `<p class="hero-description">${b.descricao}</p>` : ''}
+                <img src="${b.imagem}" alt="Banner Institucional" class="banner-img">
             </div>
         `).join('');
 
