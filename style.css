@@ -220,8 +220,8 @@ img {
 }
 
 .header-logo{
-    width: 62px;
-    height: 62px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
     display: block;
 }
