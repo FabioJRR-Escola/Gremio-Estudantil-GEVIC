@@ -1,124 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grêmio Estudantil Visão Coletiva | Portal Oficial</title>
-    <!-- FontAwesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Grêmio Estudantil Visão Coletiva</title>
+    <!-- Link para seu arquivo CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- BARRA DE ACESSIBILIDADE CENTRALIZADA -->
-    <div class="accessibility-bar">
-        <div class="acc-container">
-            <div class="accessibility-dropdown-wrapper">
-                <button id="btn-toggle-accessibility" class="acc-main-btn" type="button"><i class="fa-solid fa-universal-access"></i> Acessibilidade</button>
-                <div id="accessibility-menu" class="accessibility-menu">
-                    <button id="btn-decrease-text" type="button" title="Diminuir texto">A-</button>
-                    <button id="btn-normal-text" type="button" title="Tamanho normal">A</button>
-                    <button id="btn-increase-text" type="button" title="Aumentar texto">A+</button>
-                    <button id="btn-contrast" type="button" title="Alto Contraste"><i class="fa-solid fa-circle-half-stroke"></i> Contraste</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- CABEÇALHO -->
     <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="#home"><img src="gevic.png" alt="Logo Grêmio Visão Coletiva"></a>
-            </div>
-            <div class="header-right">
-                <div class="menu-toggle" id="mobile-menu" aria-label="Abrir Menu"><i class="fa-solid fa-bars"></i></div>
-                <nav>
-                    <ul id="nav-list">
-                        <li><a href="#home"><i class="fa-solid fa-house"></i> Início</a></li>
-                        <li><a href="#institucional"><i class="fa-solid fa-users-rectangle"></i> Institucional</a></li>
-                        <li><a href="#membros"><i class="fa-solid fa-user-tie"></i> Diretoria</a></li>
-                        <li><a href="#noticias"><i class="fa-solid fa-newspaper"></i> Notícias</a></li>
-                        <li><a href="#agenda"><i class="fa-solid fa-calendar-days"></i> Agenda</a></li>
-                        <li><a href="#servicos"><i class="fa-solid fa-id-card"></i> Serviços</a></li>
-                        <li><a href="admin.html" class="admin-nav-link"><i class="fa-solid fa-gear"></i> Área Restrita</a></li>
-                    </ul>
-                </nav>
-            </div>
+        <div class="container nav-container">
+            <div class="logo">Visão Coletiva</div>
+            <nav id="nav-list">
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#noticias">Notícias</a></li>
+                    <li><a href="#diretoria">Diretoria</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#" id="btn-toggle-accessibility">Acessibilidade</a></li>
+                </ul>
+            </nav>
+            <div class="menu-mobile" id="mobile-menu"><i class="fa-solid fa-bars"></i></div>
+        </div>
+
+        <!-- Menu de Acessibilidade -->
+        <div id="accessibility-menu" class="acc-menu">
+            <button id="btn-increase-text">A+</button>
+            <button id="btn-decrease-text">A-</button>
+            <button id="btn-normal-text">Normal</button>
+            <button id="btn-contrast">Contraste</button>
         </div>
     </header>
 
-    <!-- CARROSSEL DE BANNERS (APENAS SWIPE E 15s) -->
-    <section id="home" class="hero-section">
-        <div class="banner-carousel-container" id="banner-container">
-            <div class="banner-track" id="banner-track">
-                <!-- Banners inseridos via JS -->
-            </div>
-            <div class="carousel-dots" id="banner-dots"></div>
-        </div>
-    </section>
-
-    <section id="institucional" class="section-light">
-        <div class="container">
-            <h2 class="section-title"><i class="fa-solid fa-bullseye"></i> Sobre a Entidade</h2>
-            <div class="text-content">
-                <p>O <strong>Grêmio Estudantil Visão Coletiva</strong> atua como a voz legítima do corpo discente. Nossa estrutura é desenhada para promover o debate qualificado, a formulação de políticas internas e a representação ativa dos estudantes.</p>
-                <p>Guiados pela premissa de que a coletividade fortalece o indivíduo, trabalhamos focados na transparência administrativa, na criação de projetos de impacto e no aprimoramento contínuo do ambiente acadêmico.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SEÇÃO: MEMBROS (CARROSSEL ARRASTÁVEL COM BOTÕES DISCRETOS) -->
-    <section id="membros" class="section-gray">
-        <div class="container">
-            <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Nossa Diretoria</h2>
-            <div class="members-carousel-wrapper">
-                <button class="member-control prev" id="member-prev" aria-label="Membro anterior"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="members-viewport" id="members-viewport">
-                    <div id="membros-grid" class="members-track"></div>
+    <main>
+        <!-- Banner Carousel -->
+        <section id="home" class="hero-section">
+            <div class="banner-carousel-container" id="banner-container">
+                <div class="banner-track" id="banner-track">
+                    <!-- Banner 1 -->
+                    <div class="banner-slide active">
+                        <img src="banner1.jpg" alt="Banner 1" class="banner-img">
+                    </div>
+                    <!-- Banner 2 -->
+                    <div class="banner-slide">
+                        <img src="banner2.jpg" alt="Banner 2" class="banner-img">
+                    </div>
                 </div>
-                <button class="member-control next" id="member-next" aria-label="Próximo membro"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots" id="banner-dots"></div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- SEÇÃO: NOTÍCIAS -->
-    <section id="noticias" class="section-light">
-        <div class="container">
-            <h2 class="section-title"><i class="fa-solid fa-bullhorn"></i> Mural de Notícias</h2>
-            <div id="noticias-grid" class="grid-cards"></div>
-        </div>
-    </section>
+        <!-- Notícias -->
+        <section id="noticias" class="section-light">
+            <div class="container">
+                <h2 class="section-title">Últimas Notícias</h2>
+                <div class="grid-cards" id="noticias-grid">
+                    
+                    <!-- Notícia 1 -->
+                    <article class="card">
+                        <img src="noticia1.jpg" alt="Título" class="card-img">
+                        <div class="card-tag">Geral</div>
+                        <h3>Título da Notícia 1</h3>
+                        <p>Descrição curta da notícia vai aqui.</p>
+                    </article>
 
-    <!-- SEÇÃO: AGENDA -->
-    <section id="agenda" class="section-gray">
-        <div class="container">
-            <h2 class="section-title"><i class="fa-solid fa-calendar-check"></i> Agenda e Eventos</h2>
-            <div id="eventos-list" class="events-list"></div>
-        </div>
-    </section>
+                    <!-- Notícia 2 -->
+                    <article class="card">
+                        <img src="noticia2.jpg" alt="Título" class="card-img">
+                        <div class="card-tag">Aviso</div>
+                        <h3>Título da Notícia 2</h3>
+                        <p>Descrição curta da notícia vai aqui.</p>
+                    </article>
 
-    <section id="servicos" class="section-light">
-        <div class="container">
-            <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Documento do Estudante (DNE)</h2>
-            <div class="service-box">
-                <div class="service-info">
-                    <h3>Como emitir sua Carteira de Identificação Estudantil</h3>
-                    <p>A carteirinha garante o direito à meia-entrada. O Grêmio orienta que a emissão seja feita exclusivamente pelos canais oficiais.</p>
-                    <ul class="steps-list">
-                        <li><strong>Passo 1:</strong> Tenha em mãos RG, CPF e declaração de matrícula.</li>
-                        <li><strong>Passo 2:</strong> Acesse o portal oficial através do botão abaixo.</li>
-                        <li><strong>Passo 3:</strong> Preencha o formulário online e pague a taxa.</li>
-                    </ul>
-                    <a href="https://www.documentodoestudante.com.br/" target="_blank" class="btn-secondary"><i class="fa-solid fa-external-link-alt"></i> Acessar Portal Oficial</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Diretoria -->
+        <section id="diretoria" class="section-gray">
+            <div class="container">
+                <h2 class="section-title">Nossa Diretoria</h2>
+                <div class="members-carousel-wrapper">
+                    <button class="member-control prev" id="member-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="members-viewport" id="members-viewport">
+                        <div class="members-track" id="membros-grid">
+                            
+                            <!-- Membro 1 -->
+                            <div class="member-card">
+                                <div class="member-avatar">JS</div>
+                                <h3>João Silva</h3>
+                                <p>Presidente</p>
+                            </div>
+
+                            <!-- Membro 2 -->
+                            <div class="member-card">
+                                <div class="member-avatar">MC</div>
+                                <h3>Maria Clara</h3>
+                                <p>Vice-Presidente</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <button class="member-control next" id="member-next"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agenda -->
+        <section id="agenda" class="section-light">
+            <div class="container">
+                <h2 class="section-title">Agenda e Eventos</h2>
+                <div class="events-list" id="eventos-list">
+                    
+                    <!-- Evento 1 -->
+                    <div class="event-item">
+                        <div class="event-date"><span>15</span> AGO</div>
+                        <div class="event-details">
+                            <h3>Campeonato Interclasses</h3>
+                            <p>Quadra principal - 14:00h</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 Grêmio Estudantil Visão Coletiva.</p>
-        </div>
+        <p>&copy; 2026 Grêmio Estudantil Visão Coletiva</p>
     </footer>
 
     <script src="script.js"></script>
